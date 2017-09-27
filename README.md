@@ -6,9 +6,9 @@ microframework.
 
 ## Team
 
-- Jane Doe
+- Justin Lam
 
-- John Doe
+- Alan Tan
 
 
 ## Prerequisites
