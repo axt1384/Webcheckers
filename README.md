@@ -10,6 +10,8 @@ microframework.
 
 - Alan Tan
 
+- Jesse Chen
+
 
 ## Prerequisites
 
