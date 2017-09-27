@@ -12,6 +12,8 @@ microframework.
 
 - Jesse Chen
 
+- Elijah Cantella
+
 
 ## Prerequisites
 
