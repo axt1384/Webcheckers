@@ -14,6 +14,7 @@ microframework.
 
 - Elijah Cantella
 
+- Jay Gogri
 
 ## Prerequisites
 
