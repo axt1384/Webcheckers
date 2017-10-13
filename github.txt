@@ -1,0 +1,29 @@
+commit 9193921bf1e564a3ec2fb403a435e6c93e494569
+Author: jay gogri <jkg6656@g.rit.edu>
+Date:   Fri Sep 29 09:12:12 2017 -0400
+
+    Jay added his name
+
+commit 4266eef01229986f578c327013632ccc2c8198c7
+Author: Elijah Cantella <edc8230@rit.edu>
+Date:   Wed Sep 27 09:48:04 2017 -0400
+
+    This is Elijah being added to the Git Repository.
+
+commit d093fb9a4ef9e50ef7677bff3b614a34d5e276f8
+Author: Jesse Chen <jxc8924@g.rit.edu>
+Date:   Wed Sep 27 09:35:37 2017 -0400
+
+    Jesse added his name
+
+commit 6d32eaf10d49dd9791239ee6f7b8de8b53eb2f35
+Author: atan5 <axt1384@rit.edu>
+Date:   Wed Sep 27 09:30:17 2017 -0400
+
+    alan committing
+
+commit 81fc25cba65aae04ba15f7f61bc962c5aab54058
+Author: Justin <jxl6289@rit.edu>
+Date:   Tue Sep 26 21:19:26 2017 -0400
+
+    First commit
