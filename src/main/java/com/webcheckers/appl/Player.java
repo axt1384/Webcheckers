@@ -9,9 +9,12 @@ import com.webcheckers.model.StartGame;
 public class Player{
 
   public enum Color {RED, BLACK}
-
+  public Color playerColor;
   ///private StartGame game;
 
   //private final GameBoard gameBoard;
 
+  public Player(Color color){
+    this.playerColor = color;
+  }
 }

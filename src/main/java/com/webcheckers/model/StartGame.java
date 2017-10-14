@@ -12,4 +12,7 @@ public class StartGame{
 
   private Board board;
 
+  public StartGame(){
+    
+  }
 }
