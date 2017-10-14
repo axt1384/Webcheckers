@@ -21,13 +21,13 @@ public class Player{
    * @param gameBoard-the game board that has statewide responsibilities
    */
   public Player(GameBoard gameBoard){
-    if ( StartGame.value == StartGame.Decide.WAITING ) {
-      new Player(Color.RED, gameBoard);
-      StartGame.value = StartGame.Decide.VALID;
+    if ( game.value == game.Decide.WAITING ) {
+      new Player(Color.RED, this.gameBoard);
+      game.value = game.Decide.VALID;
     }
     else {
       new Player(Color.BLACK, gameBoard);
-      StartGame.value = StartGame.Decide.WAITING;
+      game.value = game.Decide.WAITING;
     }
   }
 
