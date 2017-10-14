@@ -8,6 +8,6 @@ import com.webcheckers.model.StartGame;
   * This class is to organize the state of the Web part.
   */
 public class GameBoard{
-  private static final Logger LOG = Logger.getLogger(Game.class.getName());
+  private static final Logger LOG = Logger.getLogger(GameBoard.class.getName());
 
 }

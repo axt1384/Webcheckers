@@ -10,8 +10,8 @@ public class Player{
 
   public enum Color {RED, BLACK}
 
-  private StartGame game;
+  ///private StartGame game;
 
-  private final GameBoard gameBoard;
+  //private final GameBoard gameBoard;
 
 }

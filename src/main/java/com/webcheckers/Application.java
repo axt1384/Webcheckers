@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 import spark.TemplateEngine;
 import spark.template.freemarker.FreeMarkerEngine;
 
-//import com.google.gson.Gson;
-import com.webcheckkers.appl.Game;
+import com.google.gson.Gson;
+import com.webcheckers.appl.GameBoard;
 import com.webcheckers.ui.WebServer;
 
 
