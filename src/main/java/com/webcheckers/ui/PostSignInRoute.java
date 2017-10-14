@@ -12,16 +12,15 @@ import spark.Route;
 import spark.TemplateEngine;
 
 /**
- * The UI Controller to GET the Sign In page.
+ * The UI Handler to POST the Sign In page.
  *
  * @author <a href='mailto:edc8230@rit.edu'>Elijah Cantella</a>
  */
-public class GetSignInRoute implements Route {
-
+public class PostSignInRoute implements Route {
     // ----------
     // Attributes
     // ----------
-    private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
+    private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
 
     private final TemplateEngine templateEngine;
 
@@ -30,19 +29,18 @@ public class GetSignInRoute implements Route {
     // ------------
 
     /**
-     * Create the Spark Route (UI controller) for the
-     * {@code GET /} HTTP request.
+     * Create the Spark Route (UI handler) for the
+     * {@code POST /} HTTP request.
      *
      * @param templateEngine
-     *   the HTML template rendering engine
-     * @param templateEngine
+     *   the HTML template rendering engine.
      */
-    public GetSignInRoute(final TemplateEngine templateEngine) {
+    public PostSignInRoute(final TemplateEngine templateEngine) {
         // validation
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
 
         this.templateEngine = templateEngine;
-        LOG.config("GetSignInRoute is initialized.");
+        LOG.config("PostSignInRoute is initialized.");
     }
 
     // -------
@@ -50,7 +48,7 @@ public class GetSignInRoute implements Route {
     // -------
 
     /**
-     * Render the WebCheckers Sign in page.
+     * Render the WebCheckers lobby page.
      *
      * @param request
      *   the HTTP request
