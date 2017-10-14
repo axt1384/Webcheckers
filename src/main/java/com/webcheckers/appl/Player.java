@@ -9,10 +9,29 @@ import com.webcheckers.model.StartGame;
 public class Player{
 
   public enum Color {RED, BLACK}
+
   public Color playerColor;
-  ///private StartGame game;
+
+  private StartGame game;
 
   //private final GameBoard gameBoard;
+
+  /**
+   * Construct a new player but wait for him/her to start a game
+   * @param gameBoard-the game board that has statewide responsibilities
+   */
+  Player(GameBoard gameBoard){
+    this.game=null;
+    this.gameBoard=gameBoard;
+  }
+
+  public synchronized StartGame currentGame(){
+    if(game==null){
+      game=gameBoard.getGame();
+    }
+    return game;
+  }
+
 
   public Player(Color color){
     this.playerColor = color;

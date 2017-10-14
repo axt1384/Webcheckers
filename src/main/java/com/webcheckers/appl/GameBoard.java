@@ -14,4 +14,5 @@ public class GameBoard{
   public Player initializePlayer(){
     return new Player(Player.Color.BLACK);
   }
+  public StartGame getGame(){return new StartGame(24,this);}
 }
