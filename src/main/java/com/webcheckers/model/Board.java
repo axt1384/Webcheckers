@@ -1,7 +1,9 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.Player;
+
 public class Board{
-  
+
   private Square[][] board;
 
   public Board() {
@@ -12,11 +14,19 @@ public class Board{
   public void populateBoard(Square[][] board) {
     for (int i = 0; i < board.length; i++) {
       for (int j = 0; j < board[i].length; j++) {
-        if ((j % 2 == 0 && i % 2 == 1) || (j % 2 == 1 && i % 2 == 0)) {
-          board[i][j] = new Square(Square.Playable.YES);
+        if (((j % 2 == 0 && i % 2 == 1) || (j % 2 == 1 && i % 2 == 0))) {
+          if (i < 3) {
+            board[i][j] = new Square(Square.Playable.YES, Player.playerColor);
+          }
+          else if (i > 4) {
+            board[i][j] = new Square(Square.Playable.YES, Player.playerColor);
+          }
+          else {
+            board[i][j] = new Square(Square.Playable.YES, null);
+          }
         }
         else {
-          board[i][j] = new Square(Square.Playable.NO);
+          board[i][j] = new Square(Square.Playable.NO, null);
         }
       }
     }

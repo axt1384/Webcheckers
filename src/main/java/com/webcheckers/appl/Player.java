@@ -10,9 +10,11 @@ public class Player{
 
   public enum Color {RED, BLACK}
 
+  public Color playerColor;
+
   private StartGame game;
 
-  private final GameBoard gameBoard;
+  //private final GameBoard gameBoard;
 
   /**
    * Construct a new player but wait for him/her to start a game
@@ -31,5 +33,7 @@ public class Player{
   }
 
 
-
+  public Player(Color color){
+    this.playerColor = color;
+  }
 }

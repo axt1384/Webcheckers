@@ -36,5 +36,4 @@ public class StartGame{
   public synchronized boolean isGameBeginning(){
     return totalMoves==0;
   }
-
 }
