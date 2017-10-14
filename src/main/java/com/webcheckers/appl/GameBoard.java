@@ -9,5 +9,5 @@ import com.webcheckers.model.StartGame;
   */
 public class GameBoard{
   private static final Logger LOG = Logger.getLogger(GameBoard.class.getName());
-
+  public StartGame getGame(){return new StartGame(24,this);}
 }
