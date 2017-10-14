@@ -27,16 +27,14 @@ public class StartGame{
     LOG.fine("Game Created");
     this.totalPieces=totalPieces;
     this.gameBoard=gameBoard;
-    this.board=new Board();
     this.totalPieces=totalPieces;
     this.blackPieces=this.redPieces=totalPieces/2;
     this.totalMoves=0;
   }
 
   /**
-   * Checks whether the game is in the beginning; basically if any moves
-   * have been made
-   * @return true if the game has just begun (0 total moves) false otherwise
+   * Checks whether the game is in the beginning; basically if any moves  
+   * @return
    */
   public synchronized boolean isGameBeginning(){
     return totalMoves==0;
