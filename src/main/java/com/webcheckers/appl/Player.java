@@ -10,19 +10,31 @@ public class Player{
 
   public enum Color {RED, BLACK}
 
-  public Color playerColor;
+  public static Color playerColor;
 
   private StartGame game;
 
-  //private final GameBoard gameBoard;
+  private GameBoard gameBoard;
 
   /**
    * Construct a new player but wait for him/her to start a game
    * @param gameBoard-the game board that has statewide responsibilities
    */
-  Player(GameBoard gameBoard){
-    this.game=null;
-    this.gameBoard=gameBoard;
+  public Player(GameBoard gameBoard){
+    if ( StartGame.value == StartGame.Decide.WAITING ) {
+      new Player(Color.RED, gameBoard);
+      StartGame.value = StartGame.Decide.VALID;
+    }
+    else {
+      new Player(Color.BLACK, gameBoard);
+      StartGame.value = StartGame.Decide.WAITING;
+    }
+  }
+
+  public Player(Color color, GameBoard gameBoard){
+    this.playerColor = color;
+    this.game = null;
+    this.gameBoard = gameBoard;
   }
 
   public synchronized StartGame currentGame(){
@@ -32,8 +44,4 @@ public class Player{
     return game;
   }
 
-
-  public Player(Color color){
-    this.playerColor = color;
-  }
 }

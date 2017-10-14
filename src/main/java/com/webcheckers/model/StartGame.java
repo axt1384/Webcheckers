@@ -10,6 +10,9 @@ import com.webcheckers.appl.GameBoard;
 public class StartGame{
   private static final Logger LOG = Logger.getLogger(StartGame.class.getName());
 
+  public enum Decide {NONE, WAITING, VALID};
+  public static Decide value = Decide.NONE;
+
   private Board board;
   private final GameBoard gameBoard;
 

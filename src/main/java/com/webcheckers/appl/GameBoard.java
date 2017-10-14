@@ -12,7 +12,7 @@ public class GameBoard{
   private static final Logger LOG = Logger.getLogger(GameBoard.class.getName());
 
   public Player initializePlayer(){
-    return new Player(Player.Color.BLACK);
+    return new Player(this);
   }
   public StartGame getGame(){return new StartGame(24,this);}
 }
