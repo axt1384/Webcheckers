@@ -12,10 +12,10 @@
           <a href="/">my home</a>
     </div>
     <div class="body">
-        <form action='hello' method='POST'>
+        <form action='' method='POST'>
             <label for='username'>Username:</label>
-            <input name='username' placeholder='Enter a Username' />
-            <button type='submit'>Submit</button>
+            <input name='username' placeholder='Enter Username' />
+            <button type='submit'>Sign In</button>
       </form>
 
     </div>

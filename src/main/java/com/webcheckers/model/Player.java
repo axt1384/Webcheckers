@@ -22,7 +22,12 @@ public class Player {
     // Methods
     // -------
 
-    public String getUsername() {
-        return this.username;
+    public boolean equals(Object o) {
+        if(o instanceof Player) {
+            if(((Player) o).username == this.username) {
+                return true;
+            }
+        }
+        return false;
     }
 }

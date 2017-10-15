@@ -1,5 +1,6 @@
 package com.webcheckers.appl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import com.webcheckers.model.Player;
@@ -12,21 +13,25 @@ public class PlayerLobby {
     // ----------
     // Attributes
     // ----------
-    private HashMap<Player, Boolean> players;
+    private ArrayList<Player> players;
 
     // ------------
     // Constructors
     // ------------
 
     public PlayerLobby() {
-        this.players = new HashMap<>();
+        this.players = new ArrayList<Player>();
     }
 
     // -------
     // Methods
     // -------
 
-    public boolean signIn(Player player) {
-        this.players.get(player);
+    public synchronized boolean signIn(Player player) {
+        if(players.contains(player)) {
+            return false;
+        }
+        this.players.add(player);
+        return true;
     }
 }
