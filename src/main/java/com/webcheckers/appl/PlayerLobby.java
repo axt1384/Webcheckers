@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import com.webcheckers.model.Player;
+import spark.Session;
 
 /**
  * The lobby where the players are inside. A player can sign in/sign out
@@ -16,7 +17,7 @@ public class PlayerLobby {
     // ----------
     // Attributes
     // ----------
-    private ArrayList<Player> players; // Simply a List of Players
+    private HashMap<Session, Player> players; // Simply a List of Players
 
     // ------------
     // Constructors
@@ -26,7 +27,7 @@ public class PlayerLobby {
      * Creates a new PlayerLobby. Begins with no players.
      */
     public PlayerLobby() {
-        this.players = new ArrayList<Player>();
+        this.players = new HashMap();
     }
 
     // -------
@@ -39,12 +40,13 @@ public class PlayerLobby {
      * @param player Player that is attempting to sign in.
      * @return True if the player signed in successfully, false otherwise.
      */
-    public synchronized boolean SignIn(Player player) {
-        if(players.contains(player)) {
+    public synchronized boolean SignIn(Session session, Player player) {
+        if(players.keySet().contains(session)) {
             return false;
         }
-        this.players.add(player);
+        this.players.put(session, player);
         return true;
+
     }
 
     /**
@@ -54,11 +56,18 @@ public class PlayerLobby {
      * @param player Player that is attempting to sign out.
      * @return True if the player signed out successfully, false otherwise.
      */
-    public boolean SignOut(Player player) {
-        if(players.contains(player)) {
-            players.remove(player);
+    public boolean SignOut(Session session) {
+        if(players.keySet().contains(session)) {
+            players.remove(session);
             return true;
         }
         return false;
+    }
+
+    public Player getUser(Session session) {
+        if(this.players.keySet().contains(session)) {
+            return this.players.get(session);
+        }
+        return null;
     }
 }

@@ -8,11 +8,7 @@ import java.util.logging.Logger;
 import com.webcheckers.model.Player;
 import com.webcheckers.appl.PlayerLobby;
 
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
+import spark.*;
 
 /**
  * The UI Handler to POST the Sign In page.
@@ -41,11 +37,11 @@ public class PostSignInRoute implements Route {
      * @param templateEngine
      *   the HTML template rendering engine.
      */
-    public PostSignInRoute(final TemplateEngine templateEngine) {
+    public PostSignInRoute(final TemplateEngine templateEngine, PlayerLobby playerlobby) {
         // validation
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
 
-        this.lobby = new PlayerLobby();
+        this.lobby = playerlobby;
         this.templateEngine = templateEngine;
         LOG.config("PostSignInRoute is initialized.");
     }
@@ -72,12 +68,18 @@ public class PostSignInRoute implements Route {
         vm.put("title", "Welcome!"); // Is this meant to be here?
         vm.put("username", request.queryParams("username"));
 
+
         Player newuser = new Player(request.queryParams("username"));
-        if(!lobby.SignIn(newuser)) { // UserName is Already Taken
+        if(!lobby.SignIn(request.session(), newuser)) { // UserName is Already Taken
             vm.put("signedin", false);
             return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
         }
         vm.put("signedin", true);
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
+
+
+
+
+
 }

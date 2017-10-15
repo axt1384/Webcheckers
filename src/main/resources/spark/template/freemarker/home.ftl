@@ -14,11 +14,11 @@
       <a href="/">My Home</a>
       <a href="/SignIn">Sign In</a>
       <a href="/">Sign Out</a>
-      <p>${username}</p>
     </div>
 
     <div class="body">
       <p>Welcome to the world of online Checkers.</p>
+      <p>${username}</p>
     </div>
     
   </div>

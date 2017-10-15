@@ -28,6 +28,10 @@ public class Player {
     // Methods
     // -------
 
+    public String toString() {
+        return this.username;
+    }
+
     /**
      * Indicates whether some other object is "equal to" this one.
      * @param o Object being compared to.
@@ -42,4 +46,7 @@ public class Player {
         }
         return false;
     }
+
+
+
 }
