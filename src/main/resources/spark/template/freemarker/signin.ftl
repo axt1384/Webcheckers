@@ -9,10 +9,10 @@
     <div class="page">
         <h1>Web Checkers</h1>
     <div class="navigation">
-          <a href="/">my home</a>
+          <a href="/">My Home</a>
     </div>
     <div class="body">
-        <form action='' method='POST'>
+        <form action='/' method='POST'>
             <label for='username'>Username:</label>
             <input name='username' placeholder='Enter Username' />
             <button type='submit'>Sign In</button>

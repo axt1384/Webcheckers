@@ -14,7 +14,7 @@ import spark.TemplateEngine;
 /**
  * The UI Controller to GET the Sign In page.
  *
- * @author <a href='mailto:edc8230@rit.edu'>Elijah Cantella</a>
+ * @author Anorwen - - - edc8230@rit.edu
  */
 public class GetSignInRoute implements Route {
 
@@ -42,6 +42,7 @@ public class GetSignInRoute implements Route {
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
 
         this.templateEngine = templateEngine;
+
         LOG.config("GetSignInRoute is initialized.");
     }
 

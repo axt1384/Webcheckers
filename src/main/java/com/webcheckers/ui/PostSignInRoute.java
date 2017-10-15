@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.model.Player;
+import com.webcheckers.appl.PlayerLobby;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -14,15 +17,18 @@ import spark.TemplateEngine;
 /**
  * The UI Handler to POST the Sign In page.
  *
- * @author <a href='mailto:edc8230@rit.edu'>Elijah Cantella</a>
+ * @author Anorwen - - - edc8230@rit.edu
  */
 public class PostSignInRoute implements Route {
+
     // ----------
     // Attributes
     // ----------
     private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
 
     private final TemplateEngine templateEngine;
+
+    private final PlayerLobby lobby; // Shows who is Online.
 
     // ------------
     // Constructors
@@ -39,6 +45,7 @@ public class PostSignInRoute implements Route {
         // validation
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
 
+        this.lobby = new PlayerLobby();
         this.templateEngine = templateEngine;
         LOG.config("PostSignInRoute is initialized.");
     }
@@ -59,10 +66,18 @@ public class PostSignInRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
-        LOG.finer("GetSignInRoute is invoked.");
+        LOG.finer("PostSignInRoute is invoked.");
 
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Welcome!"); // What is this?
-        return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
+        vm.put("title", "Welcome!"); // Is this meant to be here?
+        vm.put("username", request.queryParams("username"));
+
+        Player newuser = new Player(request.queryParams("username"));
+        if(!lobby.SignIn(newuser)) { // UserName is Already Taken
+            vm.put("signedin", false);
+            return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+        }
+        vm.put("signedin", true);
+        return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
 }

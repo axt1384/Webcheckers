@@ -15,6 +15,7 @@ import spark.TemplateEngine;
  * The UI Controller to GET the Home page.
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author Anorwen - - - edc8230@rit.edu
  */
 public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
@@ -31,9 +32,9 @@ public class GetHomeRoute implements Route {
   public GetHomeRoute(final TemplateEngine templateEngine) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
-    //
+
     this.templateEngine = templateEngine;
-    //
+
     LOG.config("GetHomeRoute is initialized.");
   }
 
@@ -51,8 +52,9 @@ public class GetHomeRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     LOG.finer("GetHomeRoute is invoked.");
-    //
+
     Map<String, Object> vm = new HashMap<>();
+    vm.put("username", ""); // Place Holder for User
     vm.put("title", "Welcome!");
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }

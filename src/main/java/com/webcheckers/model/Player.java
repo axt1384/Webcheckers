@@ -1,19 +1,25 @@
 package com.webcheckers.model;
 
 /**
- * Created by cante on 10/14/2017.
+ * Represents a Player in the WebCheckers application.
+ *
+ * @author Anorwen - - - edc8230@rit.edu
  */
 public class Player {
 
     // ----------
     // Attributes
     // ----------
-    private String username;
+    private String username; // A Player only has a Username
 
     // ------------
     // Constructors
     // ------------
 
+    /**
+     * Creates a new Player provided a username to represent them.
+     * @param username String that represents the player.
+     */
     public Player(String username) {
         this.username = username;
     }
@@ -22,6 +28,12 @@ public class Player {
     // Methods
     // -------
 
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * @param o Object being compared to.
+     * @return True if the object is a Player and they have the same
+     *          username, false otherwise.
+     */
     public boolean equals(Object o) {
         if(o instanceof Player) {
             if(((Player) o).username == this.username) {

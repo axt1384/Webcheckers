@@ -11,8 +11,10 @@
     <h1>Web Checkers</h1>
     
     <div class="navigation">
-      <a href="/">my home</a>
+      <a href="/">My Home</a>
       <a href="/SignIn">Sign In</a>
+      <a href="/">Sign Out</a>
+      <p>${username}</p>
     </div>
 
     <div class="body">
