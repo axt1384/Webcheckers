@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameCenter;
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.ui.WebServer;
 
 import spark.TemplateEngine;
@@ -54,13 +55,15 @@ public final class Application {
 
     final GameCenter gameCenter = new GameCenter();
 
+    final PlayerLobby playerlobby = new PlayerLobby();
+
     // The application uses Gson to generate JSON representations of Java objects.
     // This should be used by your Ajax Routes to generate JSON for the HTTP
     // response to Ajax requests.
     final Gson gson = new Gson();
 
     // inject the game center and freemarker engine into web server
-    final WebServer webServer = new WebServer(templateEngine, gson, gameCenter);
+    final WebServer webServer = new WebServer(templateEngine, gson, gameCenter, playerlobby);
 
     // inject web server into application
     final Application app = new Application(webServer);

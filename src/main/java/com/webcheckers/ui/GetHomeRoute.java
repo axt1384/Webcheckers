@@ -74,7 +74,6 @@ public class GetHomeRoute implements Route {
   public Object handle(Request request, Response response) {
     LOG.finer("GetHomeRoute is invoked.");
 
-<<<<<<< HEAD
     Map<String, Object> vm = new HashMap<>();
 
     if(this.playerlobby.getUser(request.session()) == null) {
@@ -92,21 +91,14 @@ public class GetHomeRoute implements Route {
     }
 
     vm.put("numberUsers", this.showNumber()); // Not Being Used Yet
-=======
     final Session httpSession = request.session();
     final PlayerServices playerServices =
             httpSession.attribute("playerServices");
     CheckersGame game = playerServices.currentGame();
 
-    Map<String, Object> vm = new HashMap<>();
+    //Map<String, Object> vm = new HashMap<>();
     vm.put(BOARD, game.getBoard());
->>>>>>> master
     vm.put("title", "Welcome!");
-    return templateEngine.render(new ModelAndView(vm , "testHome.ftl"));
+    return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }
-<<<<<<< HEAD
 }
-=======
-
-}
->>>>>>> master
