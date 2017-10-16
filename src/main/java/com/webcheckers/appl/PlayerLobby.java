@@ -17,7 +17,7 @@ public class PlayerLobby {
     // ----------
     // Attributes
     // ----------
-    private HashMap<Session, Player> players; // Simply a List of Players
+    private HashMap<String, Player> players; // Simply a List of Players
 
     // ------------
     // Constructors
@@ -41,10 +41,10 @@ public class PlayerLobby {
      * @return True if the player signed in successfully, false otherwise.
      */
     public synchronized boolean SignIn(Session session, Player player) {
-        if(players.keySet().contains(session)) {
+        if(players.keySet().contains(session.id())) {
             return false;
         }
-        this.players.put(session, player);
+        this.players.put(session.id(), player);
         return true;
 
     }
@@ -57,17 +57,14 @@ public class PlayerLobby {
      * @return True if the player signed out successfully, false otherwise.
      */
     public boolean SignOut(Session session) {
-        if(players.keySet().contains(session)) {
-            players.remove(session);
+        if(players.keySet().contains(session.id())) {
+            players.remove(session.id());
             return true;
         }
         return false;
     }
 
     public Player getUser(Session session) {
-        if(this.players.keySet().contains(session)) {
-            return this.players.get(session);
-        }
-        return null;
+        return this.players.get(session.id());
     }
 }

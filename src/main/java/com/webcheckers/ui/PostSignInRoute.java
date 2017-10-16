@@ -24,7 +24,7 @@ public class PostSignInRoute implements Route {
 
     private final TemplateEngine templateEngine;
 
-    private final PlayerLobby lobby; // Shows who is Online.
+    private final PlayerLobby playerlobby; // Shows who is Online.
 
     // ------------
     // Constructors
@@ -41,7 +41,7 @@ public class PostSignInRoute implements Route {
         // validation
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
 
-        this.lobby = playerlobby;
+        this.playerlobby = playerlobby;
         this.templateEngine = templateEngine;
         LOG.config("PostSignInRoute is initialized.");
     }
@@ -70,7 +70,7 @@ public class PostSignInRoute implements Route {
 
 
         Player newuser = new Player(request.queryParams("username"));
-        if(!lobby.SignIn(request.session(), newuser)) { // UserName is Already Taken
+        if(!playerlobby.SignIn(request.session(), newuser)) { // UserName is Already Taken
             vm.put("signedin", false);
             return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
         }
