@@ -47,19 +47,16 @@ public class PostSignInRoute implements Route {
         LOG.config("PostSignInRoute is initialized.");
     }
 
-    public String showPlayers(String viewingUser) {
-        String result = "<h2>Players Online</h2>\n";
+    public String addPlayersList(String viewingUser) {
         ArrayList<String> list = this.playerlobby.getUsers();
         if(list.contains(viewingUser)) {
             list.remove(viewingUser);
         }
-        for(String player: list) {
-            result +="<li>" + player + "</li>\n";
+        String result = "";
+        for(String user: list) {
+            result += "<li>" + user + "</li>";
         }
-        if(result != "<h2>Players Online</h2>\n") {
-            result = "<div class=\"ul.players\">\n" + result + "</div>\n";
-        }
-        return result;
+        return "<ul>" + result + "</ul>";
     }
 
     // -------
@@ -93,7 +90,7 @@ public class PostSignInRoute implements Route {
         if(!playerlobby.SignIn(request.session(), newuser)) { // UserName is Already Taken
             return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
         }
-        vm.put("showUsers", this.showPlayers(request.queryParams("username")));
+        vm.put("showPlayers", this.addPlayersList(request.queryParams("username")));
         vm.put("numberUsers", this.showNumber());
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }

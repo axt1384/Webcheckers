@@ -42,19 +42,16 @@ public class GetHomeRoute implements Route {
     LOG.config("GetHomeRoute is initialized.");
   }
 
-  public String showPlayers(String viewingUser) {
-    String result = "<h2>Players Online</h2>\n";
+  public String addPlayersList(String viewingUser) {
     ArrayList<String> list = this.playerlobby.getUsers();
     if(list.contains(viewingUser)) {
       list.remove(viewingUser);
     }
-    for(String player: list) {
-      result +="<li>" + player + "</li>\n";
+    String result = "";
+    for(String user: list) {
+      result += "<li>" + user + "</li>";
     }
-    if(result != "<h2>Players Online</h2>\n") {
-      result = "<div class=\"ul.players\">\n" + result + "</div>\n";
-    }
-    return result;
+    return "<ul>" + result + "</ul>";
   }
 
   private String showNumber() {
@@ -80,14 +77,13 @@ public class GetHomeRoute implements Route {
 
     if(this.playerlobby.getUser(request.session()) == null) {
       vm.put("username", ""); // Place Holder for User
-      vm.put("listUsers", "");
+      vm.put("showPlayers", "<p>Please Sign In to see players.</p>");
     }
     else {
       vm.put("username", this.playerlobby.getUser(request.session()).toString());
-      vm.put("listUsers", this.showPlayers(this.playerlobby.getUser(request.session()).toString()));
+      vm.put("numberUsers", showNumber());
+      vm.put("showPlayers", addPlayersList(this.playerlobby.getUser(request.session()).toString()));
     }
-
-
 
     vm.put("numberUsers", this.showNumber()); // Not Being Used Yet
     vm.put("title", "Welcome!");

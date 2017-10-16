@@ -62,8 +62,8 @@ public class GetSignOutRoute implements Route {
         this.playerlobby.SignOut(request.session());
         vm.put("username", ""); // Place Holder for Use
 
-
         vm.put("title", "Welcome!");
+        vm.put("showPlayers", "<p>Please Sign In to see players.</p>");
         vm.put("numberUsers", this.showNumber());
         return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }

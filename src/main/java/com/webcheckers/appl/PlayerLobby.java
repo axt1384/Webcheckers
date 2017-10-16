@@ -42,7 +42,13 @@ public class PlayerLobby {
      * @return True if the player signed in successfully, false otherwise.
      */
     public synchronized boolean SignIn(Session session, Player player) {
-        if(players.keySet().contains(session.id())) {
+        if(player.toString().equals("\"")) {
+            return false;
+        }
+        else if(player.toString().equals("")) {
+            return false;
+        }
+        else if(players.values().contains(player)) {
             return false;
         }
         this.players.put(session.id(), player);

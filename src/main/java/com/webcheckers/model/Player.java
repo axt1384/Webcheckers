@@ -40,7 +40,7 @@ public class Player {
      */
     public boolean equals(Object o) {
         if(o instanceof Player) {
-            if(((Player) o).username == this.username) {
+            if(((Player) o).username.equals(this.username)) {
                 return true;
             }
         }
