@@ -1,51 +1,32 @@
 package com.webcheckers.model;
 
-import com.webcheckers.appl.Player;
+public class Board {
 
-public class Board{
+    private int width;
+    private int height;
 
-  private Square[][] board;
+    private Row[] board;
 
-  public Board() {
-    this.board = new Square [8][8];
-    populateBoard(board);
-  }
-
-  public void populateBoard(Square[][] board) {
-    for (int i = 0; i < board.length; i++) {
-      for (int j = 0; j < board[i].length; j++) {
-        if (((j % 2 == 0 && i % 2 == 1) || (j % 2 == 1 && i % 2 == 0))) {
-          if (i < 3) {
-            board[i][j] = new Square(Square.Playable.YES, Player.playerColor);
-          }
-          else if (i > 4) {
-            board[i][j] = new Square(Square.Playable.YES, Player.playerColor);
-          }
-          else {
-            board[i][j] = new Square(Square.Playable.YES, null);
-          }
-        }
-        else {
-          board[i][j] = new Square(Square.Playable.NO, null);
-        }
-      }
+    public Board(int width, int height){
+        this.width=width;
+        this.height=height;
+        board=new Row[height];
+        boardInit();
     }
-  }
 
-  public String toString() {
-    String display = "";
-    for (int i = 0; i < board.length; i++) {
-      for(int j = 0; j < board[i].length; j++) {
-        display = display + "     " + board[i][j];
-      }
-      display += "\n";
+    private void boardInit(){
+        for(int i=0; i<height; i++){
+            if(i%2==0){
+                board[i]=new Row(width, "white",i);
+            }else{
+                board[i]=new Row(width,"black",i);
+            }
+        }
     }
-    return display;
-  }
 
-  public static void main(String[] args)
-  {
-      Board b = new Board();
-      System.out.println(b);
-  }
+    public Row[] getBoard(){
+        return board;
+    }
+
+
 }

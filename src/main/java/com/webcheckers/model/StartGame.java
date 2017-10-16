@@ -28,8 +28,13 @@ public class StartGame{
     this.totalPieces=totalPieces;
     this.gameBoard=gameBoard;
     this.totalPieces=totalPieces;
+    this.board=board;
     this.blackPieces=this.redPieces=totalPieces/2;
     this.totalMoves=0;
+  }
+
+  public Board getBoard(){
+    return board;
   }
 
   /**
