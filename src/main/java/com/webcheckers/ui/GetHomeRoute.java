@@ -7,11 +7,10 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.webcheckers.appl.PlayerLobby;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
+
+import com.webcheckers.appl.PlayerServices;
+import com.webcheckers.model.CheckersGame;
+import spark.*;
 
 /**
  * The UI Controller to GET the Home page.
@@ -23,6 +22,8 @@ public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   private PlayerLobby playerlobby;
+  static final String BOARD="board";
+
   private final TemplateEngine templateEngine;
 
   /**
@@ -73,6 +74,7 @@ public class GetHomeRoute implements Route {
   public Object handle(Request request, Response response) {
     LOG.finer("GetHomeRoute is invoked.");
 
+<<<<<<< HEAD
     Map<String, Object> vm = new HashMap<>();
 
     if(this.playerlobby.getUser(request.session()) == null) {
@@ -90,7 +92,21 @@ public class GetHomeRoute implements Route {
     }
 
     vm.put("numberUsers", this.showNumber()); // Not Being Used Yet
+=======
+    final Session httpSession = request.session();
+    final PlayerServices playerServices =
+            httpSession.attribute("playerServices");
+    CheckersGame game = playerServices.currentGame();
+
+    Map<String, Object> vm = new HashMap<>();
+    vm.put(BOARD, game.getBoard());
+>>>>>>> master
     vm.put("title", "Welcome!");
-    return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+    return templateEngine.render(new ModelAndView(vm , "testHome.ftl"));
   }
+<<<<<<< HEAD
 }
+=======
+
+}
+>>>>>>> master

@@ -130,16 +130,7 @@ table#game-board td.valid {
   background-color: rgba(0, 255, 0, 0.4);
 }
 
-/* Prevent the text contents of draggable elements from being selectable. */
-[draggable] {
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
-  /* Required to make elements draggable in old WebKit */
-  -khtml-user-drag: element;
-  -webkit-user-drag: element;
-}
+
 .Space.hover {
   background-color: rgba(255, 192, 203, 0.4);
 }

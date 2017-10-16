@@ -7,7 +7,11 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 
+<<<<<<< HEAD
 import com.webcheckers.appl.PlayerLobby;
+=======
+import com.webcheckers.appl.GameCenter;
+>>>>>>> master
 import spark.TemplateEngine;
 
 
@@ -55,6 +59,7 @@ public class WebServer {
    * The URL pattern to request the Home page.
    */
   public static final String HOME_URL = "/";
+<<<<<<< HEAD
 
   /**
    * The URL pattern to request the Sign In page.
@@ -66,12 +71,16 @@ public class WebServer {
    */
   public static final String SIGN_OUT_URL = "/SignedOut";
 
+=======
+  public static final String GAME_URL = "/game";
+>>>>>>> master
   //
   // Attributes
   //
 
   private final TemplateEngine templateEngine;
   private final Gson gson;
+  private final GameCenter gameCenter;
 
   //
   // Constructor
@@ -88,11 +97,12 @@ public class WebServer {
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson, final GameCenter gameCenter) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
     //
+    this.gameCenter=gameCenter;
     this.templateEngine = templateEngine;
     this.gson = gson;
   }
@@ -149,6 +159,7 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Shows the Checkers game Home page.
+<<<<<<< HEAD
     PlayerLobby lobby = new PlayerLobby();
 
     get(HOME_URL, new GetHomeRoute(templateEngine, lobby));
@@ -156,7 +167,11 @@ public class WebServer {
     get(SIGN_OUT_URL, new GetSignOutRoute(templateEngine, lobby));
     post(HOME_URL, new PostSignInRoute(templateEngine, lobby));
 
+=======
+    //get(HOME_URL, new GetHomeRoute(templateEngine,gameCenter));
+>>>>>>> master
     //
+    get(GAME_URL, new GetGameRoute(templateEngine, gameCenter));
     LOG.config("WebServer is initialized.");
   }
 
