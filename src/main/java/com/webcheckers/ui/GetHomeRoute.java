@@ -77,11 +77,15 @@ public class GetHomeRoute implements Route {
 
     if(this.playerlobby.getUser(request.session()) == null) {
       vm.put("username", ""); // Place Holder for User
+      vm.put("signURL", "/SignIn");
+      vm.put("signLabel", "Sign In");
       vm.put("showPlayers", "<p>Please Sign In to see players.</p>");
     }
     else {
       vm.put("username", this.playerlobby.getUser(request.session()).toString());
       vm.put("numberUsers", showNumber());
+      vm.put("signURL", "/SignedOut");
+      vm.put("signLabel", "Sign Out");
       vm.put("showPlayers", addPlayersList(this.playerlobby.getUser(request.session()).toString()));
     }
 

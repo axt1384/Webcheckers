@@ -12,8 +12,7 @@
     
     <div class="navigation">
       <a href="/">My Home</a>
-      <a href="/SignIn">Sign In</a>
-      <a href="/SignedOut">Sign Out</a>
+      <a href=${signURL}>${signLabel}</a>
       <info>${username}</info>
     </div>
 

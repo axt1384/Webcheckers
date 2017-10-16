@@ -92,6 +92,8 @@ public class PostSignInRoute implements Route {
         }
         vm.put("showPlayers", this.addPlayersList(request.queryParams("username")));
         vm.put("numberUsers", this.showNumber());
+        vm.put("signURL", "/SignedOut");
+        vm.put("signLabel", "Sign Out");
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
 }
