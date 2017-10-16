@@ -42,6 +42,10 @@ public class GetSignOutRoute implements Route {
     // Methods
     // -------
 
+    private String showNumber() {
+        return Integer.toString(this.playerlobby.getUsers().size());
+    }
+
     /**
      * Render the WebCheckers Home page.
      *
@@ -60,6 +64,7 @@ public class GetSignOutRoute implements Route {
 
 
         vm.put("title", "Welcome!");
+        vm.put("numberUsers", this.showNumber());
         return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
 }

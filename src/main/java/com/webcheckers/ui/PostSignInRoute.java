@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -46,9 +47,28 @@ public class PostSignInRoute implements Route {
         LOG.config("PostSignInRoute is initialized.");
     }
 
+    public String showPlayers(String viewingUser) {
+        String result = "<h2>Players Online</h2>\n";
+        ArrayList<String> list = this.playerlobby.getUsers();
+        if(list.contains(viewingUser)) {
+            list.remove(viewingUser);
+        }
+        for(String player: list) {
+            result +="<li>" + player + "</li>\n";
+        }
+        if(result != "<h2>Players Online</h2>\n") {
+            result = "<div class=\"ul.players\">\n" + result + "</div>\n";
+        }
+        return result;
+    }
+
     // -------
     // Methods
     // -------
+
+    private String showNumber() {
+        return Integer.toString(this.playerlobby.getUsers().size());
+    }
 
     /**
      * Render the WebCheckers lobby page.
@@ -65,21 +85,16 @@ public class PostSignInRoute implements Route {
         LOG.finer("PostSignInRoute is invoked.");
 
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Welcome!"); // Is this meant to be here?
+        vm.put("title", "Welcome!");
         vm.put("username", request.queryParams("username"));
 
 
         Player newuser = new Player(request.queryParams("username"));
         if(!playerlobby.SignIn(request.session(), newuser)) { // UserName is Already Taken
-            vm.put("signedin", false);
             return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
         }
-        vm.put("signedin", true);
+        vm.put("showUsers", this.showPlayers(request.queryParams("username")));
+        vm.put("numberUsers", this.showNumber());
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
-
-
-
-
-
 }

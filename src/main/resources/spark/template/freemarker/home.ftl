@@ -14,21 +14,13 @@
       <a href="/">My Home</a>
       <a href="/SignIn">Sign In</a>
       <a href="/SignedOut">Sign Out</a>
+      <info>${username}</info>
     </div>
 
     <div class="body">
-      <p>Welcome to the world of online Checkers.</p>
-      <p>${username}</p>
+      <p>Welcome to the world of online Checkers. There are ${numberUsers} players online!</p>
     </div>
 
-    <h2>Players Online</h2>
-    <div class="ul.players">
-            <li>Jamie</li>
-            <li>Taco321</li>
-            <li>xD231d</li>
-            <li>Hello</li>
-    </div>
-    
   </div>
 </body>
 </html>

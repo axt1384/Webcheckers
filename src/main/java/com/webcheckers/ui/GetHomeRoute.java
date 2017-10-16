@@ -42,8 +42,8 @@ public class GetHomeRoute implements Route {
     LOG.config("GetHomeRoute is initialized.");
   }
 
-  private String showPlayers(String viewingUser) {
-    String result = "";
+  public String showPlayers(String viewingUser) {
+    String result = "<h2>Players Online</h2>\n";
     ArrayList<String> list = this.playerlobby.getUsers();
     if(list.contains(viewingUser)) {
       list.remove(viewingUser);
@@ -51,6 +51,14 @@ public class GetHomeRoute implements Route {
     for(String player: list) {
       result +="<li>" + player + "</li>\n";
     }
+    if(result != "<h2>Players Online</h2>\n") {
+      result = "<div class=\"ul.players\">\n" + result + "</div>\n";
+    }
+    return result;
+  }
+
+  private String showNumber() {
+    return Integer.toString(this.playerlobby.getUsers().size());
   }
 
   /**
@@ -72,12 +80,16 @@ public class GetHomeRoute implements Route {
 
     if(this.playerlobby.getUser(request.session()) == null) {
       vm.put("username", ""); // Place Holder for User
+      vm.put("listUsers", "");
     }
     else {
       vm.put("username", this.playerlobby.getUser(request.session()).toString());
+      vm.put("listUsers", this.showPlayers(this.playerlobby.getUser(request.session()).toString()));
     }
 
 
+
+    vm.put("numberUsers", this.showNumber()); // Not Being Used Yet
     vm.put("title", "Welcome!");
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }
