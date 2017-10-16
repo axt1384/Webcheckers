@@ -1,5 +1,6 @@
 package com.webcheckers.appl;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -66,5 +67,13 @@ public class PlayerLobby {
 
     public Player getUser(Session session) {
         return this.players.get(session.id());
+    }
+
+    public ArrayList<String> getUsers() {
+        ArrayList<String> result = new ArrayList<>();
+        for(String session: this.players.keySet()) {
+            result.add(this.players.get(session).toString());
+        }
+        return result;
     }
 }

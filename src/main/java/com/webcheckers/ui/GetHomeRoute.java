@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -41,6 +42,17 @@ public class GetHomeRoute implements Route {
     LOG.config("GetHomeRoute is initialized.");
   }
 
+  private String showPlayers(String viewingUser) {
+    String result = "";
+    ArrayList<String> list = this.playerlobby.getUsers();
+    if(list.contains(viewingUser)) {
+      list.remove(viewingUser);
+    }
+    for(String player: list) {
+      result +="<li>" + player + "</li>\n";
+    }
+  }
+
   /**
    * Render the WebCheckers Home page.
    *
@@ -69,5 +81,4 @@ public class GetHomeRoute implements Route {
     vm.put("title", "Welcome!");
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }
-
 }

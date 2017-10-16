@@ -61,6 +61,11 @@ public class WebServer {
    */
   public static final String SIGN_IN_URL = "/SignIn";
 
+  /**
+   * The URL pattern to request the Sign Out page.
+   */
+  public static final String SIGN_OUT_URL = "/SignedOut";
+
   //
   // Attributes
   //
@@ -148,6 +153,7 @@ public class WebServer {
 
     get(HOME_URL, new GetHomeRoute(templateEngine, lobby));
     get(SIGN_IN_URL, new GetSignInRoute(templateEngine));
+    get(SIGN_OUT_URL, new GetSignOutRoute(templateEngine, lobby));
     post(HOME_URL, new PostSignInRoute(templateEngine, lobby));
 
     //
