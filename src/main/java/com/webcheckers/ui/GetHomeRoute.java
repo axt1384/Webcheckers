@@ -19,12 +19,18 @@ import spark.*;
  * @author Anorwen - - - edc8230@rit.edu
  */
 public class GetHomeRoute implements Route {
+
+  // ----------
+  // Attributes
+  // ----------
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
-
   private PlayerLobby playerlobby;
-  static final String BOARD="board";
-
   private final TemplateEngine templateEngine;
+  static final String BOARD = "board";
+
+  // ------------
+  // Constructors
+  // ------------
 
   /**
    * Create the Spark Route (UI controller) for the
@@ -43,20 +49,39 @@ public class GetHomeRoute implements Route {
     LOG.config("GetHomeRoute is initialized.");
   }
 
-  public String addPlayersList(String viewingUser) {
-    ArrayList<String> list = this.playerlobby.getUsers();
-    if(list.contains(viewingUser)) {
+  // -------
+  // Methods
+  // -------
+
+  /**
+   * Creates a list of links to start games with the corresponding players. May be used in
+   * any class that needs to render the home page with game links.
+   * @param viewingUser String username of the player not to be shown on the list.
+   * @param playerlobby Playerlobby of the application.
+   * @return String of <li><a href="/game>'username</a></li> Kleene Star
+   */
+  public static String addPlayersList(String viewingUser, PlayerLobby playerlobby) {
+    ArrayList<String> list = playerlobby.getUsers();
+
+    if(list.contains(viewingUser)) { // The Current User Can't Play a Game With Their Self
       list.remove(viewingUser);
     }
+
     String result = "";
     for(String user: list) {
-      result += "<li>" + user + "</li>";
+      result += "<li><a href=/game>" + user + "</a></li>";
     }
-    return "<ul>" + result + "</ul>";
+    return "<ul>" + result + "</ul>"; // Unordered List Label
   }
 
-  private String showNumber() {
-    return Integer.toString(this.playerlobby.getUsers().size());
+  /**
+   * Creates a String representing the total number of users online, including the current user if they are signed in.
+   * May be used by and other class handle() that needs to render the home page.
+   * @param playerlobby PlayerLobby of the application
+   * @return String version of an Integer.
+   */
+  public static String showNumber(PlayerLobby playerlobby) {
+    return Integer.toString(playerlobby.getUsers().size());
   }
 
   /**
@@ -75,29 +100,30 @@ public class GetHomeRoute implements Route {
     LOG.finer("GetHomeRoute is invoked.");
 
     Map<String, Object> vm = new HashMap<>();
+    final Session httpSession = request.session();
 
-    if(this.playerlobby.getUser(request.session()) == null) {
-      vm.put("username", ""); // Place Holder for User
+    if(this.playerlobby.getUser(httpSession) == null) {
+      vm.put("username", "");
       vm.put("signURL", "/SignIn");
       vm.put("signLabel", "Sign In");
       vm.put("showPlayers", "<p>Please Sign In to see players.</p>");
     }
     else {
-      vm.put("username", this.playerlobby.getUser(request.session()).toString());
-      vm.put("numberUsers", showNumber());
+      vm.put("username", this.playerlobby.getUser(httpSession).toString());
       vm.put("signURL", "/SignedOut");
       vm.put("signLabel", "Sign Out");
-      vm.put("showPlayers", addPlayersList(this.playerlobby.getUser(request.session()).toString()));
+      vm.put("showPlayers", addPlayersList(playerlobby.getUser(httpSession).toString(), playerlobby));
     }
+    vm.put("numberUsers", showNumber(playerlobby));
 
-    vm.put("numberUsers", this.showNumber()); // Not Being Used Yet
-    final Session httpSession = request.session();
+    /**
     final PlayerServices playerServices =
             httpSession.attribute("playerServices");
     CheckersGame game = playerServices.currentGame();
 
-    //Map<String, Object> vm = new HashMap<>();
-    vm.put(BOARD, game.getBoard());
+     vm.put(BOARD, game.getBoard());
+     */
+
     vm.put("title", "Welcome!");
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }

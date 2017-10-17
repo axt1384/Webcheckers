@@ -17,8 +17,8 @@ public class GetSignInRoute implements Route {
     // ----------
     // Attributes
     // ----------
-    private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
 
+    private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
     private final TemplateEngine templateEngine;
 
     // ------------
@@ -61,7 +61,10 @@ public class GetSignInRoute implements Route {
         LOG.finer("GetSignInRoute is invoked.");
 
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Welcome!"); // What is this?
+
+        vm.put("title", "Welcome!");
+        vm.put("signInMessage", "");
+
         return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
     }
 }

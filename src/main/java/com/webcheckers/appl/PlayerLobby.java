@@ -39,21 +39,30 @@ public class PlayerLobby {
      * Attempts to sign in a player with a specific username. Player must have a valid username. Checks to see
      * if a Player is already using the username of a player (two players are equal if they have the same username).
      * @param player Player that is attempting to sign in.
-     * @return True if the player signed in successfully, false otherwise.
+     * @return String representing a message for the SignIn page. Empty String means success.
      */
-    public synchronized boolean SignIn(Session session, Player player) {
-        if(player.toString().equals("\"")) {
-            return false;
-        }
-        else if(player.toString().equals("")) {
-            return false;
-        }
-        else if(players.values().contains(player)) {
-            return false;
-        }
-        this.players.put(session.id(), player);
-        return true;
+    public synchronized String SignIn(Session session, Player player) {
+        String message = "";
 
+        switch (player.toString()) { // Username Not Allowed
+            case "\"":
+                message = "\"";
+                break;
+            case "":
+                return "<p>Please enter a username with at least one character.<p>";
+        }
+        if(message != "") {
+            return "<p>The username " + message + " is not allowed.<p>";
+        }
+
+        if(players.values().contains(player)) { // Username in Use
+            return "<p>The username '" + player.toString() + "' is already in use.";
+        }
+        if(message == "") {
+            this.players.put(session.id(), player);
+        }
+
+        return message;
     }
 
     /**
@@ -71,10 +80,19 @@ public class PlayerLobby {
         return false;
     }
 
+    /**
+     * Gets the Player of the provided session.
+     * @param session Session of the current User.
+     * @return Player if the current session exists in the key, null otherwise.
+     */
     public Player getUser(Session session) {
         return this.players.get(session.id());
     }
 
+    /**
+     * Gets a list of Strings of the current usernames being used.
+     * @return ArrayList<String> of the usernames being used.
+     */
     public ArrayList<String> getUsers() {
         ArrayList<String> result = new ArrayList<>();
         for(String session: this.players.keySet()) {

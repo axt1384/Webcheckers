@@ -155,16 +155,13 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Shows the Checkers game Home page.
-    // PlayerLobby lobby = new PlayerLobby();
 
     get(HOME_URL, new GetHomeRoute(templateEngine, playerlobby));
     get(SIGN_IN_URL, new GetSignInRoute(templateEngine));
     get(SIGN_OUT_URL, new GetSignOutRoute(templateEngine, playerlobby));
+    get(GAME_URL, new GetGameRoute(templateEngine, gameCenter));
     post(HOME_URL, new PostSignInRoute(templateEngine, playerlobby));
 
-    //get(HOME_URL, new GetHomeRoute(templateEngine,gameCenter));
-    //
-    get(GAME_URL, new GetGameRoute(templateEngine, gameCenter));
     LOG.config("WebServer is initialized.");
   }
 

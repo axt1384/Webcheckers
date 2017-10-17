@@ -21,6 +21,7 @@ public class PostSignInRoute implements Route {
     // ----------
     // Attributes
     // ----------
+
     private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
 
     private final TemplateEngine templateEngine;
@@ -47,25 +48,9 @@ public class PostSignInRoute implements Route {
         LOG.config("PostSignInRoute is initialized.");
     }
 
-    public String addPlayersList(String viewingUser) {
-        ArrayList<String> list = this.playerlobby.getUsers();
-        if(list.contains(viewingUser)) {
-            list.remove(viewingUser);
-        }
-        String result = "";
-        for(String user: list) {
-            result += "<li>" + user + "</li>";
-        }
-        return "<ul>" + result + "</ul>";
-    }
-
     // -------
     // Methods
     // -------
-
-    private String showNumber() {
-        return Integer.toString(this.playerlobby.getUsers().size());
-    }
 
     /**
      * Render the WebCheckers lobby page.
@@ -82,16 +67,22 @@ public class PostSignInRoute implements Route {
         LOG.finer("PostSignInRoute is invoked.");
 
         Map<String, Object> vm = new HashMap<>();
+        final Session httpSession = request.session();
+
         vm.put("title", "Welcome!");
         vm.put("username", request.queryParams("username"));
 
 
         Player newuser = new Player(request.queryParams("username"));
-        if(!playerlobby.SignIn(request.session(), newuser)) { // UserName is Already Taken
+        String signMessage = playerlobby.SignIn(httpSession, newuser);
+        if(!signMessage.equals("")) { // Username is Invalid
+            vm.put("signInMessage", signMessage);
             return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
         }
-        vm.put("showPlayers", this.addPlayersList(request.queryParams("username")));
-        vm.put("numberUsers", this.showNumber());
+
+        // Signed In Successfully, Now Go to Home Page
+        vm.put("showPlayers", GetHomeRoute.addPlayersList(request.queryParams("username"), this.playerlobby));
+        vm.put("numberUsers", GetHomeRoute.showNumber(this.playerlobby));
         vm.put("signURL", "/SignedOut");
         vm.put("signLabel", "Sign Out");
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
