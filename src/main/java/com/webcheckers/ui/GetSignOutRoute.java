@@ -63,8 +63,7 @@ public class GetSignOutRoute implements Route {
         vm.put("showPlayers", "<p>Please Sign In to see players.</p>");
         vm.put("numberUsers", GetHomeRoute.showNumber(this.playerlobby));
 
-        vm.put("signURL", "/SignIn");
-        vm.put("signLabel", "Sign In");
+        vm.put("sign", "<a href=/SignIn>Sign In</a>");
 
         return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }

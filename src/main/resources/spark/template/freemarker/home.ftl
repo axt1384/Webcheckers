@@ -12,7 +12,7 @@
     
     <div class="navigation">
       <a href="/">My Home</a>
-      <a href=${signURL}>${signLabel}</a>
+      ${sign}
       <info>${username}</info>
     </div>
 
