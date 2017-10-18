@@ -64,7 +64,7 @@ public class GetSignOutRoute implements Route {
         vm.put("numberUsers", GetHomeRoute.showNumber(this.playerlobby));
 
         vm.put("sign", "<a href=/SignIn>Sign In</a>");
-
+        vm.put("gameError", "");
         return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
 }

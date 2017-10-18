@@ -69,7 +69,7 @@ public class GetHomeRoute implements Route {
 
     String result = "";
     for(String user: list) {
-      result += "<li><a href=/game>" + user + "</a></li>";
+      result += "<li><a href=/game?opponent=" + user + ">" + user + "</a></li>";
     }
     return "<ul>" + result + "</ul>"; // Unordered List Label
   }
@@ -102,16 +102,22 @@ public class GetHomeRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     final Session httpSession = request.session();
 
-    if(this.playerlobby.getUser(httpSession) == null) {
+    if(this.playerlobby.getUser(httpSession) == null) { // Yet to Sign In
       vm.put("username", "");
       vm.put("sign", "<a href=/SignIn>Sign In</a>");
       vm.put("showPlayers", "<p>Please Sign In to see players.</p>");
     }
-    else {
+    else { // Logged On
+      if(httpSession.attribute("inGame")) {
+        response.redirect("/game");
+      }
+
+
       vm.put("username", this.playerlobby.getUser(httpSession).toString());
       vm.put("sign", "<a href=/SignedOut>Sign Out</a>");
       vm.put("showPlayers", addPlayersList(playerlobby.getUser(httpSession).toString(), playerlobby));
     }
+    vm.put("gameError", "");
     vm.put("numberUsers", showNumber(playerlobby));
 
     /**

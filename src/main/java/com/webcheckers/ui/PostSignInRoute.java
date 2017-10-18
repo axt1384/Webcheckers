@@ -81,6 +81,9 @@ public class PostSignInRoute implements Route {
         }
 
         // Signed In Successfully, Now Go to Home Page
+        httpSession.attribute("inGame", false);
+
+        vm.put("gameError", "");
         vm.put("showPlayers", GetHomeRoute.addPlayersList(request.queryParams("username"), this.playerlobby));
         vm.put("numberUsers", GetHomeRoute.showNumber(this.playerlobby));
         vm.put("sign", "<a href=/SignedOut>Sign Out</a>");

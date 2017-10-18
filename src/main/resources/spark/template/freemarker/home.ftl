@@ -20,6 +20,8 @@
       <p>Welcome to the world of online Checkers. There are ${numberUsers} players online!</p>
     </div>
 
+    ${gameError}
+
     <h2>Players Online:</h2>
     ${showPlayers}
 

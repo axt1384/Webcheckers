@@ -159,7 +159,7 @@ public class WebServer {
     get(HOME_URL, new GetHomeRoute(templateEngine, playerlobby));
     get(SIGN_IN_URL, new GetSignInRoute(templateEngine));
     get(SIGN_OUT_URL, new GetSignOutRoute(templateEngine, playerlobby));
-    get(GAME_URL, new GetGameRoute(templateEngine, gameCenter));
+    get(GAME_URL, new GetGameRoute(templateEngine, gameCenter, playerlobby));
     post(HOME_URL, new PostSignInRoute(templateEngine, playerlobby));
 
     LOG.config("WebServer is initialized.");

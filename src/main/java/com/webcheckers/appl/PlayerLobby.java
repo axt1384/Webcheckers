@@ -19,6 +19,7 @@ public class PlayerLobby {
     // Attributes
     // ----------
     private HashMap<String, Player> players; // Simply a List of Players
+    private HashMap<String, Session> sessions; // Players have a Session
 
     // ------------
     // Constructors
@@ -29,6 +30,7 @@ public class PlayerLobby {
      */
     public PlayerLobby() {
         this.players = new HashMap();
+        this.sessions = new HashMap();
     }
 
     // -------
@@ -60,6 +62,7 @@ public class PlayerLobby {
         }
         if(message == "") {
             this.players.put(session.id(), player);
+            this.sessions.put(player.toString(), session);
         }
 
         return message;
@@ -73,8 +76,10 @@ public class PlayerLobby {
      * @return True if the player signed out successfully, false otherwise.
      */
     public boolean SignOut(Session session) {
-        if(players.keySet().contains(session.id())) {
-            players.remove(session.id());
+        if(this.players.keySet().contains(session.id())) {
+            Player player = this.players.get(session.id());
+            this.players.remove(session.id());
+            this.sessions.remove(player.toString());
             return true;
         }
         return false;
@@ -87,6 +92,10 @@ public class PlayerLobby {
      */
     public Player getUser(Session session) {
         return this.players.get(session.id());
+    }
+
+    public Session getSession(Player player) {
+        return this.sessions.get(player.toString());
     }
 
     /**
