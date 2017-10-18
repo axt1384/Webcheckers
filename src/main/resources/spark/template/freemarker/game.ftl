@@ -77,25 +77,48 @@
                             ondrop="drop(event,this)"
                             ondragover="allowDrop(event,this)">
                             <#if space.hasPiece()>
-                                <#if space.isValid() && (row.getIndex()<3)>
-                                    <img src="../img/single-piece-white.svg"
-                                        class="Piece"
-                                        id="piece-${row.getIndex()}-${space.getIndex()}"
-                                        data-type="${space.getPieceType()}"
-                                        data-color="${space.getPieceColor()}"
-                                        draggable="true"
-                                        ondragstart="drag(event)"
-                                    />
-                                <#elseif space.isValid() && (row.getIndex()>4)>
-                                    <img src="../img/single-piece-red.svg"
-                                        class="Piece"
-                                        id="piece-${row.getIndex()}-${space.getIndex()}"
-                                        data-type="${space.getPieceType()}"
-                                        data-color="${space.getPieceColor()}"
-                                        draggable="true"
-                                        ondragstart="drag(event)"
-                                    />
+                                <#if opponent=="">
+                                    <#if space.isValid() && (row.getIndex()>4)>
+                                        <img src="../img/single-piece-white.svg"
+                                            class="Piece"
+                                            id="piece-${row.getIndex()}-${space.getIndex()}"
+                                            data-type="${space.getPieceType()}"
+                                            data-color="${space.getPieceColor()}"
+                                            draggable="true"
+                                            ondragstart="drag(event)"
+                                        />
+                                    <#elseif space.isValid() && (row.getIndex()<3)>
+                                        <img src="../img/single-piece-red.svg"
+                                            class="Piece"
+                                            id="piece-${row.getIndex()}-${space.getIndex()}"
+                                            data-type="${space.getPieceType()}"
+                                            data-color="${space.getPieceColor()}"
+                                            draggable="true"
+                                            ondragstart="drag(event)"
+                                        />
+                                    </#if>
+                                <#else>
+                                    <#if space.isValid() && (row.getIndex()<3)>
+                                        <img src="../img/single-piece-white.svg"
+                                            class="Piece"
+                                            id="piece-${row.getIndex()}-${space.getIndex()}"
+                                            data-type="${space.getPieceType()}"
+                                            data-color="${space.getPieceColor()}"
+                                            draggable="true"
+                                            ondragstart="drag(event)"
+                                        />
+                                    <#elseif space.isValid() && (row.getIndex()>4)>
+                                        <img src="../img/single-piece-red.svg"
+                                            class="Piece"
+                                            id="piece-${row.getIndex()}-${space.getIndex()}"
+                                            data-type="${space.getPieceType()}"
+                                            data-color="${space.getPieceColor()}"
+                                            draggable="true"
+                                            ondragstart="drag(event)"
+                                        />
+                                    </#if>
                                 </#if>
+
                             </#if>
                         </div>
                     </#if>
@@ -113,8 +136,8 @@
   </div>
 
   <audio id="audio" src="http://www.soundjay.com/button/beep-07.mp3" autostart="false" ></audio>
-  
+
   <script data-main="js/game/index" src="js/require.js"></script>
-  
+
 </body>
 </html>

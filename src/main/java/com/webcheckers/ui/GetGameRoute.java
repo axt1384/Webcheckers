@@ -59,7 +59,7 @@ public class GetGameRoute implements Route {
                     httpSession.attribute("playerServices");
             CheckersGame game = playerServices.currentGame();
             vm.put(BOARD, game.getBoard());
-
+            vm.put("opponent","");
             // render the Game Form view
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
@@ -83,7 +83,7 @@ public class GetGameRoute implements Route {
                         httpSession.attribute("playerServices");
                 CheckersGame game = playerServices.currentGame();
                 vm.put(BOARD, game.getBoard());
-
+                vm.put("opponent", opponent.toString());
                 // render the Game Form view
                 return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
             }
