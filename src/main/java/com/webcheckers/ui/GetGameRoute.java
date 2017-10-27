@@ -67,8 +67,8 @@ public class GetGameRoute implements Route {
             Player opponent = new Player(enemyName);
             Session opponentSession = this.playerlobby.getSession(opponent);
             if (opponentSession.attribute("inGame")) { // This Player is Already in a Match
-                vm.put("gameError", "<p>The player " + opponent.toString() + " is already in game; please wait or choose" +
-                        "another opponent.</p>");
+                vm.put("gameError", "<p>The player " + opponent.toString() + " is already in game; please wait or " +
+                        "choose another opponent.</p>");
                 vm.put("username", this.playerlobby.getUser(httpSession).toString());
                 vm.put("sign", "<a href=/SignedOut>Sign Out</a>");
                 vm.put("showPlayers", GetHomeRoute.addPlayersList(playerlobby.getUser(httpSession).toString(), playerlobby));
