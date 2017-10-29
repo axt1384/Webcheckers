@@ -1,0 +1,261 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
+\usepackage[unicode=true]{hyperref}
+\hypersetup{
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Fix footnotes in tables (requires footnote package)
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{long table}}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\date{}
+
+\begin{document}
+
+\section{PROJECT Design
+Documentation}\label{project-design-documentation}
+
+\subsection{Team Information}\label{team-information}
+
+\begin{itemize}
+\tightlist
+\item
+  Team name: Resistance
+\item
+  Team members
+\item
+  Justin Lam
+\item
+  Alan Tan
+\item
+  Jesse Chen
+\item
+  Elijah Cantella
+\item
+  Jay Gogri
+\end{itemize}
+
+\subsection{Executive Summary}\label{executive-summary}
+
+This is the documentation for our project after Sprint 1. What has been
+implemented is creating the backend for the Sign In and also displaying
+the Checker board with the pieces on its respective sides.
+
+\subsubsection{Purpose}\label{purpose}
+
+To allow users to sign in, sign out, and enter a game with another
+player by clicking on the opponent's name in the home page.
+
+\subsubsection{Glossary and Acronyms}\label{glossary-and-acronyms}
+
+\begin{quote}
+Provide a table of terms and acronyms.
+\end{quote}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Term & Definition\tabularnewline
+\midrule
+\endhead
+VO & Value Object\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsubsection{Requirements}\label{requirements}
+
+\begin{quote}
+This section describes the features of the application. In this section
+you do not need to be exhaustive and list every story. Focus on
+top-level features from the Vision document and maybe Epics and critical
+Stories.
+\end{quote}
+
+During this sprint, we were given two main tasks to complete * Implement
+a Sign In interface so that users can sign in and sign out * Name
+restrictions * No duplicate names * No null names such as double quotes
+(``) * List out all the users currently online only if the user is sign
+in * Implement a Game interface so that users can start a game with each
+other * Utliizing that list a user can click on another player and start
+a game with him/her * If selected player is in a game than, a message
+should show that a game cannot be started * The pieces on the board
+should be displayed properly, with challenger as red and challenged as
+white, with respective pieces on the bottom of each user's board *
+Pieces should be draggable and droppable on valid places on the baord
+
+\subsubsection{Definition of MVP}\label{definition-of-mvp}
+
+The Minimun Viable Product should be a product that can sign a user in
+and out (if such user is already signed in), and start a game with
+properly aligned pieces.
+
+\subsubsection{MVP Features}\label{mvp-features}
+
+\begin{itemize}
+\tightlist
+\item
+  Sign In
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Player Sign-In
+  \item
+    Player Sign-Out
+  \end{itemize}
+\item
+  Game Play
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Player Setup
+  \item
+    Disc Placement
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{Roadmap of Enhancements}\label{roadmap-of-enhancements}
+
+\begin{quote}
+Provide a list of top-level features in the order you plan to consider
+them.
+\end{quote}
+
+\subsection{Application Domain}\label{application-domain}
+
+This section describes the application domain.
+
+\subsubsection{Overview of Major Domain
+Areas}\label{overview-of-major-domain-areas}
+
+\begin{quote}
+Provide a high-level overview of the
+\end{quote}
+
+\subsubsection{Details of each Domain
+Area}\label{details-of-each-domain-area}
+
+\begin{quote}
+If necessary, high-light certain areas of the Domain model that have a
+focused purpose. Create textual narrative that describes the purpose and
+how that relates to the associated domain model.
+\end{quote}
+
+\subsection{Architecture}\label{architecture}
+
+This section describes the application architecture.
+
+\subsubsection{Summary}\label{summary}
+
+\begin{quote}
+Provide a brief summary of the architecture. Also provide one or two
+models (diagrams) that describe the architecture. Hint: review the
+Architecture lecture slides for ideas.
+\end{quote}
+
+\subsubsection{Overview of User
+Interface}\label{overview-of-user-interface}
+
+\begin{quote}
+Provide a summary of the application's user interface. This includes the
+UI state model.
+\end{quote}
+
+\subsubsection{Tier X}\label{tier-x}
+
+\begin{quote}
+Provide a summary of each tier of your architecture. Thus replicate this
+heading for each tier. In each section describe the types of components
+in the tier and describe their responsibilities.
+\end{quote}
+
+\subsection{Sub-system X}\label{sub-system-x}
+
+\begin{quote}
+Provide a section for each major sub-system within the tiers of the
+architecture. Replace `X' with the name of the sub-system. A sub-system
+would exist within one of the application tiers and is a group of
+components cooperating on a significant purpose within the application.
+For example, in WebCheckers all of the UI Controller components for the
+Game view would be its own sub-system.
+\end{quote}
+
+This section describes the detail design of sub-system X.
+
+\subsubsection{Purpose of the
+sub-system}\label{purpose-of-the-sub-system}
+
+\begin{quote}
+Provide a summary of the purpose of this sub-system.
+\end{quote}
+
+\subsubsection{Static models}\label{static-models}
+
+\begin{quote}
+Provide one or more static models (UML class or object diagrams) with
+some details such as critical attributes and methods. If the sub-system
+is large (over 10 classes) then consider decomposing into multiple,
+smaller, more focused diagrams.
+\end{quote}
+
+\subsubsection{Dynamic models}\label{dynamic-models}
+
+\begin{quote}
+Provide any dynamic model, such as state and sequence diagrams, as is
+relevant to a particularly significant user story. For example, in
+WebCheckers you might create a sequence diagram of the
+\texttt{POST\ /validateMove} HTTP request processing or you might use a
+state diagram if the Game component uses a state machine to manage the
+game.
+\end{quote}
+
+\end{document}

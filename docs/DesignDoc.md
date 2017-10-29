@@ -7,11 +7,11 @@ geometry: margin=1in
 ## Team Information
 * Team name: Resistance
 * Team members
-  * Justin Lam
-  * Alan Tan
-	* Jesse Chen
-  * Elijah Cantella
-  * Jay Gogri
+    * Justin Lam
+    * Alan Tan
+    * Jesse Chen
+    * Elijah Cantella
+    * Jay Gogri
 
 ## Executive Summary
 This is the documentation for our project after Sprint 1. What has been implemented is creating the backend for the Sign In and also displaying the Checker board with the pieces on its respective sides.
@@ -27,10 +27,9 @@ To allow users to sign in, sign out, and enter a game with another player by cli
 | VO | Value Object |
 
 ### Requirements
->This section describes the features of the application.
-> In this section you do not need to be exhaustive and list every story.  Focus on top-level features from the Vision document and maybe Epics and critical Stories.
 
 During this sprint, we were given two main tasks to complete
+
 * Implement a Sign In interface so that users can sign in and sign out
     * Name restrictions
         * No duplicate names
@@ -54,43 +53,101 @@ The Minimun Viable Product should be a product that can sign a user in and out (
     * Disc Placement
 
 ### Roadmap of Enhancements
-> Provide a list of top-level features in the order you plan to consider them.
+* Player Turn
+    * Player Movement
+    * Player Capture
+    * Player King
+* End Game
+    * Player Win
+    * Player Lose
+    * Player Quit
+* Logging System
+    * Pause
+    * Resume
+* Chatting System
+    * Game Chat
 
 ## Application Domain
 This section describes the application domain.
 
 ### Overview of Major Domain Areas
-> Provide a high-level overview of the
+The main domain areas are the Player, CheckersGame, Board, Squares, and Pieces. These define the checkers game that two players will play utlizing pieces on a board.
 
 ### Details of each Domain Area
-> If necessary, high-light certain areas of the Domain model that have a focused purpose.  Create textual narrative that describes the purpose and how that relates to the associated domain model.
+* Pieces are utilized to represent either Player on the board, which is either a red or white piece.
+* Players play a CheckersGame which is played on a Board represented by Squares.
 
 ## Architecture
 This section describes the application architecture.
 
 ### Summary
-> Provide a brief summary of the architecture.  Also provide one or two models (diagrams) that describe the architecture.  Hint: review the Architecture lecture slides for ideas.
+
+The WebCheckers webapp will use a Java-based web server, this is done using the Spark web micro framework and the FreeMarker template engine to handle HTTP requests and generate HTTP responses.
 
 ### Overview of User Interface
-> Provide a summary of the application's user interface.
-> This includes the UI state model.
 
-### Tier X
-> Provide a summary of each tier of your architecture.  Thus replicate this heading for each tier.
-> In each section describe the types of components in the tier and describe their responsibilities.
+The application's user interface consists of two parts, the server UI and the Client UI. In the Server UI it is made up of the various routes we implemented so that the Spark framework and the FreeMarker template engine's are able to handle HTTP request and HTTP responses. We also alter and made new ftl files in order to create the Client UI, which is a combinations of HTML and CSS. Together these two parts made up the UI views and UI controllers.
 
-## Sub-system X
-> Provide a section for each major sub-system within the tiers of the architecture.  Replace 'X' with the name of the sub-system.
-> A sub-system would exist within one of the application tiers and is a group of components cooperating on a significant purpose within the application.  For example, in WebCheckers all of the UI Controller components for the Game view would be its own sub-system.
+### UI Tier
 
-This section describes the detail design of sub-system X.
+The user of the application interacts with the UI tier, then the UI tier interacts with the Application and Model tiers. We implemented various routes in order display proper information back to the user.
+* GetGameRoute
+    * This class deals with initializing a game, where a player had clicked on an opponent in the home screen to face against.
+    * If the the player had clicked on an opponent already in a game then he/she will be sent back to the home page with a error message and may click on another opponent.
+    * If it is a valid game, then the player will be the red piece and the opponent will be the white piece with respective pieces on the bottom of whoever's screen.
+* GetHomeRoute
+    * This is the home screen of the whole application. This is what the player will see as the first thing he/she opens up the web browser.
+    * In the navigation bar the player may sign in.
+    * Only when he/she is signed may he/she see all the players online and click on someone to face against.
+* GetSignInRoute
+    * When a player decides to sign in, this class allows the player to sign in with a username
+* PostSignInRoute
+    * When the player enters a username of their choice, this handles if the username is a valid username or not.
+    * Returns a error message if the username is taken or if it is a empty username.
+* GetSignOutRoute
+    * Signs a player out and returns the player to the home page.
+
+### Application Tier
+The Application tier holds the logic that controls the flow of the application.
+* GameCenter
+    * This class initializes a CheckersGame instance.
+    * If there is an existing game instance, it will return that instead, so a game wouldn't be lost.
+* PlayerLobby
+    * Holds all the online players so that they can be displayed in the home page.
+* PlayerServices
+    * Each player needs to be part of a GameCenter, where they will be part of a CheckersGame
+
+### Model Tier
+The Model holds all the of the core domain logic.
+* CheckersGame
+    * Is part of the GameCenter.
+    * Holds a Board.
+* Board
+    * Initializes the board by passing in white or black tiles to the Row class.
+* Row
+    * Creates each row on the board using the Square class.
+    * Places all the pawn pieces in the rows on the board
+* Square
+    * Contains information on each individual square on the board.
+    * If the square is valid, if it has a Piece.
+* Piece
+    * Contains information on a singular piece, the color and type.
+* Player
+    * Contains information on each user of the application as long as they are signed in.
+    * Holds his/her username.
+
+## Sub-system GameCenter
+
+This section describes the detail design of sub-system GameCenter.
 
 ### Purpose of the sub-system
-> Provide a summary of the purpose of this sub-system.
+
+Essentially this the brains of the game part of the application, it is responsible for assigning responsiblities onto other classes. The game hiearachy is basically a GameCenter returning a game instance either new or existing, then the game has a Board, which has a Row containing Squares with Pieces on it. Then all of these is handled with by the GetGameRoute which displays everything.
 
 ### Static models
-> Provide one or more static models (UML class or object diagrams) with some details such as critical attributes and methods.  If the sub-system is large (over 10 classes) then consider decomposing into multiple, smaller, more focused diagrams.
+
+![UML for the Sub-system GameCenter](gamecenter.png)
 
 ### Dynamic models
-> Provide any dynamic model, such as state and sequence diagrams, as is relevant to a particularly significant user story.
-> For example, in WebCheckers you might create a sequence diagram of the `POST /validateMove` HTTP request processing or you might use a state diagram if the Game component uses a state machine to manage the game.
+
+![State Diagram](state.png)
