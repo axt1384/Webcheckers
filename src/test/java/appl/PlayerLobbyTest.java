@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
@@ -40,7 +41,9 @@ public class PlayerLobbyTest {
 
         // Need to Use mock as Session's Constructor is Private
         session1 = mock(Session.class);
+        when(session1.id()).thenReturn("1");
         session2 = mock(Session.class);
+        when(session2.id()).thenReturn("2");
     }
 
     /**
@@ -70,7 +73,10 @@ public class PlayerLobbyTest {
      */
     @Test
     public void test_sign_out_player1() {
-        this.playerLobby.SignOut(this.session1);
+        Player player1 = new Player(this.username1);
+        this.playerLobby.SignIn(this.session1, player1);
+
+        assertEquals(true, this.playerLobby.SignOut(this.session1));
 
         assertEquals(WRONG_SIZE, 0, this.playerLobby.getUsers().size());
         assertEquals(USER_FOUND, null, this.playerLobby.getUser(this.session1));
@@ -97,15 +103,26 @@ public class PlayerLobbyTest {
      */
     @Test
     public void test_sign_out_players() {
+        // Sign Players In
+        Player player1 = new Player(this.username1);
+        Player player2 = new Player(this.username2);
+
+        this.playerLobby.SignIn(this.session1, player1);
+        this.playerLobby.SignIn(this.session2, player2);
+
+        // Sign Out Player 1
         assertEquals(true, this.playerLobby.SignOut(this.session1));
 
+        // Was Only Player 1 Signed Out?
         assertEquals(WRONG_SIZE, 1, this.playerLobby.getUsers().size());
         assertEquals(USER_FOUND, null, this.playerLobby.getUser(this.session1));
         assertEquals(USER_NOT_FOUND, new Player(this.username2), this.playerLobby.getUser(this.session2));
 
+        // Sign Out Player 2, Try 1
         assertEquals(false, this.playerLobby.SignOut(this.session1));
         assertEquals(true, this.playerLobby.SignOut(this.session2));
 
+        // Is the Player Lobby at its Original State?
         assertEquals(WRONG_SIZE, 0, this.playerLobby.getUsers().size());
         assertEquals(USER_FOUND, null, this.playerLobby.getUser(this.session2));
     }
@@ -123,7 +140,7 @@ public class PlayerLobbyTest {
 
         // Invalid Username
         error = this.playerLobby.SignIn(this.session2, new Player("\""));
-        assertEquals("<p>The username  \" is not allowed.<p>", error);
+        assertEquals("<p>The username \" is not allowed.<p>", error);
 
         // No Username
         error = this.playerLobby.SignIn(this.session2, new Player(""));
@@ -150,6 +167,13 @@ public class PlayerLobbyTest {
      */
     @Test
     public void test_get_users() {
+        // Sign Players In
+        Player player1 = new Player(this.username1);
+        Player player2 = new Player(this.username2);
+
+        this.playerLobby.SignIn(this.session1, player1);
+        this.playerLobby.SignIn(this.session2, player2);
+
         ArrayList<String> users = this.playerLobby.getUsers();
         for(String username: users) {
             if(!(username.equals(this.username1) || username.equals(this.username2))) {
