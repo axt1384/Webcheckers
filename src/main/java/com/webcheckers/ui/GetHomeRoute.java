@@ -27,7 +27,13 @@ public class GetHomeRoute implements Route {
   private PlayerLobby playerlobby;
   private final TemplateEngine templateEngine;
   static final String BOARD = "board";
-
+  public static final String TITLE = "title";
+  public static final String USERNAME = "username";
+  public static final String SIGNIN = "sign";
+  public static final String PLAYERS="showPlayers";
+  public static final String ERROR="gameError";
+  public static final String USERS="numberUsers";
+  public static final String VIEW_NAME="home.ftl";
   // ------------
   // Constructors
   // ------------
@@ -103,9 +109,9 @@ public class GetHomeRoute implements Route {
     final Session httpSession = request.session();
 
     if(this.playerlobby.getUser(httpSession) == null) { // Yet to Sign In
-      vm.put("username", "");
-      vm.put("sign", "<a href=/SignIn>Sign In</a>");
-      vm.put("showPlayers", "<p>Please Sign In to see players.</p>");
+      vm.put(USERNAME, "");
+      vm.put(SIGNIN, "<a href=/SignIn>Sign In</a>");
+      vm.put(PLAYERS, "<p>Please Sign In to see players.</p>");
     }
     else { // Logged On
       if(httpSession.attribute("inGame")) {
@@ -113,12 +119,12 @@ public class GetHomeRoute implements Route {
       }
 
 
-      vm.put("username", this.playerlobby.getUser(httpSession).toString());
-      vm.put("sign", "<a href=/SignedOut>Sign Out</a>");
-      vm.put("showPlayers", addPlayersList(playerlobby.getUser(httpSession).toString(), playerlobby));
+      vm.put(USERNAME, this.playerlobby.getUser(httpSession).toString());
+      vm.put(SIGNIN, "<a href=/SignedOut>Sign Out</a>");
+      vm.put(PLAYERS, addPlayersList(playerlobby.getUser(httpSession).toString(), playerlobby));
     }
-    vm.put("gameError", "");
-    vm.put("numberUsers", showNumber(playerlobby));
+    vm.put(ERROR, "");
+    vm.put(USERS, showNumber(playerlobby));
 
     /**
     final PlayerServices playerServices =
@@ -128,7 +134,7 @@ public class GetHomeRoute implements Route {
      vm.put(BOARD, game.getBoard());
      */
 
-    vm.put("title", "Welcome!");
+    vm.put(TITLE, "Welcome!");
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }
 }
