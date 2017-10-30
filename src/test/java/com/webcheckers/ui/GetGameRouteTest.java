@@ -91,6 +91,9 @@ public class GetGameRouteTest{
       assertEquals(GetGameRoute.VIEW_NAME, myModelView.viewName);
     }
 
+    /**
+     * Test that the Game view will display with a new game with a opponent
+     */
     @Test
     public void new_game_opp(){
       final PlayerServices services = gameCenter.newPlayerServices();
@@ -124,5 +127,50 @@ public class GetGameRouteTest{
       assertEquals("bob", vm.get("opponent"));
 
       assertEquals(GetGameRoute.VIEW_NAME, myModelView.viewName);
+    }
+
+    /**
+     * Test that the Game view will not display since opponent is in game
+     */
+    @Test
+    public void new_game_opp_in_game(){
+      final PlayerServices services = gameCenter.newPlayerServices();
+      when(session.attribute("playerServices")).thenReturn(services);
+      final CheckersGame game = services.currentGame();
+
+      String enemyName = "bob";
+      when(request.queryParams("opponent")).thenReturn(enemyName);
+      final Player opponent = new Player(enemyName);
+      final Player user = new Player("user");
+      //playerLobby.SignIn(sessionOpp, opponent);
+
+      // To analyze what the Route created in the View-Model map you need
+      // to be able to extract the argument to the TemplateEngine.render method.
+      // Mock up the 'render' method by supplying a Mockito 'Answer' object
+      // that captures the ModelAndView data passed to the template engine
+      final MyModelAndView myModelView = new MyModelAndView();
+      when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
+
+      when(playerLobby.getSession(opponent)).thenReturn(sessionOpp);
+      when(sessionOpp.attribute("inGame")).thenReturn(true);
+      when(playerLobby.getUser(session)).thenReturn(user);
+      //when(any(PlayerLobby.class).getSession(opponent)).thenReturn(sessionOpp);
+      CuT.handle(request, response);
+
+      final Object model = myModelView.model;
+      assertNotNull(model);
+      assertTrue(model instanceof Map);
+
+      //@SupressWarnings("unchecked")
+      final Map<String,Object> vm = (Map<String,Object>) model;
+      assertEquals("<p>The player bob is already in game; please wait or " +
+              "choose another opponent.</p>", vm.get("gameError"));
+      assertEquals("user", vm.get("username"));
+      assertEquals("<a href=/SignedOut>Sign Out</a>", vm.get("sign"));
+      assertEquals("<ul></ul>", vm.get("showPlayers"));
+      assertEquals("0",vm.get("numberUsers"));
+      assertEquals("Welcome!", vm.get("title"));
+
+      assertEquals("home.ftl", myModelView.viewName);
     }
 }
