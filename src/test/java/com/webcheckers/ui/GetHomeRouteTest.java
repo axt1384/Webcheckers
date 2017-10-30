@@ -1,3 +1,5 @@
+package com.webcheckers.ui;
+
 import com.sun.istack.internal.NotNull;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;

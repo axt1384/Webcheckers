@@ -1,3 +1,5 @@
+package com.webcheckers.model;
+
 import com.webcheckers.model.Piece;
 import org.junit.Test;
 

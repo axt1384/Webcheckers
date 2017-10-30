@@ -1,3 +1,5 @@
+package com.webcheckers.ui;
+
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.ui.GetSignOutRoute;
 import com.webcheckers.ui.GetHomeRoute;
