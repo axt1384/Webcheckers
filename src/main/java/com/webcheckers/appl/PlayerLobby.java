@@ -90,6 +90,7 @@ public class PlayerLobby {
      * @param session Session of the current User.
      * @return Player if the current session exists in the key, null otherwise.
      */
+
     public Player getUser(Session session) {
         return this.players.get(session.id());
     }
