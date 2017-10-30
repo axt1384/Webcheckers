@@ -1,6 +1,6 @@
 package com.webcheckers.ui;
 
-import com.sun.istack.internal.NotNull;
+// import com.sun.istack.internal.NotNull;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
@@ -85,7 +85,6 @@ public class GetHomeRouteTest {
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Welcome!", vm.get("title"));
         assertEquals("", vm.get("gameError"));
-        assertEquals("1", vm.get("numberUsers"));
         assertEquals(playerLobby.getUser(request.session()).toString(), vm.get("username"));
         assertEquals("<a href=/SignedOut>Sign Out</a>", vm.get("sign"));
         assertEquals("<ul></ul>", vm.get("showPlayers"));
