@@ -1,4 +1,4 @@
-package ui;
+package com.webcheckers.ui;
 
 import com.webcheckers.ui.GetSignInRoute;
 import org.junit.Before;

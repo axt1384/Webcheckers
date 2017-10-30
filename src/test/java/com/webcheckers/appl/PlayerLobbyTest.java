@@ -1,4 +1,4 @@
-package appl;
+package com.webcheckers.appl;
 
 import static org.junit.Assert.*;
 
