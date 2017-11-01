@@ -28,6 +28,13 @@ public class PostSignInRouteTest {
 
     private PostSignInRoute CuT;
 
+    private static final String TITLE = "Welcome!";
+    private static final String NO_ERROR = "";
+    private static final String IN_USE = "<p>The username 'ReadyPlayer1' is already in use.";
+    private static final String NO_INPUT = "<p>Please enter a username with at least one character.<p>";
+    private static final String INVALID_INPUT = "<p>The username \" is not allowed.<p>";
+
+
     @Before
     public void setup() {
         signedIn = mock(GetSignInRoute.class);
@@ -50,16 +57,16 @@ public class PostSignInRouteTest {
         final Object model = myModelView.model;
 
         HashMap<String, Object> vm = (HashMap<String, Object>) model;
-        CuT.handle(request, response);
+        this.CuT.handle(this.request, this.response);
 
         assertNotNull(model);
         assertTrue(model instanceof HashMap);
 
 
 
-
-        assertEquals("username should not be null", null, vm.get("username"));
         assertEquals("title should have value 'Welcome!'", "Welcome!", vm.get("title"));
+        assertNotEquals(NO_INPUT, null, vm.get("signInMessage"));
+
 
     }
 
