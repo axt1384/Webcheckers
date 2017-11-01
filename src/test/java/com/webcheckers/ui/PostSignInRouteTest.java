@@ -12,11 +12,8 @@ import org.junit.Test;
 
 import spark.*;
 
-import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Created by jay on 10/31/17.
- */
 public class PostSignInRouteTest {
 
     private Session session;
@@ -51,24 +48,26 @@ public class PostSignInRouteTest {
 
     @Test
     public void PostSignInTest(){
-
+        when(request.queryParams("username")).thenReturn("user");
+        when(lobby.SignIn(session,new Player("user"))).thenReturn("");
         final MyModelAndView myModelView = new MyModelAndView();
         when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
+
+        this.CuT.handle(request, response);
+
         final Object model = myModelView.model;
-
-        HashMap<String, Object> vm = (HashMap<String, Object>) model;
-        this.CuT.handle(this.request, this.response);
-
         assertNotNull(model);
-        assertTrue(model instanceof HashMap);
+        assertTrue(model instanceof Map);
 
+        final Map<String,Object> vm = (Map<String,Object>) model;
 
+        assertEquals("Welcome!", vm.get("title"));
+        assertEquals("user",vm.get("username"));
+        assertEquals("", vm.get("gameError"));
+        assertEquals("<ul></ul>", vm.get("showPlayers"));
+        assertEquals("0", vm.get("numberUsers"));
+        assertEquals("<a href=/SignedOut>Sign Out</a>", vm.get("sign"));
 
-        assertEquals("title should have value 'Welcome!'", "Welcome!", vm.get("title"));
-        assertNotEquals(NO_INPUT, null, vm.get("signInMessage"));
-
-
+        assertEquals("home.ftl", myModelView.viewName);
     }
-
-
 }
