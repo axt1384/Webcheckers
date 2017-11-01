@@ -1,8 +1,9 @@
 package com.webcheckers.appl;
 
 import com.webcheckers.model.Board;
-import com.webcheckers.model.Moves;
+import com.webcheckers.model.PossibleMoves;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.PossibleMoves;
 
 /**
  * Orchestrates the turns of the players. This class oscillates between each player
@@ -19,7 +20,7 @@ public class TurnAdministrator {
     private final Player red;
     private final Player white;
     private Player currentPlayer;
-    // private Moves moves;
+    private PossibleMoves possibleMoves;
 
     // ------------
     // Constructors
@@ -29,24 +30,12 @@ public class TurnAdministrator {
         this.red = red;
         this.white = white;
         this.currentPlayer = red;
-        // this.moves = new Moves(board);
+        this.possibleMoves = new PossibleMoves(this);
     }
 
     // -------
     // Methods
     // -------
 
-    public boolean hasCaptureMove() {
-        return false;
-    }
-
-    public boolean hasMove() {
-        return false;
-    }
-
-    public boolean isValid() {
-        return false;
-    }
-
-    public void makeMove() {}
+    public void takeTurn() {}
 }
