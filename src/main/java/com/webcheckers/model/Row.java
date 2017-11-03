@@ -1,5 +1,8 @@
 package com.webcheckers.model;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 public class Row {
     private int width;
     private String startColor;
@@ -46,7 +49,20 @@ public class Row {
         return index;
     }
 
-    public Square[] getRow(){
-        return row;
+    public Piece removePiece(int col){
+      return row[col].removePiece();
+    }
+
+    public void setPiece(Piece piece, int col){
+      row[col].setPiece(piece);
+    }
+
+    public Square[] getRow(String opponent, String summoner){
+      if(opponent.equals(summoner)){
+          Square[] reverseRow=row;
+          Collections.reverse(Arrays.asList(reverseRow));
+          return reverseRow;
+      }
+      return row;
     }
 }

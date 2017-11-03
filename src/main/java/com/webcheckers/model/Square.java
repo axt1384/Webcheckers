@@ -18,6 +18,20 @@ public class Square {
         return piece!=null;
     }
 
+    public Piece getPiece(){
+      return piece;
+    }
+
+    public void setPiece(Piece piece){
+      this.piece=piece;
+    }
+
+    public Piece removePiece(){
+      Piece p=this.piece;
+      this.piece=null;
+      return p;
+    }
+
     public String getPieceType(){
         return piece.getType();
     }
