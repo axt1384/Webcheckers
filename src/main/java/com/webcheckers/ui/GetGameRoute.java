@@ -52,14 +52,15 @@ public class GetGameRoute implements Route {
         final Map<String, Object> vm = new HashMap<>();
         LOG.config(""+counter+"");
         counter++;
+        LOG.config("YOU ARE VIEWING GETGAMEROUTE");
         String enemyName = request.queryParams("opponent");
         String summoner=request.queryParams("summoner");
         if(enemyName == null) { // This Session was summoned.
-
-            final PlayerServices playerServices =
-                    httpSession.attribute("playerServices");
+            final PlayerServices playerServices = httpSession.attribute("playerServices");
             CheckersGame game = playerServices.currentGame();
             vm.put(BOARD, game.getBoard());
+            LOG.config("Opponent info: enemy:"+enemyName+" opp:"+game.getSummoner().toString()+
+                    " summ: "+game.getSummoner().toString()+" summonerturn: "+game.isSummonerTurn());
             vm.put("opponent",game.getSummoner().toString());
             vm.put("summoner",game.getSummoner().toString());
             vm.put("summonerTurn", game.isSummonerTurn());
@@ -67,9 +68,11 @@ public class GetGameRoute implements Route {
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
         else {
+                    //&& (httpSession.attribute("inGame")==null)
             Player opponent = new Player(enemyName);
             Session opponentSession = this.playerlobby.getSession(opponent);
-            if (opponentSession.attribute("inGame")) { // This Player is Already in a Match
+            boolean oppInGame=opponentSession.attribute("inGame");
+            if (oppInGame && httpSession.attribute("inGame")==null) { // This Player is Already in a Match
                 vm.put("gameError", "<p>The player " + opponent.toString() + " is already in game; please wait or " +
                         "choose another opponent.</p>");
                 vm.put("username", this.playerlobby.getUser(httpSession).toString());
@@ -79,16 +82,21 @@ public class GetGameRoute implements Route {
                 vm.put("title", "Welcome!");
                 return templateEngine.render(new ModelAndView(vm, "home.ftl"));
             } else {
+                PlayerServices playerServices = httpSession.attribute("playerServices");
+                CheckersGame game;
+
                 if(httpSession.attribute("playerServices")==null){
                   httpSession.attribute("playerServices", gameCenter.newPlayerServices());
                   opponentSession.attribute("playerServices", httpSession.attribute("playerServices"));
                   httpSession.attribute("inGame", true);
                   opponentSession.attribute("inGame", true);
+                  playerServices=httpSession.attribute("playerServices");
+                  game = playerServices.newGame(opponent, new Player(this.playerlobby.getUser(httpSession).toString()));
+                }else{
+                  game = playerServices.currentGame();
                 }
-                final PlayerServices playerServices =
-                        httpSession.attribute("playerServices");
-                CheckersGame game = playerServices.newGame(opponent, new Player(this.playerlobby.getUser(httpSession).toString()));
                 vm.put(BOARD, game.getBoard());
+                LOG.config("sum Info: opp:"+opponent.toString()+" summoner: "+summoner+" sumTurn: "+game.isSummonerTurn());
                 vm.put("opponent", opponent.toString());
                 vm.put("summoner", summoner);
                 vm.put("summonerTurn", game.isSummonerTurn());

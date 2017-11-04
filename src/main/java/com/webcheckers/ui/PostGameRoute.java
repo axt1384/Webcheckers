@@ -52,6 +52,7 @@ public class PostGameRoute implements Route {
         game.updateBoard(move, oldPos);
         String turn=request.queryParams("turn");
         LOG.config("bounter"+counter+"");
+        LOG.config("YOU ARE VIEWING POSTGAMEROUTE");
         counter++;
         if(turn.equals("true")){
           LOG.config("turn status: "+turn);

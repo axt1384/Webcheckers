@@ -29,7 +29,8 @@ public class Board {
 
     public Row[] getBoard(String opponent, String summoner){
         if(opponent.equals(summoner)){
-            Row[] reverseBoard=board;
+            Row[] reverseBoard=new Row[height];
+            System.arraycopy( board, 0, reverseBoard, 0, height );
             Collections.reverse(Arrays.asList(reverseBoard));
             return reverseBoard;
         }

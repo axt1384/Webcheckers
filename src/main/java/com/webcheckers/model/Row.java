@@ -59,7 +59,8 @@ public class Row {
 
     public Square[] getRow(String opponent, String summoner){
       if(opponent.equals(summoner)){
-          Square[] reverseRow=row;
+          Square[] reverseRow= new Square[width];
+          System.arraycopy( row, 0, reverseRow, 0, width );
           Collections.reverse(Arrays.asList(reverseRow));
           return reverseRow;
       }
