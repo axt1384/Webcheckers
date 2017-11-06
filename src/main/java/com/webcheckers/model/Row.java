@@ -2,6 +2,7 @@ package com.webcheckers.model;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.logging.Logger;
 
 public class Row {
     private int width;
@@ -55,6 +56,14 @@ public class Row {
 
     public void setPiece(Piece piece, int col){
       row[col].setPiece(piece);
+    }
+
+    public Square[] getRow(){
+      return row;
+    }
+
+    public void reverse(){
+      Collections.reverse(Arrays.asList(row));
     }
 
     public Square[] getRow(String opponent, String summoner){

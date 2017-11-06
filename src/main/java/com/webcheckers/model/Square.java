@@ -1,4 +1,5 @@
 package com.webcheckers.model;
+import java.util.logging.Logger;
 
 public class Square {
     private int index;

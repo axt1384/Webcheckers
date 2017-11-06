@@ -6,16 +6,34 @@
   <link rel="stylesheet" href="/css/game.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script>
+    var moved=false;
     function allowDrop(e,parent) {
-      e.preventDefault();
+      //svar data = e.dataTransfer.getData("text");
+    //  var piece=document.getElementById(data);
+    //  console.log(piece.dataset.color + ""+turn);
+      //if((piece.dataset.color=="red" && turn)|| (piece.dataset.color=="white" && !turn)){
+        e.preventDefault();
+      //}
     }
     function drag(e, piece, turn) {
         e.dataTransfer.setData("text", e.target.id);
     }
-    function drop(e,square) {
+    function withinRowRange(squareRow, pieceRow, turn){
+      if(turn){
+        return squareRow == pieceRow-1;
+      }else{
+        return squareRow == pieceRow+1;
+      }
+    }
+    function withinColRange(squareCol, pieceCol){
+      return ((squareCol==pieceCol-1) || (squareCol==pieceCol+1));
+    }
+    function drop(e,square,turn) {
       var data = e.dataTransfer.getData("text");
       console.log(data);
       var piece=document.getElementById(data);
+      console.log(piece.dataset.color);
+      console.log(""+turn);
       if((piece.dataset.color=="red" && turn)|| (piece.dataset.color=="white" && !turn)){
         var squarePos= square.id.split("-");
         var squareRow=parseInt(squarePos[0]);
@@ -23,14 +41,13 @@
         var piecePos= piece.id.split("-");
         var pieceRow=parseInt(piecePos[1]);
         var pieceCol=parseInt(piecePos[2]);
-        console.log(squareRow < pieceRow);
-        console.log("pieceCol:"+pieceCol+" squareCol:"+squareCol);
-        console.log(square.childNodes.length < 2);
-        if((squareRow < pieceRow) && ((squareCol==pieceCol-1) || (squareCol==pieceCol+1)) && square.childNodes.length < 2){
+        if(withinRowRange(squareRow, pieceRow, turn) && withinColRange(squareCol, pieceCol)
+            && square.childNodes.length < 2 && moved==false){
           e.preventDefault();
           e.target.appendChild(piece);
           document.getElementById("moveInput").value=squareRow+"-"+squareCol;
           document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
+          moved=true;
           document.getElementById("submitButton").disabled=false;
         }
       }
@@ -78,21 +95,12 @@
                     <#if space.isValid() >
                         <div class="Space"
                             id="${row.getIndex()}-${space.getIndex()}"
-                            ondrop="drop(event,this)"
+                            ondrop="drop(event,this,${summonerTurn?c})"
                             ondragover="allowDrop(event,this)">
                             <#if space.hasPiece()>
-                              <#if space.isValid() && (row.getIndex()<3)>
+                              <#if space.isValid()>
                                 <img id="piece-${row.getIndex()}-${space.getIndex()}"
-                                  src="../img/single-piece-white.svg"
-                                  class="Piece"
-                                  data-type="${space.getPieceType()}"
-                                  data-color="${space.getPieceColor()}"
-                                  draggable="true"
-                                  ondragstart="drag(event,this,${summonerTurn?c});"
-                                />
-                              <#elseif space.isValid() && (row.getIndex()>4)>
-                                <img id="piece-${row.getIndex()}-${space.getIndex()}"
-                                  src="../img/single-piece-red.svg"
+                                  src="../img/single-piece-${space.getPieceColor()}.svg"
                                   class="Piece"
                                   data-type="${space.getPieceType()}"
                                   data-color="${space.getPieceColor()}"
@@ -117,6 +125,7 @@
       <input id="moveInput" type="hidden" name="move" value=""/>
       <input id="oldPosInput" type="hidden" name="oldPos" value=""/>
       <input id="turn" type="hidden" name="turn" value="${summonerTurn?c}"/>
+      <input id="summoner" type="hidden" name="summoner" value="${summoner}"/>
       <button id="submitButton" type='submit' disabled>Submit</button>
     </form>
 

@@ -42,29 +42,23 @@ public class PostGameRoute implements Route {
      */
     @Override
     public String handle(Request request, Response response) {
-        // retrieve the game object and start one if no game is in progress
         final Session httpSession = request.session();
+        String summoner=request.queryParams("summoner");
         String move= request.queryParams("move");
         String oldPos= request.queryParams("oldPos");
         final Map<String, Object> vm = new HashMap<>();
         final PlayerServices playerServices = httpSession.attribute("playerServices");
         CheckersGame game = playerServices.currentGame();
         game.updateBoard(move, oldPos);
-        String turn=request.queryParams("turn");
-        LOG.config("bounter"+counter+"");
-        LOG.config("YOU ARE VIEWING POSTGAMEROUTE");
-        counter++;
-        if(turn.equals("true")){
-          LOG.config("turn status: "+turn);
+        if(summoner.equals(playerlobby.getUser(httpSession).toString())){
           vm.put("opponent", game.getOpp().toString());
           vm.put("summoner", game.getSummoner().toString());
         }else{
-          LOG.config("turn status: balse");
           vm.put("opponent", game.getSummoner().toString());
           vm.put("summoner", game.getSummoner().toString());
         }
-        game.endTurn();
         vm.put(BOARD, game.getBoard());
+        game.endTurn();
         vm.put("summonerTurn",game.isSummonerTurn());
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }

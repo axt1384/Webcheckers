@@ -29,6 +29,7 @@ public class CheckersGame {
       String[] oldPosCoords=oldPos.split("-");
       String oldRow=oldPosCoords[0];
       String oldCol=oldPosCoords[1];
+      LOG.config("move: "+row+" "+col+" old: "+oldRow+" "+oldCol);
       Piece p=board.removePiece(Integer.parseInt(oldRow), Integer.parseInt(oldCol));
       board.setPiece(p, Integer.parseInt(row), Integer.parseInt(col));
     }
@@ -47,6 +48,12 @@ public class CheckersGame {
 
     public void endTurn(){
       summonerTurn=!summonerTurn;
+    }
+
+    public Board getOppBoard(){
+      Board b=new Board(8,8);
+      b.setBoard(board.getOppBoard());
+      return b;
     }
 
     public Board getBoard(){
