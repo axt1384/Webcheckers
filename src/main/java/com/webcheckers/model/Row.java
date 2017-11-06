@@ -75,4 +75,8 @@ public class Row {
       }
       return row;
     }
+
+    public boolean PiecePresent(int col){
+        return row[col].hasPiece();
+    }
 }

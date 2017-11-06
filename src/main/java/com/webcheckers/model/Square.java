@@ -2,9 +2,12 @@ package com.webcheckers.model;
 import java.util.logging.Logger;
 
 public class Square {
+
     private int index;
     private String color;
     private Piece piece;
+
+
     public Square(String color, Piece piece, int index){
         this.index=index;
         this.piece=piece;
