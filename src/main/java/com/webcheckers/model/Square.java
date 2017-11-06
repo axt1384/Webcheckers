@@ -2,14 +2,30 @@ package com.webcheckers.model;
 import java.util.logging.Logger;
 
 public class Square {
-    private int index;
+
+    // ----------
+    // Attributes
+    // ----------
+
+    private int column;
+    private int row;
     private String color;
     private Piece piece;
-    public Square(String color, Piece piece, int index){
-        this.index=index;
-        this.piece=piece;
-        this.color=color;
+
+    // ------------
+    // Constructors
+    // ------------
+
+    public Square(String color, Piece piece, int row, int column){
+        this.column = column;
+        this.row = row;
+        this.piece = piece;
+        this.color = color;
     }
+
+    // -------
+    // Methods
+    // -------
 
     public String getSquare(){
         return color;
@@ -45,7 +61,9 @@ public class Square {
         return color.equals("black");
     }
 
-    public int getIndex(){
-        return index;
+    public int getRow(){
+        return this.row;
     }
+
+    public int getColumn() { return this.column; }
 }

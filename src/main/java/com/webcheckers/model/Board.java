@@ -6,10 +6,17 @@ import java.util.logging.Logger;
 
 public class Board {
 
+    // ----------
+    // Attributes
+    // ----------
+
     private int width;
     private int height;
-
     private Row[] board;
+
+    // ------------
+    // Constructors
+    // ------------
 
     public Board(int width, int height){
         this.width=width;
@@ -17,6 +24,10 @@ public class Board {
         board=new Row[height];
         boardInit();
     }
+
+    // -------
+    // Methods
+    // -------
 
     private void boardInit(){
         for(int i=0; i<height; i++){

@@ -15,18 +15,18 @@ public abstract class Move {
     // Attributes
     // ----------
 
-    private Piece piece;
-    private Square from;
-    private Square to;
+    protected Piece piece;
+    protected Square origin;
+    protected Square destination;
 
     // ------------
     // Constructors
     // ------------
 
-    public Move(Piece piece, Square from, Square to) {
+    public Move(Piece piece, Square origin, Square destination) {
         this.piece = piece;
-        this.from = from;
-        this.to = to;
+        this.origin = origin;
+        this.destination = destination;
     }
 
     // -------
@@ -35,6 +35,6 @@ public abstract class Move {
 
     public abstract boolean isValid(Board board);
 
-    public void execute(Board board) {}
+    public void execute() {}
 }
 
