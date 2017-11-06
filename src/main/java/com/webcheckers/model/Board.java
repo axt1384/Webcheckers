@@ -71,6 +71,4 @@ public class Board {
     public Row getRow(int index){
       return board[index];
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.webcheckers.model;
+package com.webcheckers.model.Movement;
 
 import com.webcheckers.appl.TurnAdministrator;
 
