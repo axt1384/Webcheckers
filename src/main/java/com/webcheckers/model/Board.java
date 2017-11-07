@@ -28,16 +28,6 @@ public class Board {
         }
     }
 
-    public Row[] getOppBoard(){
-      Row[] reverseBoard=new Row[height];
-      System.arraycopy( board, 0, reverseBoard, 0, height );
-      Collections.reverse(Arrays.asList(reverseBoard));
-      for(int i=0; i<height; i++){
-        reverseBoard[i].reverse();
-      }
-      return reverseBoard;
-    }
-
     public Row[] getBoard(String opponent,String summoner){
       if(opponent.equals(summoner)){
         Row[] reverseBoard=new Row[height];
@@ -50,10 +40,6 @@ public class Board {
 
     public void setBoard(Row[] board){
       this.board=board;
-    }
-
-    public Row[] getSummonerBoard(){
-      return board;
     }
 
     public Piece removePiece(int row, int col){
