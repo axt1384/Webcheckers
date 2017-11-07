@@ -15,6 +15,13 @@ public abstract class Move {
     // Attributes
     // ----------
 
+    enum MoveType { // Necessary?
+        KINGCAPTURE,
+        KINGREGULAR,
+        NORMALCAPTURE,
+        NORMALREGULAR
+    }
+
     protected Piece piece;
     protected Square origin;
     protected Square destination;

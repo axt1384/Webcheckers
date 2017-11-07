@@ -82,4 +82,16 @@ public class Board {
     public Row getRow(int index){
       return board[index];
     }
+
+    public Square getSquare(int row, int col) {
+        return this.getRow(row).getSqueare(col);
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
 }

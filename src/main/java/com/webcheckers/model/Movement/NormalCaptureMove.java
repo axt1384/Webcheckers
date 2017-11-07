@@ -9,7 +9,8 @@ import com.webcheckers.model.Square;
  *
  * @author Anorwen - - - edc8230@rit.edu
  */
-public class NormalAttackMove extends Move {
+public class NormalCaptureMove extends Move {
+
 
     // ----------
     // Attributes
@@ -19,7 +20,7 @@ public class NormalAttackMove extends Move {
     // Constructors
     // ------------
 
-    public NormalAttackMove(Piece piece, Square from, Square to) {
+    public NormalCaptureMove(Piece piece, Square from, Square to) {
         super(piece, from, to);
     }
 
