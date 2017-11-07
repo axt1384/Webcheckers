@@ -1,6 +1,6 @@
 package com.webcheckers.ui;
 
-
+import java.util.logging.Logger;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.PlayerServices;
@@ -24,8 +24,8 @@ public class GetGameRoute implements Route {
     private final TemplateEngine templateEngine;
     private final GameCenter gameCenter;
     private PlayerLobby playerlobby;
-
-
+    private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
+    private static int counter=0;
     /**
      * The constructor for the {@code GET /game} route handler.
      *
@@ -42,31 +42,42 @@ public class GetGameRoute implements Route {
 
     }
 
+    private void updatePlayers(Session summonerSess, Session oppSess){
+        Player summoner= this.playerlobby.getUser(summonerSess);
+        Player opponent=this.playerlobby.getUser(oppSess);
+        summoner.setSummoner(true);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String handle(Request request, Response response) {
-        // retrieve the game object and start one if no game is in progress
         final Session httpSession = request.session();
-
-        httpSession.attribute("playerServices", gameCenter.newPlayerServices());
         final Map<String, Object> vm = new HashMap<>();
-
-        String enemyName = request.queryParams("opponent");
-        if(enemyName == null) { // This Session was summoned.
-            final PlayerServices playerServices =
-                    httpSession.attribute("playerServices");
+        LOG.config("Params: "+request.queryParams());
+        String enemyName, summoner;
+        if(request.queryParams("summoner")==null){
+            enemyName=httpSession.attribute("opponent");
+            summoner=httpSession.attribute("summoner");
+        }else{
+            enemyName = request.queryParams("opponent");
+            summoner=request.queryParams("summoner");
+        }
+        if((enemyName == null && !playerlobby.getUser(httpSession).isSummoner()) || enemyName.equals(summoner)) { // This Session was summoned.
+            final PlayerServices playerServices = httpSession.attribute("playerServices");
             CheckersGame game = playerServices.currentGame();
             vm.put(BOARD, game.getBoard());
-            vm.put("opponent","");
-            // render the Game Form view
+            vm.put("opponent",game.getSummoner().toString());
+            vm.put("summoner",game.getSummoner().toString());
+            vm.put("summonerTurn", game.isSummonerTurn());
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
         else {
-            Player opponent = new Player(enemyName);
+            Player opponent = new Player(enemyName,false);
             Session opponentSession = this.playerlobby.getSession(opponent);
-            if (opponentSession.attribute("inGame")) { // This Player is Already in a Match
+            boolean oppInGame=opponentSession.attribute("inGame");
+            if (oppInGame && httpSession.attribute("inGame")==null) { // This Player is Already in a Match
                 vm.put("gameError", "<p>The player " + opponent.toString() + " is already in game; please wait or " +
                         "choose another opponent.</p>");
                 vm.put("username", this.playerlobby.getUser(httpSession).toString());
@@ -76,15 +87,30 @@ public class GetGameRoute implements Route {
                 vm.put("title", "Welcome!");
                 return templateEngine.render(new ModelAndView(vm, "home.ftl"));
             } else {
-                httpSession.attribute("inGame", true);
-                opponentSession.attribute("inGame", true);
+                CheckersGame game;
+                PlayerServices playerServices=httpSession.attribute("playerServices");;
+                if(httpSession.attribute("playerServices")==null){
+                  httpSession.attribute("playerServices", gameCenter.newPlayerServices());
+                  opponentSession.attribute("playerServices", httpSession.attribute("playerServices"));
+                  httpSession.attribute("inGame", true);
+                  opponentSession.attribute("inGame", true);
 
-                final PlayerServices playerServices =
-                        httpSession.attribute("playerServices");
-                CheckersGame game = playerServices.currentGame();
+                  httpSession.attribute("summoner",summoner);
+                  httpSession.attribute("opponent",opponent.toString());
+
+                  opponentSession.attribute("summoner",summoner);
+                  opponentSession.attribute("opponent",summoner);
+
+                  playerServices=httpSession.attribute("playerServices");
+                  updatePlayers(httpSession, opponentSession);
+                  game = playerServices.newGame(new Player(this.playerlobby.getUser(httpSession).toString(),true), opponent);
+                }else{
+                  game = playerServices.currentGame();
+                }
                 vm.put(BOARD, game.getBoard());
                 vm.put("opponent", opponent.toString());
-                // render the Game Form view
+                vm.put("summoner", summoner);
+                vm.put("summonerTurn", game.isSummonerTurn());
                 return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
             }
         }

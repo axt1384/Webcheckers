@@ -7,7 +7,7 @@
 </head>
 <body>
   <div class="page">
-  
+
     <h1>Web Checkers</h1>
     
     <div class="navigation">

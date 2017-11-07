@@ -75,7 +75,7 @@ public class GetHomeRoute implements Route {
 
     String result = "";
     for(String user: list) {
-      result += "<li><a href=/game?opponent=" + user + ">" + user + "</a></li>";
+      result += "<li><a href=/game?opponent=" + user + "&summoner="+viewingUser+">" + user + "</a></li>";
     }
     return "<ul>" + result + "</ul>"; // Unordered List Label
   }

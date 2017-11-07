@@ -1,4 +1,5 @@
 package com.webcheckers.model;
+import java.util.logging.Logger;
 
 public class Square {
     private int index;
@@ -16,6 +17,20 @@ public class Square {
 
     public boolean hasPiece(){
         return piece!=null;
+    }
+
+    public Piece getPiece(){
+      return piece;
+    }
+
+    public void setPiece(Piece piece){
+      this.piece=piece;
+    }
+
+    public Piece removePiece(){
+      Piece p=this.piece;
+      this.piece=null;
+      return p;
     }
 
     public String getPieceType(){

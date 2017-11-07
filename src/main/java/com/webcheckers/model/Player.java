@@ -11,7 +11,7 @@ public class Player {
     // Attributes
     // ----------
     private String username; // A Player only has a Username
-
+    private boolean isSummoner;
     // ------------
     // Constructors
     // ------------
@@ -20,13 +20,26 @@ public class Player {
      * Creates a new Player provided a username to represent them.
      * @param username String that represents the player.
      */
-    public Player(String username) {
+    public Player(String username){
+        this.username=username;
+        this.isSummoner=false;
+    }
+    public Player(String username, boolean isSummoner) {
         this.username = username;
+        this.isSummoner=isSummoner;
     }
 
     // -------
     // Methods
     // -------
+
+    public boolean isSummoner(){
+      return isSummoner;
+    }
+
+    public void setSummoner(boolean status){
+        this.isSummoner=status;
+    }
 
     public String toString() {
         return this.username;

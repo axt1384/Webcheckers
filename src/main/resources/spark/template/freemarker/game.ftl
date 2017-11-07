@@ -6,41 +6,112 @@
   <link rel="stylesheet" href="/css/game.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script>
+    var moved=false;
     function allowDrop(e,parent) {
-
-            e.preventDefault();
-
+      //svar data = e.dataTransfer.getData("text");
+    //  var piece=document.getElementById(data);
+    //  console.log(piece.dataset.color + ""+turn);
+      //if((piece.dataset.color=="red" && turn)|| (piece.dataset.color=="white" && !turn)){
+        e.preventDefault();
+      //}
     }
-
-    function drag(e) {
+    function drag(e, piece, turn) {
         e.dataTransfer.setData("text", e.target.id);
     }
-
-    function drop(e,parent) {
-        if(parent.childNodes.length < 2){
-            e.preventDefault();
-            var data = e.dataTransfer.getData("text");
-            e.target.appendChild(document.getElementById(data));
+    function createSubmitLink(move, oldPos){
+        if(${opponent}==${summoner}){
+            document.write("<a href=/game?summoner="+${summoner}+"&opponent="+${summoner}+
+            "&move="+move+ "&oldPos="+oldPos+">submit it!!!</a>");
+        }else{
+            document.write("<a href=/game?summoner="+${summoner}+"&opponent="+${opponent}+
+            "&move="+move+ "&oldPos="+oldPos+">submit it!!!</a>");
         }
+    }
+    function withinRowRange(squareRow, pieceRow, turn){
+      if(turn){
+        return squareRow == pieceRow-1;
+      }else{
+        return squareRow == pieceRow+1;
+      }
+    }
+    function withinColRange(squareCol, pieceCol){
+      return ((squareCol==pieceCol-1) || (squareCol==pieceCol+1));
+    }
+    function withinCapRowRange(squareRow, pieceRow, turn){
+      if(turn){
+        return squareRow == pieceRow-2;
+      }
+      else{
+        return squareRow == pieceRow+2;
+      }
+    }
+    function withinCapColRange(squareCol, pieceCol, pieceRow, turn){
+      var capRow;
+      var opposite;
+      if(turn){
+        capRow=pieceRow-1;
+        opposite = "white";
+      }else{
+        capRow=pieceRow+1;
+        opposite = "red";
+      }
+      var capCol=pieceCol-1;
+      var capCol2=pieceCol+1;
+      var capPos= document.getElementById("piece-"+capRow+"-"+capCol);
+      var capPos2= document.getElementById("piece-"+capRow+"-"+capCol2);
+      if ((squareCol==pieceCol-2)&&(capPos.dataset.color==opposite)){
+        document.getElementById("capturedInput").value = capRow+"-"+capCol;
+        return (squareCol==pieceCol-2)&&(capPos.dataset.color==opposite);
+      }
+      else if ((squareCol==pieceCol+2)&&(capPos2.dataset.color==opposite)){
+        document.getElementById("capturedInput").value = capRow+"-"+capCol2;
+        return ((squareCol==pieceCol+2)&&(capPos2.dataset.color==opposite));
+      }
+    }
+    function drop(e,square,turn) {
+      var data = e.dataTransfer.getData("text");
+      console.log(data);
+      var piece=document.getElementById(data);
+      console.log(piece.dataset.color);
+      console.log(""+turn);
+      if((piece.dataset.color=="red" && turn)|| (piece.dataset.color=="white" && !turn)){
+        var squarePos= square.id.split("-");
+        var squareRow=parseInt(squarePos[0]);
+        var squareCol=parseInt(squarePos[1]);
+        var piecePos= piece.id.split("-");
+        var pieceRow=parseInt(piecePos[1]);
+        var pieceCol=parseInt(piecePos[2]);
+        if(withinRowRange(squareRow, pieceRow, turn) && withinColRange(squareCol, pieceCol)
+            && square.childNodes.length < 2 && moved==false){
+          e.preventDefault();
+          e.target.appendChild(piece);
+          document.getElementById("moveInput").value=squareRow+"-"+squareCol;
+          document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
+          moved=true;
+          document.getElementById("submitButton").disabled=false;
+        }else if (withinCapRowRange(squareRow, pieceRow, turn) && withinCapColRange(squareCol, pieceCol, pieceRow, turn)
+                  && square.childNodes.length < 2 && moved==false){
+          e.preventDefault();
+          e.target.appendChild(piece);
+          document.getElementById("moveInput").value=squareRow+"-"+squareCol;
+          document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
+          moved=true;
+          document.getElementById("submitButton").disabled=false;
+        }
+      }
     }
   </script>
 </head>
 <body>
   <div class="page">
     <h1>Web Checkers</h1>
-
     <div class="navigation">
-
     <div class="body">
-
       <p id="help_text"></p>
-
       <div>
         <div id="game-controls">
-
           <fieldset id="game-info">
             <legend>Info</legend>
-
             <div>
               <table data-color='RED'>
                 <tr>
@@ -56,73 +127,38 @@
               </table>
             </div>
           </fieldset>
-
           <fieldset id="game-toolbar">
             <legend>Controls</legend>
             <div class="toolbar"></div>
           </fieldset>
-
         </div>
 
         <div class="game-board">
           <table id="game-board">
             <tbody>
-            <#list board.getBoard() as row>
+            <#list board.getBoard(opponent,summoner) as row>
               <tr data-row="${row.getIndex()}">
-              <#list row.getRow() as space>
+              <#list row.getRow(opponent,summoner) as space>
                 <td data-cell="${space.getIndex()}">
                     <#if space.isValid() >
                         <div class="Space"
                             id="${row.getIndex()}-${space.getIndex()}"
-                            ondrop="drop(event,this)"
+                            ondrop="drop(event,this,${summonerTurn?c})"
                             ondragover="allowDrop(event,this)">
                             <#if space.hasPiece()>
-                                <#if opponent=="">
-                                    <#if space.isValid() && (row.getIndex()>4)>
-                                        <img src="../img/single-piece-white.svg"
-                                            class="Piece"
-                                            id="piece-${row.getIndex()}-${space.getIndex()}"
-                                            data-type="${space.getPieceType()}"
-                                            data-color="${space.getPieceColor()}"
-                                            draggable="true"
-                                            ondragstart="drag(event)"
-                                        />
-                                    <#elseif space.isValid() && (row.getIndex()<3)>
-                                        <img src="../img/single-piece-red.svg"
-                                            class="Piece"
-                                            id="piece-${row.getIndex()}-${space.getIndex()}"
-                                            data-type="${space.getPieceType()}"
-                                            data-color="${space.getPieceColor()}"
-                                            draggable="true"
-                                            ondragstart="drag(event)"
-                                        />
-                                    </#if>
-                                <#else>
-                                    <#if space.isValid() && (row.getIndex()<3)>
-                                        <img src="../img/single-piece-white.svg"
-                                            class="Piece"
-                                            id="piece-${row.getIndex()}-${space.getIndex()}"
-                                            data-type="${space.getPieceType()}"
-                                            data-color="${space.getPieceColor()}"
-                                            draggable="true"
-                                            ondragstart="drag(event)"
-                                        />
-                                    <#elseif space.isValid() && (row.getIndex()>4)>
-                                        <img src="../img/single-piece-red.svg"
-                                            class="Piece"
-                                            id="piece-${row.getIndex()}-${space.getIndex()}"
-                                            data-type="${space.getPieceType()}"
-                                            data-color="${space.getPieceColor()}"
-                                            draggable="true"
-                                            ondragstart="drag(event)"
-                                        />
-                                    </#if>
-                                </#if>
-
+                              <#if space.isValid()>
+                                <img id="piece-${row.getIndex()}-${space.getIndex()}"
+                                  src="../img/single-piece-${space.getPieceColor()}.svg"
+                                  class="Piece"
+                                  data-type="${space.getPieceType()}"
+                                  data-color="${space.getPieceColor()}"
+                                  draggable="true"
+                                  ondragstart="drag(event,this,${summonerTurn?c});"
+                                />
+                              </#if>
                             </#if>
                         </div>
                     </#if>
-
                 </td>
               </#list>
               </tr>
@@ -133,6 +169,17 @@
       </div>
 
     </div>
+    <form action="/game" method="POST">
+      <input id="moveInput" type="hidden" name="move" value=""/>
+      <input id="oldPosInput" type="hidden" name="oldPos" value=""/>
+      <input id="capturedInput" type="hidden" name="capture" value=""/>
+      <input id="turn" type="hidden" name="turn" value="${summonerTurn?c}"/>
+      <input id="summoner" type="hidden" name="summoner" value="${summoner}"/>
+      <input id="summoner" type="hidden" name="opponent" value="${opponent}"/>
+      <button id="submitButton" type='submit' disabled>Submit</button>
+    </form>
+
+
   </div>
 
   <audio id="audio" src="http://www.soundjay.com/button/beep-07.mp3" autostart="false" ></audio>
