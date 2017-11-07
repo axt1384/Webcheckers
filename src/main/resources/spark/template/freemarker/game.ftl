@@ -18,6 +18,15 @@
     function drag(e, piece, turn) {
         e.dataTransfer.setData("text", e.target.id);
     }
+    function createSubmitLink(move, oldPos){
+        if(${opponent}==${summoner}){
+            document.write("<a href=/game?summoner="+${summoner}+"&opponent="+${summoner}+
+            "&move="+move+ "&oldPos="+oldPos+">submit it!!!</a>");
+        }else{
+            document.write("<a href=/game?summoner="+${summoner}+"&opponent="+${opponent}+
+            "&move="+move+ "&oldPos="+oldPos+">submit it!!!</a>");
+        }
+    }
     function withinRowRange(squareRow, pieceRow, turn){
       if(turn){
         return squareRow == pieceRow-1;
@@ -27,6 +36,78 @@
     }
     function withinColRange(squareCol, pieceCol){
       return ((squareCol==pieceCol-1) || (squareCol==pieceCol+1));
+    }
+    function withinCapRowRange(squareRow, pieceRow, turn){
+      if(turn){
+        return squareRow == pieceRow-2;
+      }
+      else{
+        return squareRow == pieceRow+2;
+      }
+    }
+    function withinCapColRange(squareCol, squareRow, pieceCol, pieceRow, turn){
+      var capRow;
+      var capRow2;
+      var capCol=pieceCol-1;
+      var capCol2=pieceCol+1;
+      var opposite;
+      var piece = document.getElementById("piece-"+pieceRow+"-"+pieceCol);
+      if (piece.dataset.type != "king"){
+        if(turn){
+          capRow=pieceRow-1;
+          opposite = "white";
+        }else{
+          capRow=pieceRow+1;
+          opposite = "red";
+        }
+        var capPos= document.getElementById("piece-"+capRow+"-"+capCol);
+        var capPos2= document.getElementById("piece-"+capRow+"-"+capCol2);
+        if ((squareCol==pieceCol-2)&&(capPos.dataset.color==opposite)){
+          document.getElementById("capturedInput").value = capRow+"-"+capCol;
+          return (squareCol==pieceCol-2)&&(capPos.dataset.color==opposite);
+        }
+        else if ((squareCol==pieceCol+2)&&(capPos2.dataset.color==opposite)){
+          document.getElementById("capturedInput").value = capRow+"-"+capCol2;
+          return ((squareCol==pieceCol+2)&&(capPos2.dataset.color==opposite));
+        }
+      }
+      else{
+        capRow=pieceRow-1;
+        capRow2=pieceRow+1;
+        if(turn){opposite="white";}else{opposite="red";}
+        var capPos= document.getElementById("piece-"+capRow+"-"+capCol);
+        var capPos2= document.getElementById("piece-"+capRow+"-"+capCol2);
+        var capPos3= document.getElementById("piece-"+capRow2+"-"+capCol);
+        var capPos4= document.getElementById("piece-"+capRow2+"-"+capCol2);
+        console.log("1:"+capPos!=null);
+        console.log("2:"+capPos2!=null);
+        console.log("3:"+capPos3!=null);
+        console.log("4:"+capPos4!=null);
+        if ((squareCol==pieceCol-2)&&(squareRow==pieceRow-2)&&(capPos!=null)&&(capPos.dataset.color==opposite)){
+          console.log("used capPos1");
+          document.getElementById("capturedInput").value = capRow+"-"+capCol;
+          console.log(document.getElementById("capturedInput").value);
+          return true;
+        }
+        else if ((squareCol==pieceCol+2)&&(squareRow==pieceRow-2)&&(capPos2!=null)&&(capPos2.dataset.color==opposite)){
+          console.log("used capPos2");
+          document.getElementById("capturedInput").value = capRow+"-"+capCol2;
+          console.log(document.getElementById("capturedInput").value);
+          return true;
+        }
+        else if ((squareCol==pieceCol-2)&&(squareRow==pieceRow+2)&&(capPos3!=null)&&(capPos3.dataset.color==opposite)){
+          console.log("used capPos3");
+          document.getElementById("capturedInput").value = capRow2+"-"+capCol;
+          console.log(document.getElementById("capturedInput").value);
+          return true;
+        }
+        else if ((squareCol==pieceCol+2)&&(squareRow==pieceRow+2)&&(capPos4!=null)&&(capPos4.dataset.color==opposite)){
+          console.log("used capPos4");
+          document.getElementById("capturedInput").value = capRow2+"-"+capCol2;
+          console.log(document.getElementById("capturedInput").value);
+          return true;
+        }
+      }
     }
     function drop(e,square,turn) {
       var data = e.dataTransfer.getData("text");
@@ -41,7 +122,25 @@
         var piecePos= piece.id.split("-");
         var pieceRow=parseInt(piecePos[1]);
         var pieceCol=parseInt(piecePos[2]);
-        if(withinRowRange(squareRow, pieceRow, turn) && withinColRange(squareCol, pieceCol)
+        if ((piece.dataset.type == "king") && withinColRange(squareCol, pieceCol) &&
+            (squareRow == pieceRow + 1 || squareRow == pieceRow - 1) && square.childNodes.length < 2 && moved==false) {
+            e.preventDefault();
+            e.target.appendChild(piece);
+            document.getElementById("moveInput").value=squareRow+"-"+squareCol;
+            document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
+            moved=true;
+            document.getElementById("submitButton").disabled=false;
+        }
+        else if ((piece.dataset.type == "king") && (squareRow == pieceRow + 2 || squareRow == pieceRow - 2) && withinCapColRange(squareCol, squareRow, pieceCol, pieceRow, turn)
+             && square.childNodes.length < 2 && moved==false) {
+            e.preventDefault();
+            e.target.appendChild(piece);
+            document.getElementById("moveInput").value=squareRow+"-"+squareCol;
+            document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
+            moved=true;
+            document.getElementById("submitButton").disabled=false;
+        }
+        else if(withinRowRange(squareRow, pieceRow, turn) && withinColRange(squareCol, pieceCol)
             && square.childNodes.length < 2 && moved==false){
           e.preventDefault();
           e.target.appendChild(piece);
@@ -49,7 +148,28 @@
           document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
           moved=true;
           document.getElementById("submitButton").disabled=false;
+          if (piece.dataset.color == "red" && squareRow == 0){
+            piece.src = "../img/king-piece-red.svg";
+          }
+          else if (piece.dataset.color == "white" && squareRow == 7){
+            piece.src = "../img/king-piece-white.svg";
+          }
+        }else if (withinCapRowRange(squareRow, pieceRow, turn) && withinCapColRange(squareCol, squareRow, pieceCol, pieceRow, turn)
+                  && square.childNodes.length < 2 && moved==false){
+          e.preventDefault();
+          e.target.appendChild(piece);
+          document.getElementById("moveInput").value=squareRow+"-"+squareCol;
+          document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
+          moved=true;
+          document.getElementById("submitButton").disabled=false;
+          if (piece.dataset.color == "red" && squareRow == 0){
+              piece.src = "../img/king-piece-red.svg";
+          }
+          else if (piece.dataset.color == "white" && squareRow == 7){
+              piece.src = "../img/king-piece-white.svg";
+          }
         }
+
       }
     }
   </script>
@@ -99,14 +219,25 @@
                             ondragover="allowDrop(event,this)">
                             <#if space.hasPiece()>
                               <#if space.isValid()>
-                                <img id="piece-${row.getIndex()}-${space.getIndex()}"
-                                  src="../img/single-piece-${space.getPieceColor()}.svg"
-                                  class="Piece"
-                                  data-type="${space.getPieceType()}"
-                                  data-color="${space.getPieceColor()}"
-                                  draggable="true"
-                                  ondragstart="drag(event,this,${summonerTurn?c});"
-                                />
+                                <#if space.getPieceType() != "king">
+                                  <img id="piece-${row.getIndex()}-${space.getIndex()}"
+                                    src="../img/single-piece-${space.getPieceColor()}.svg"
+                                    class="Piece"
+                                    data-type="${space.getPieceType()}"
+                                    data-color="${space.getPieceColor()}"
+                                    draggable="true"
+                                    ondragstart="drag(event,this,${summonerTurn?c});"
+                                  />
+                                <#else>
+                                  <img id="piece-${row.getIndex()}-${space.getIndex()}"
+                                    src="../img/king-piece-${space.getPieceColor()}.svg"
+                                    class="Piece"
+                                    data-type="${space.getPieceType()}"
+                                    data-color="${space.getPieceColor()}"
+                                    draggable="true"
+                                    ondragstart="drag(event,this,${summonerTurn?c});"
+                                  />
+                                </#if>
                               </#if>
                             </#if>
                         </div>
@@ -124,10 +255,13 @@
     <form action="/game" method="POST">
       <input id="moveInput" type="hidden" name="move" value=""/>
       <input id="oldPosInput" type="hidden" name="oldPos" value=""/>
+      <input id="capturedInput" type="hidden" name="capture" value=""/>
       <input id="turn" type="hidden" name="turn" value="${summonerTurn?c}"/>
       <input id="summoner" type="hidden" name="summoner" value="${summoner}"/>
+      <input id="summoner" type="hidden" name="opponent" value="${opponent}"/>
       <button id="submitButton" type='submit' disabled>Submit</button>
     </form>
+
 
   </div>
 
