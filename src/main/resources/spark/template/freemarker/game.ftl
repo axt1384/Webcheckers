@@ -79,29 +79,33 @@
         var capPos2= document.getElementById("piece-"+capRow+"-"+capCol2);
         var capPos3= document.getElementById("piece-"+capRow2+"-"+capCol);
         var capPos4= document.getElementById("piece-"+capRow2+"-"+capCol2);
+        console.log("1:"+capPos!=null);
+        console.log("2:"+capPos2!=null);
+        console.log("3:"+capPos3!=null);
+        console.log("4:"+capPos4!=null);
         if ((squareCol==pieceCol-2)&&(squareRow==pieceRow-2)&&(capPos!=null)&&(capPos.dataset.color==opposite)){
           console.log("used capPos1");
           document.getElementById("capturedInput").value = capRow+"-"+capCol;
           console.log(document.getElementById("capturedInput").value);
-          return (squareCol==pieceCol-2)&&(capPos.dataset.color==opposite);
+          return true;
         }
-        else if ((squareCol==pieceCol-2)&&(squareRow=pieceRow+2)&&(capPos2!=null)&&(capPos2.dataset.color==opposite)){
+        else if ((squareCol==pieceCol+2)&&(squareRow==pieceRow-2)&&(capPos2!=null)&&(capPos2.dataset.color==opposite)){
           console.log("used capPos2");
           document.getElementById("capturedInput").value = capRow+"-"+capCol2;
           console.log(document.getElementById("capturedInput").value);
-          return ((squareCol==pieceCol-2)&&(capPos2.dataset.color==opposite));
+          return true;
         }
-        else if ((squareCol==pieceCol+2)&&(squareRow==pieceRow-2)&&(capPos3!=null)&&(capPos3.dataset.color==opposite)){
+        else if ((squareCol==pieceCol-2)&&(squareRow==pieceRow+2)&&(capPos3!=null)&&(capPos3.dataset.color==opposite)){
           console.log("used capPos3");
           document.getElementById("capturedInput").value = capRow2+"-"+capCol;
           console.log(document.getElementById("capturedInput").value);
-          return (squareCol==pieceCol+2)&&(capPos3.dataset.color==opposite);
+          return true;
         }
         else if ((squareCol==pieceCol+2)&&(squareRow==pieceRow+2)&&(capPos4!=null)&&(capPos4.dataset.color==opposite)){
           console.log("used capPos4");
           document.getElementById("capturedInput").value = capRow2+"-"+capCol2;
           console.log(document.getElementById("capturedInput").value);
-          return ((squareCol==pieceCol+2)&&(capPos4.dataset.color==opposite));
+          return true;
         }
       }
     }
