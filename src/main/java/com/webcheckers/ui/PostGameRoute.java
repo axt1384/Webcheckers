@@ -43,13 +43,17 @@ public class PostGameRoute implements Route {
     @Override
     public String handle(Request request, Response response) {
         final Session httpSession = request.session();
+        String turn=request.queryParams("turn");
+        LOG.config("TURN STATUS: "+turn);
         String summoner=request.queryParams("summoner");
         String move= request.queryParams("move");
         String oldPos= request.queryParams("oldPos");
+        LOG.config("params:"+request.queryParams());
+        String capture=request.queryParams("capture");
         final Map<String, Object> vm = new HashMap<>();
         final PlayerServices playerServices = httpSession.attribute("playerServices");
         CheckersGame game = playerServices.currentGame();
-        game.updateBoard(move, oldPos);
+        game.updateBoard(move, oldPos,capture);
         if(summoner.equals(playerlobby.getUser(httpSession).toString())){
           vm.put("opponent", game.getOpp().toString());
           vm.put("summoner", game.getSummoner().toString());
@@ -58,8 +62,10 @@ public class PostGameRoute implements Route {
           vm.put("summoner", game.getSummoner().toString());
         }
         vm.put(BOARD, game.getBoard());
+        LOG.config("VALIDATE TURN STATUS: "+game.isSummonerTurn());
         game.endTurn();
         vm.put("summonerTurn",game.isSummonerTurn());
-        return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+        response.redirect("/game");
+        return null;
     }
 }

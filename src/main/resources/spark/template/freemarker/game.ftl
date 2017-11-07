@@ -18,6 +18,15 @@
     function drag(e, piece, turn) {
         e.dataTransfer.setData("text", e.target.id);
     }
+    function createSubmitLink(move, oldPos){
+        if(${opponent}==${summoner}){
+            document.write("<a href=/game?summoner="+${summoner}+"&opponent="+${summoner}+
+            "&move="+move+ "&oldPos="+oldPos+">submit it!!!</a>");
+        }else{
+            document.write("<a href=/game?summoner="+${summoner}+"&opponent="+${opponent}+
+            "&move="+move+ "&oldPos="+oldPos+">submit it!!!</a>");
+        }
+    }
     function withinRowRange(squareRow, pieceRow, turn){
       if(turn){
         return squareRow == pieceRow-1;
@@ -27,6 +36,37 @@
     }
     function withinColRange(squareCol, pieceCol){
       return ((squareCol==pieceCol-1) || (squareCol==pieceCol+1));
+    }
+    function withinCapRowRange(squareRow, pieceRow, turn){
+      if(turn){
+        return squareRow == pieceRow-2;
+      }
+      else{
+        return squareRow == pieceRow+2;
+      }
+    }
+    function withinCapColRange(squareCol, pieceCol, pieceRow, turn){
+      var capRow;
+      var opposite;
+      if(turn){
+        capRow=pieceRow-1;
+        opposite = "white";
+      }else{
+        capRow=pieceRow+1;
+        opposite = "red";
+      }
+      var capCol=pieceCol-1;
+      var capCol2=pieceCol+1;
+      var capPos= document.getElementById("piece-"+capRow+"-"+capCol);
+      var capPos2= document.getElementById("piece-"+capRow+"-"+capCol2);
+      if ((squareCol==pieceCol-2)&&(capPos.dataset.color==opposite)){
+        document.getElementById("capturedInput").value = capRow+"-"+capCol;
+        return (squareCol==pieceCol-2)&&(capPos.dataset.color==opposite);
+      }
+      else if ((squareCol==pieceCol+2)&&(capPos2.dataset.color==opposite)){
+        document.getElementById("capturedInput").value = capRow+"-"+capCol2;
+        return ((squareCol==pieceCol+2)&&(capPos2.dataset.color==opposite));
+      }
     }
     function drop(e,square,turn) {
       var data = e.dataTransfer.getData("text");
@@ -43,6 +83,14 @@
         var pieceCol=parseInt(piecePos[2]);
         if(withinRowRange(squareRow, pieceRow, turn) && withinColRange(squareCol, pieceCol)
             && square.childNodes.length < 2 && moved==false){
+          e.preventDefault();
+          e.target.appendChild(piece);
+          document.getElementById("moveInput").value=squareRow+"-"+squareCol;
+          document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
+          moved=true;
+          document.getElementById("submitButton").disabled=false;
+        }else if (withinCapRowRange(squareRow, pieceRow, turn) && withinCapColRange(squareCol, pieceCol, pieceRow, turn)
+                  && square.childNodes.length < 2 && moved==false){
           e.preventDefault();
           e.target.appendChild(piece);
           document.getElementById("moveInput").value=squareRow+"-"+squareCol;
@@ -124,10 +172,13 @@
     <form action="/game" method="POST">
       <input id="moveInput" type="hidden" name="move" value=""/>
       <input id="oldPosInput" type="hidden" name="oldPos" value=""/>
+      <input id="capturedInput" type="hidden" name="capture" value=""/>
       <input id="turn" type="hidden" name="turn" value="${summonerTurn?c}"/>
       <input id="summoner" type="hidden" name="summoner" value="${summoner}"/>
+      <input id="summoner" type="hidden" name="opponent" value="${opponent}"/>
       <button id="submitButton" type='submit' disabled>Submit</button>
     </form>
+
 
   </div>
 
