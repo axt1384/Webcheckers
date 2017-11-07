@@ -1,7 +1,7 @@
 package com.webcheckers.appl;
 
 import com.webcheckers.model.Board;
-import com.webcheckers.model.Moves;
+//import com.webcheckers.model.Moves;
 import com.webcheckers.model.Player;
 
 /**
