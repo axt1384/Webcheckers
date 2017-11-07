@@ -211,16 +211,16 @@
             <#list board.getBoard(opponent,summoner) as row>
               <tr data-row="${row.getIndex()}">
               <#list row.getRow(opponent,summoner) as space>
-                <td data-cell="${space.getIndex()}">
+                <td data-cell="${space.getRow()}">
                     <#if space.isValid() >
                         <div class="Space"
-                            id="${row.getIndex()}-${space.getIndex()}"
+                            id="${row.getIndex()}-${space.getRow()}"
                             ondrop="drop(event,this,${summonerTurn?c})"
                             ondragover="allowDrop(event,this)">
                             <#if space.hasPiece()>
                               <#if space.isValid()>
                                 <#if space.getPieceType() != "king">
-                                  <img id="piece-${row.getIndex()}-${space.getIndex()}"
+                                  <img id="piece-${row.getIndex()}-${space.getRow()}"
                                     src="../img/single-piece-${space.getPieceColor()}.svg"
                                     class="Piece"
                                     data-type="${space.getPieceType()}"
@@ -229,7 +229,7 @@
                                     ondragstart="drag(event,this,${summonerTurn?c});"
                                   />
                                 <#else>
-                                  <img id="piece-${row.getIndex()}-${space.getIndex()}"
+                                  <img id="piece-${row.getIndex()}-${space.getRow()}"
                                     src="../img/king-piece-${space.getPieceColor()}.svg"
                                     class="Piece"
                                     data-type="${space.getPieceType()}"
