@@ -80,12 +80,6 @@ public class Row {
       return row;
     }
 
-    /*
-    Reverses the row
-     */
-    public void reverse(){
-      Collections.reverse(Arrays.asList(row));
-    }
 
     public Square[] getRow(String opponent, String summoner){
       if(opponent.equals(summoner)){

@@ -32,19 +32,6 @@ public class Board {
         }
     }
 
-    /*
-    Returns the opponent's board in their perspective - reverses the board
-     */
-    public Row[] getOppBoard(){
-      Row[] reverseBoard=new Row[height];
-      System.arraycopy( board, 0, reverseBoard, 0, height );
-      Collections.reverse(Arrays.asList(reverseBoard));
-      for(int i=0; i<height; i++){
-        reverseBoard[i].reverse();
-      }
-      return reverseBoard;
-    }
-
     public Row[] getBoard(String opponent,String summoner){
       if(opponent.equals(summoner)){
         Row[] reverseBoard=new Row[height];
@@ -62,13 +49,6 @@ public class Board {
       this.board=board;
     }
 
-    public Row[] getSummonerBoard(){
-      return board;
-    }
-
-    /*
-    Removes the piece at the square location
-     */
     public Piece removePiece(int row, int col){
         return board[row].removePiece(col);
     }
