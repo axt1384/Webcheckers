@@ -22,6 +22,9 @@ public class CheckersGame {
         this.summonerTurn=true;
     }
 
+    /*
+    Updates the board based on the move the player or opponent has done during his turn
+     */
     public void updateBoard(String move, String oldPos, String capture){
       String[] moveCoords=move.split("-");
       String row=moveCoords[0];
@@ -45,28 +48,46 @@ public class CheckersGame {
       }
     }
 
+    /*
+    Returns the opponent of the game
+     */
     public Player getOpp(){
       return opp;
     }
 
+    /*
+    Returns true if it's the player's turn
+     */
     public boolean isSummonerTurn(){
       return summonerTurn;
     }
 
+    /*
+    Returns the player of the game
+     */
     public Player getSummoner(){
       return summoner;
     }
 
+    /*
+    Ends the turn of the player
+     */
     public void endTurn(){
       summonerTurn = !summonerTurn;
     }
 
+    /*
+    Returns the opponent's board
+     */
     public Board getOppBoard(){
       Board b=new Board(8,8);
       b.setBoard(board.getOppBoard());
       return b;
     }
 
+    /*
+    Returns the board
+     */
     public Board getBoard(){
         return board;
     }

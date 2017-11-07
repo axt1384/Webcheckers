@@ -19,6 +19,9 @@ public class Board {
         piecePresent(2,3);
     }
 
+    /*
+    Initializes the board
+     */
     private void boardInit(){
         for(int i=0; i<height; i++){
             if(i%2==0){
@@ -29,6 +32,9 @@ public class Board {
         }
     }
 
+    /*
+    Returns the opponent's board in their perspective - reverses the board
+     */
     public Row[] getOppBoard(){
       Row[] reverseBoard=new Row[height];
       System.arraycopy( board, 0, reverseBoard, 0, height );
@@ -49,6 +55,9 @@ public class Board {
       return board;
     }
 
+    /*
+    Sets the board
+     */
     public void setBoard(Row[] board){
       this.board=board;
     }
@@ -57,22 +66,37 @@ public class Board {
       return board;
     }
 
+    /*
+    Removes the piece at the square location
+     */
     public Piece removePiece(int row, int col){
         return board[row].removePiece(col);
     }
 
+    /*
+    Returns the board
+     */
     public Row[] getBoard(){
       return board;
     }
 
+    /*
+    Sets the piece at the square location
+     */
     public void setPiece(Piece piece, int row, int col){
       board[row].setPiece(piece ,col);
     }
 
+    /*
+    Gets the row at the index
+     */
     public Row getRow(int index){
       return board[index];
     }
 
+    /*
+    Checks if there's a piece at the square location
+     */
     public boolean piecePresent(int row, int col){
         if(board[row].getRow()[col].hasPiece()){
             return true;

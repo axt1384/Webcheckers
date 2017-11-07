@@ -19,6 +19,9 @@ public class Row {
         rowInit();
     }
 
+    /*
+    Initializes the row array with square arrays and populates the squares with pieces
+     */
     private void rowInit(){
         for(int i = 0; i < width; i++){
             Piece piece;
@@ -48,23 +51,38 @@ public class Row {
         }
     }
 
+    /*
+    Returns the index
+     */
     public int getIndex(){
         return index;
     }
 
+    /*
+    Removes the piece at the row's column
+     */
     public Piece removePiece(int col){
       return row[col].removePiece();
     }
 
+    /*
+    Sets the piece at the row's column
+     */
     public void setPiece(Piece piece, int col){
       row[col].setPiece(piece);
 
     }
 
+    /*
+    Returns the row
+     */
     public Square[] getRow(){
       return row;
     }
 
+    /*
+    Reverses the row
+     */
     public void reverse(){
       Collections.reverse(Arrays.asList(row));
     }
