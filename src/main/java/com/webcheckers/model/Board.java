@@ -16,8 +16,12 @@ public class Board {
         this.height=height;
         board=new Row[height];
         boardInit();
+        piecePresent(2,3);
     }
 
+    /*
+    Initializes the board
+     */
     private void boardInit(){
         for(int i=0; i<height; i++){
             if(i%2==0){
@@ -28,6 +32,22 @@ public class Board {
         }
     }
 
+<<<<<<< HEAD
+=======
+    /*
+    Returns the opponent's board in their perspective - reverses the board
+     */
+    public Row[] getOppBoard(){
+      Row[] reverseBoard=new Row[height];
+      System.arraycopy( board, 0, reverseBoard, 0, height );
+      Collections.reverse(Arrays.asList(reverseBoard));
+      for(int i=0; i<height; i++){
+        reverseBoard[i].reverse();
+      }
+      return reverseBoard;
+    }
+
+>>>>>>> a981e3df2bce76b0a5deb6c411e6676f854feaa5
     public Row[] getBoard(String opponent,String summoner){
       if(opponent.equals(summoner)){
         Row[] reverseBoard=new Row[height];
@@ -38,25 +58,61 @@ public class Board {
       return board;
     }
 
+    /*
+    Sets the board
+     */
     public void setBoard(Row[] board){
       this.board=board;
     }
 
+<<<<<<< HEAD
+=======
+    public Row[] getSummonerBoard(){
+      return board;
+    }
+
+    /*
+    Removes the piece at the square location
+     */
+>>>>>>> a981e3df2bce76b0a5deb6c411e6676f854feaa5
     public Piece removePiece(int row, int col){
         return board[row].removePiece(col);
     }
 
+    /*
+    Returns the board
+     */
     public Row[] getBoard(){
       return board;
     }
 
+    /*
+    Sets the piece at the square location
+     */
     public void setPiece(Piece piece, int row, int col){
       board[row].setPiece(piece ,col);
     }
 
+    /*
+    Gets the row at the index
+     */
     public Row getRow(int index){
       return board[index];
     }
+
+    /*
+    Checks if there's a piece at the square location
+     */
+    public boolean piecePresent(int row, int col){
+        if(board[row].getRow()[col].hasPiece()){
+            return true;
+        }
+        else return false;
+
+
+    }
+
+
 
 
 }

@@ -22,7 +22,10 @@ public class CheckersGame {
         this.summonerTurn=true;
     }
 
-    public void updateBoard(String move, String oldPos){
+    /*
+    Updates the board based on the move the player or opponent has done during his turn
+     */
+    public void updateBoard(String move, String oldPos, String capture){
       String[] moveCoords=move.split("-");
       String row=moveCoords[0];
       String col=moveCoords[1];
@@ -31,22 +34,45 @@ public class CheckersGame {
       String oldCol=oldPosCoords[1];
       Piece p=board.removePiece(Integer.parseInt(oldRow), Integer.parseInt(oldCol));
       board.setPiece(p, Integer.parseInt(row), Integer.parseInt(col));
+
+      if (capture != ""){
+        String[] capCoords=capture.split("-");
+        String capRow=capCoords[0];
+        String capCol=capCoords[1];
+        Piece temp = board.removePiece(Integer.parseInt(capRow), Integer.parseInt(capCol));
+      }
+      if (!p.getType().equals("king") && ((p.getColor().equals("white") && Integer.parseInt(row) == 7) ||
+              (p.getColor().equals("red") && Integer.parseInt(row) == 0))){
+        p.setKing();
+      }
     }
 
+    /*
+    Returns the opponent of the game
+     */
     public Player getOpp(){
       return opp;
     }
 
+    /*
+    Returns true if it's the player's turn
+     */
     public boolean isSummonerTurn(){
       return summonerTurn;
     }
 
+    /*
+    Returns the player of the game
+     */
     public Player getSummoner(){
       return summoner;
     }
 
+    /*
+    Ends the turn of the player
+     */
     public void endTurn(){
-      summonerTurn=!summonerTurn;
+      summonerTurn = !summonerTurn;
     }
 
     public Board getBoard(){

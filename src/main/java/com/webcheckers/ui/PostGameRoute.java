@@ -45,9 +45,10 @@ public class PostGameRoute implements Route {
         final Session httpSession = request.session();
         String move= request.queryParams("move");
         String oldPos= request.queryParams("oldPos");
+        String capture = request.queryParams("capture");
         final PlayerServices playerServices = httpSession.attribute("playerServices");
         CheckersGame game = playerServices.currentGame();
-        game.updateBoard(move, oldPos);
+        game.updateBoard(move, oldPos,capture);
         game.endTurn();
         response.redirect("/game");
         return null;

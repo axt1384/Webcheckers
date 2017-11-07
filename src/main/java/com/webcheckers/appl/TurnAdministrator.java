@@ -1,9 +1,9 @@
 package com.webcheckers.appl;
 
 import com.webcheckers.model.Board;
+//import com.webcheckers.model.Moves;
 import com.webcheckers.model.PossibleMoves;
 import com.webcheckers.model.Player;
-import com.webcheckers.model.PossibleMoves;
 
 /**
  * Orchestrates the turns of the players. This class oscillates between each player
