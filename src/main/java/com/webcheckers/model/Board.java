@@ -16,6 +16,7 @@ public class Board {
         this.height=height;
         board=new Row[height];
         boardInit();
+        piecePresent(2,3);
     }
 
     private void boardInit(){
@@ -71,6 +72,17 @@ public class Board {
     public Row getRow(int index){
       return board[index];
     }
+
+    public boolean piecePresent(int row, int col){
+        if(board[row].getRow()[col].hasPiece()){
+            return true;
+        }
+        else return false;
+
+
+    }
+
+
 
 
 }

@@ -19,7 +19,7 @@ public class Square {
     }
 
     public boolean hasPiece(){
-        return piece!=null;
+        return piece != null;
     }
 
     public Piece getPiece(){
@@ -27,12 +27,12 @@ public class Square {
     }
 
     public void setPiece(Piece piece){
-      this.piece=piece;
+      this.piece = piece;
     }
 
     public Piece removePiece(){
-      Piece p=this.piece;
-      this.piece=null;
+      Piece p = this.piece;
+      this.piece = null;
       return p;
     }
 
@@ -51,4 +51,5 @@ public class Square {
     public int getIndex(){
         return index;
     }
+
 }

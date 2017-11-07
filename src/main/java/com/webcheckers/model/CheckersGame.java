@@ -53,7 +53,7 @@ public class CheckersGame {
     }
 
     public void endTurn(){
-      summonerTurn=!summonerTurn;
+      summonerTurn = !summonerTurn;
     }
 
     public Board getOppBoard(){
