@@ -22,7 +22,7 @@ public class CheckersGame {
         this.summonerTurn=true;
     }
 
-    public void updateBoard(String move, String oldPos){
+    public void updateBoard(String move, String oldPos, String capture){
       String[] moveCoords=move.split("-");
       String row=moveCoords[0];
       String col=moveCoords[1];
@@ -32,6 +32,12 @@ public class CheckersGame {
       LOG.config("move: "+row+" "+col+" old: "+oldRow+" "+oldCol);
       Piece p=board.removePiece(Integer.parseInt(oldRow), Integer.parseInt(oldCol));
       board.setPiece(p, Integer.parseInt(row), Integer.parseInt(col));
+      if (capture != ""){
+        String[] capCoords=capture.split("-");
+        String capRow=capCoords[0];
+        String capCol=capCoords[1];
+        Piece temp = board.removePiece(Integer.parseInt(capRow), Integer.parseInt(capCol));
+      }
     }
 
     public Player getOpp(){
