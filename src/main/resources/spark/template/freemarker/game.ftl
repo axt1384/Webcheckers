@@ -18,6 +18,15 @@
     function drag(e, piece, turn) {
         e.dataTransfer.setData("text", e.target.id);
     }
+    function createSubmitLink(move, oldPos){
+        if(${opponent}==${summoner}){
+            document.write("<a href=/game?summoner="+${summoner}+"&opponent="+${summoner}+
+            "&move="+move+ "&oldPos="+oldPos+">submit it!!!</a>");
+        }else{
+            document.write("<a href=/game?summoner="+${summoner}+"&opponent="+${opponent}+
+            "&move="+move+ "&oldPos="+oldPos+">submit it!!!</a>");
+        }
+    }
     function withinRowRange(squareRow, pieceRow, turn){
       if(turn){
         return squareRow == pieceRow-1;
@@ -49,6 +58,7 @@
           document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
           moved=true;
           document.getElementById("submitButton").disabled=false;
+
         }
       }
     }
@@ -126,8 +136,10 @@
       <input id="oldPosInput" type="hidden" name="oldPos" value=""/>
       <input id="turn" type="hidden" name="turn" value="${summonerTurn?c}"/>
       <input id="summoner" type="hidden" name="summoner" value="${summoner}"/>
+      <input id="summoner" type="hidden" name="opponent" value="${opponent}"/>
       <button id="submitButton" type='submit' disabled>Submit</button>
     </form>
+
 
   </div>
 

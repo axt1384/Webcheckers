@@ -55,9 +55,16 @@ public class GetGameRoute implements Route {
     public String handle(Request request, Response response) {
         final Session httpSession = request.session();
         final Map<String, Object> vm = new HashMap<>();
-        String enemyName = request.queryParams("opponent");
-        String summoner=request.queryParams("summoner");
-        if(enemyName == null && (playerlobby.getUser(httpSession).isSummoner()==false)) { // This Session was summoned.
+        LOG.config("Params: "+request.queryParams());
+        String enemyName, summoner;
+        if(request.queryParams("summoner")==null){
+            enemyName=httpSession.attribute("opponent");
+            summoner=httpSession.attribute("summoner");
+        }else{
+            enemyName = request.queryParams("opponent");
+            summoner=request.queryParams("summoner");
+        }
+        if((enemyName == null && !playerlobby.getUser(httpSession).isSummoner()) || enemyName.equals(summoner)) { // This Session was summoned.
             final PlayerServices playerServices = httpSession.attribute("playerServices");
             CheckersGame game = playerServices.currentGame();
             vm.put(BOARD, game.getBoard());
@@ -87,6 +94,13 @@ public class GetGameRoute implements Route {
                   opponentSession.attribute("playerServices", httpSession.attribute("playerServices"));
                   httpSession.attribute("inGame", true);
                   opponentSession.attribute("inGame", true);
+
+                  httpSession.attribute("summoner",summoner);
+                  httpSession.attribute("opponent",opponent.toString());
+
+                  opponentSession.attribute("summoner",summoner);
+                  opponentSession.attribute("opponent",summoner);
+
                   playerServices=httpSession.attribute("playerServices");
                   updatePlayers(httpSession, opponentSession);
                   game = playerServices.newGame(new Player(this.playerlobby.getUser(httpSession).toString(),true), opponent);

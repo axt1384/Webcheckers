@@ -10,7 +10,7 @@ public class CheckersGame {
 
     private Board board;
     private final GameCenter gameCenter;
-    private int index=0;
+    private int id;
     private Player summoner, opp;
     private boolean summonerTurn;
 
