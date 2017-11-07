@@ -5,10 +5,10 @@ import java.util.Collections;
 import java.util.logging.Logger;
 
 public class Row {
+
     private int width;
     private String startColor;
     private Square[] row;
-
     private int index;
 
     public Row(int width, String startColor, int index){
@@ -20,26 +20,28 @@ public class Row {
     }
 
     private void rowInit(){
-        for(int i=0; i<width; i++){
+        for(int i = 0; i < width; i++){
             Piece piece;
-            if(index<3){
+            if(index < 3){
                 piece=new Piece("white","pawn");
-            }else if (index >4){
+            }else if (index > 4){
                 piece=new Piece("red","pawn");
             }else{
-                piece=null;
+                piece = null;
             }
             if(startColor.equals("white")){
-                if(i%2==0){
-                    row[i]=new Square("white",piece,i);
-                }else{
-                    row[i]=new Square("black",piece,i);
+                if(i%2 == 0){
+                    row[i] = new Square("white",piece,i);
+                }
+                else{
+                    row[i] = new Square("black",piece,i);
                 }
             }
             if(startColor.equals("black")){
-                if(i%2==0){
+                if(i % 2 == 0){
                     row[i]=new Square("black",piece,i);
-                }else{
+                }
+                else{
                     row[i]=new Square("white",piece,i);
                 }
             }
@@ -56,6 +58,7 @@ public class Row {
 
     public void setPiece(Piece piece, int col){
       row[col].setPiece(piece);
+
     }
 
     public Square[] getRow(){
@@ -75,4 +78,5 @@ public class Row {
       }
       return row;
     }
+
 }

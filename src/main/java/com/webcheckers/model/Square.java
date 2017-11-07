@@ -2,9 +2,12 @@ package com.webcheckers.model;
 import java.util.logging.Logger;
 
 public class Square {
+
     private int index;
     private String color;
     private Piece piece;
+
+
     public Square(String color, Piece piece, int index){
         this.index=index;
         this.piece=piece;
@@ -16,7 +19,7 @@ public class Square {
     }
 
     public boolean hasPiece(){
-        return piece!=null;
+        return piece != null;
     }
 
     public Piece getPiece(){
@@ -24,12 +27,12 @@ public class Square {
     }
 
     public void setPiece(Piece piece){
-      this.piece=piece;
+      this.piece = piece;
     }
 
     public Piece removePiece(){
-      Piece p=this.piece;
-      this.piece=null;
+      Piece p = this.piece;
+      this.piece = null;
       return p;
     }
 
@@ -48,4 +51,5 @@ public class Square {
     public int getIndex(){
         return index;
     }
+
 }

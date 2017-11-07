@@ -32,6 +32,7 @@ public class CheckersGame {
       LOG.config("move: "+row+" "+col+" old: "+oldRow+" "+oldCol);
       Piece p=board.removePiece(Integer.parseInt(oldRow), Integer.parseInt(oldCol));
       board.setPiece(p, Integer.parseInt(row), Integer.parseInt(col));
+
       if (capture != ""){
         String[] capCoords=capture.split("-");
         String capRow=capCoords[0];
@@ -57,7 +58,7 @@ public class CheckersGame {
     }
 
     public void endTurn(){
-      summonerTurn=!summonerTurn;
+      summonerTurn = !summonerTurn;
     }
 
     public Board getOppBoard(){
