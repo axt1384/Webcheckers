@@ -27,9 +27,10 @@ public class SquareTest {
      */
     @Test
     public void test_Square_Properties(){
-        square=new Square("white",red,0);
+        square=new Square("white",red,0,0);
         assertEquals("red", square.getPieceColor());
-        assertEquals(0,square.getIndex());
+        assertEquals(0,square.getRow());
+        assertEquals(0,square.getColumn());
     }
 
     /**
@@ -37,8 +38,8 @@ public class SquareTest {
      */
     @Test
     public void test_Square_Piece(){
-        square=new Square("white",red,0);
-        square2=new Square("white",null,2);
+        square=new Square("white",red,0,0);
+        square2=new Square("white",null,2,0);
         assertTrue(square.hasPiece());
         assertFalse(square2.hasPiece());
         assertEquals("red",square.getPieceColor());
@@ -49,8 +50,8 @@ public class SquareTest {
      */
     @Test
     public void test_Validity(){
-        square=new Square("white",null,0);
-        square2=new Square("black",null,1);
+        square=new Square("white",null,0,0);
+        square2=new Square("black",null,1,0);
         assertTrue(square2.isValid());
         assertFalse(square.isValid());
     }

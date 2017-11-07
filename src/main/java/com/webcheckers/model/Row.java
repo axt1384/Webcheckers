@@ -35,7 +35,12 @@ public class Row {
     Initializes the row array with square arrays and populates the squares with pieces
      */
     private void rowInit(){
-        for(int i = 0; i < width; i++){
+        for(int i = 0, j = 0; i < width; i++, j++){
+
+            if(j >= width) { // Start Counting Column Number Again
+                j = 0;
+            }
+
             Piece piece;
             if(index < 3){
                 piece=new Piece("white","pawn");
@@ -46,18 +51,18 @@ public class Row {
             }
             if(startColor.equals("white")){
                 if(i%2 == 0){
-                    row[i] = new Square("white",piece,i);
+                    row[i] = new Square("white",piece,i,j);
                 }
                 else{
-                    row[i] = new Square("black",piece,i);
+                    row[i] = new Square("black",piece,i,j);
                 }
             }
             if(startColor.equals("black")){
                 if(i % 2 == 0){
-                    row[i]=new Square("black",piece,i);
+                    row[i]=new Square("black",piece,i,j);
                 }
                 else{
-                    row[i]=new Square("white",piece,i);
+                    row[i]=new Square("white",piece,i,j);
                 }
             }
         }
