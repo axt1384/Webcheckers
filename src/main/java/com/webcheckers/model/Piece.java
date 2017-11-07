@@ -18,4 +18,9 @@ public class Piece {
     public String getColor(){
         return color;
     }
+
+    public void setKing()
+    {
+        this.type = "king";
+    }
 }

@@ -38,6 +38,10 @@ public class CheckersGame {
         String capCol=capCoords[1];
         Piece temp = board.removePiece(Integer.parseInt(capRow), Integer.parseInt(capCol));
       }
+      if (!p.getType().equals("king") && ((p.getColor().equals("white") && Integer.parseInt(row) == 7) ||
+              (p.getColor().equals("red") && Integer.parseInt(row) == 0))){
+        p.setKing();
+      }
     }
 
     public Player getOpp(){
