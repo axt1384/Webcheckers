@@ -29,7 +29,7 @@ public class TurnAdministrator {
         this.red = red;
         this.white = white;
         this.currentPlayer = red;
-        this.possibleMoves = new PossibleMoves(this);
+        this.possibleMoves = new PossibleMoves(this, board);
     }
 
     // -------
