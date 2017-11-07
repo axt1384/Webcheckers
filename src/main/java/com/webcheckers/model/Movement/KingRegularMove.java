@@ -19,6 +19,12 @@ public class KingRegularMove extends Move {
     // Constructors
     // ------------
 
+    /**
+     * Creates a movement with KingRegularMove functionality.
+     * @param piece The moving Piece.
+     * @param from The origin Square.
+     * @param to The destination Square.
+     */
     public KingRegularMove(Piece piece, Square from, com.webcheckers.model.Square to) {
         super(piece, from, to);
     }
@@ -27,6 +33,12 @@ public class KingRegularMove extends Move {
     // Methods
     // -------
 
+    /**
+     * A King may move up to the left, up to the right, down to the left or down to the right. The King must move
+     * diagonally and the destination can't be occupied.
+     * @param board Board where the move will take place.
+     * @return True if the Move is possible.
+     */
     public boolean isValid(Board board) {
         if(this.piece != this.origin.getPiece() || // The Origin Does not Match the Moving Piece
                 this.origin.getPiece().getType() != "king") { // The Moving Piece Needs to be a King
@@ -42,5 +54,17 @@ public class KingRegularMove extends Move {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Executes the Move. If the move is invalid nothing will happen.
+     * @param board Board where the move is to take place.
+     */
+    @Override
+    public void execute(Board board) {
+        if(this.isValid(board)) {
+            this.origin.removePiece();
+            this.destination.setPiece(this.piece);
+        }
     }
 }

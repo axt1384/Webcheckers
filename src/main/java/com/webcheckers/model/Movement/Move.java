@@ -40,8 +40,17 @@ public abstract class Move {
     // Methods
     // -------
 
+    /**
+     * Determines if a Move is possible.
+     * @param board Board where the Move is to take place.
+     * @return True if the Move is possible.
+     */
     public abstract boolean isValid(Board board);
 
-    public void execute() {}
+    /**
+     * Executes the Move.
+     * @param board Board where the move is to take place.
+     */
+    public abstract void execute(Board board);
 }
 

@@ -20,6 +20,12 @@ public class KingCaptureMove extends Move {
     // Constructors
     // ------------
 
+    /**
+     * Creates a movement with KingCaptureMove functionality.
+     * @param piece The moving Piece.
+     * @param from The origin Square.
+     * @param to The destination Square.
+     */
     public KingCaptureMove(Piece piece, Square from, Square to) {
         super(piece, from, to);
     }
@@ -28,6 +34,13 @@ public class KingCaptureMove extends Move {
     // Methods
     // -------
 
+    /**
+     * A King may move up to the left, up to the right, down to the left, and down to the right. There must be an enemy
+     * piece in between the origin Square and Destination Square. Must move 2 units vertically and 2 units horizontally.
+     * @param board Board where the move will take place.
+     * @return True if the Move is possible.
+     */
+    @Override
     public boolean isValid(Board board) {
         if(this.piece != this.origin.getPiece() || // The Origin Does not Match the Moving Piece
                 this.origin.getPiece().getType() != "king") { // The Moving Piece Needs to be a King
@@ -68,5 +81,23 @@ public class KingCaptureMove extends Move {
         }
 
         return false; // Pieces are Missing or Too Far Apart
+    }
+
+    /**
+     * Executes the Move. If the move is invalid nothing will happen.
+     * @param board Board where the move is to take place.
+     */
+    @Override
+    public void execute(Board board) {
+        if(this.isValid(board)) {
+            int xChange = this.origin.getColumn() - this.destination.getColumn(); // X Translation
+            int yChange = this.origin.getRow() - this.destination.getRow(); // Y Translation
+
+            Square enemy = board.getSquare(this.origin.getRow() + yChange, this.origin.getColumn() + xChange);
+
+            this.origin.removePiece();
+            enemy.removePiece();
+            this.destination.setPiece(this.piece);
+        }
     }
 }
