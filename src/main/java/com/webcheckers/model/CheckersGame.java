@@ -31,7 +31,6 @@ public class CheckersGame {
         this.summonerTurn=true;
     }
 
-
     // -------
     // Methods
     // -------

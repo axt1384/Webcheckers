@@ -23,7 +23,6 @@ public class Board {
         this.height=height;
         board=new Row[height];
         boardInit();
-        piecePresent(2,3);
     }
 
 
@@ -55,6 +54,13 @@ public class Board {
         reverseBoard[i].reverse();
       }
       return reverseBoard;
+    }
+
+    public void toggleBoard() {
+        for(Row row: this.board) {
+            Collections.reverse(Arrays.asList(row.getRow()));
+        }
+        Collections.reverse(Arrays.asList(board));
     }
 
     public Row[] getBoard(String opponent,String summoner){
@@ -123,7 +129,7 @@ public class Board {
     }
 
     public Square getSquare(int row, int col) {
-        return this.getRow(row).getSqueare(col);
+        return this.getRow(row).getSquare(col);
     }
 
     public int getWidth() {

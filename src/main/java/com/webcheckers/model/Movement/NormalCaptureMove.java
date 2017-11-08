@@ -45,22 +45,21 @@ public class NormalCaptureMove extends Move {
         if(this.piece != this.origin.getPiece() || // The Origin Does not Match the Moving Piece
                 this.origin.getPiece().getType() != "pawn") { // The Moving Piece Needs to be a Pawn
             return false;
-        } else if(this.destination.getPiece().getType() != null) { // Destination is Occupied
+        } else if(this.destination.getPiece() != null) { // Destination is Occupied
             return false;
         }
 
-        int xChange = this.origin.getColumn() - this.destination.getColumn(); // X Translation
-        int yChange = this.origin.getRow() - this.destination.getRow(); // Y Translation
+        int xChange = this.destination.getPossibleColumn() - this.origin.getPossibleColumn(); // X Translation
+        int yChange = this.destination.getPossibleRow() - this.origin.getPossibleRow(); // Y Translation
 
         Square target = null; // Pointer Toward Middle Square
 
 
         // Find the Target Square if Matching a Pawns's Capture Movement
-        if(xChange == -2 && yChange == 2) { // Up to the Left
-            target = board.getRow(this.origin.getRow() - 1).getSqueare(this.origin.getColumn() + 1);
-        }
-        else if(xChange == 2 && yChange == 2) { // Up to the Right
-            target = board.getRow(this.origin.getRow() + 1).getSqueare(this.origin.getColumn() + 1);
+         if(xChange == -2 && yChange == -2) { // Up to the Left
+            target = board.getRow(this.origin.getPossibleRow() - 1).getSquare(this.origin.getPossibleColumn() - 1);
+        }else if(xChange == 2 && yChange == -2) { // Up to the Right
+            target = board.getRow(this.origin.getPossibleRow() - 1).getSquare(this.origin.getPossibleColumn() + 1);
         }
 
         if(target != null) { // Movement is Possible - Correct
@@ -84,10 +83,10 @@ public class NormalCaptureMove extends Move {
     @Override
     public void execute(Board board) {
         if(this.isValid(board)) {
-            int xChange = this.origin.getColumn() - this.destination.getColumn(); // X Translation
-            int yChange = this.origin.getRow() - this.destination.getRow(); // Y Translation
+            int xChange = this.origin.getPossibleColumn() - this.destination.getPossibleColumn(); // X Translation
+            int yChange = this.origin.getPossibleRow() - this.destination.getPossibleRow(); // Y Translation
 
-            Square enemy = board.getSquare(this.origin.getRow() + yChange, this.origin.getColumn() + xChange);
+            Square enemy = board.getSquare(this.origin.getPossibleRow() + yChange, this.origin.getPossibleColumn() + xChange);
 
             this.origin.removePiece();
             enemy.removePiece();

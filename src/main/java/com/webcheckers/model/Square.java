@@ -17,8 +17,8 @@ public class Square {
     // ------------
 
     public Square(String color, Piece piece, int row, int column){
-        this.column = column;
-        this.row = row;
+        this.row = column;
+        this.column = row;
         this.piece = piece;
         this.color = color;
     }
@@ -86,9 +86,17 @@ public class Square {
     }
 
     public int getRow(){
+        return this.column;
+    }
+
+    public int getPossibleRow() {
         return this.row;
     }
 
-    public int getColumn() { return this.column; }
+    public int getPossibleColumn() {
+        return this.column;
+    }
+
+    public int getColumn() { return this.row; }
 
 }

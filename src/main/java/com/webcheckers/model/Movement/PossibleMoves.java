@@ -2,6 +2,7 @@ package com.webcheckers.model.Movement;
 
 import com.webcheckers.appl.TurnAdministrator;
 import com.webcheckers.model.Board;
+import com.webcheckers.model.CheckersGame;
 import com.webcheckers.model.Square;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class PossibleMoves {
 
     private TurnAdministrator admin;
     private Board board;
+    private CheckersGame checkersGame;
     private ArrayList<Move> capture;
     private ArrayList<Move> normal;
 
@@ -26,9 +28,10 @@ public class PossibleMoves {
     // Constructors
     // ------------
 
-    public PossibleMoves(TurnAdministrator admin, Board board) {
+    public PossibleMoves(TurnAdministrator admin, CheckersGame checkersGame) {
         this.admin = admin;
-        this.board = board;
+        this.checkersGame = checkersGame;
+        this.board = checkersGame.getBoard();
     }
 
 
@@ -44,13 +47,15 @@ public class PossibleMoves {
         int i = 0, j = 0;
 
         while(j < height) {
-            Square pointer = board.getRow(j).getSqueare(i);
-            if(pointer.getPiece().getColor().equals(color) &&
-                    pointer.getPiece().getType().equals(type)) {
-                targetSquares.add(pointer);
+            Square pointer = board.getRow(j).getSquare(i);
+            if(pointer.getPiece() != null) {
+                if(pointer.getPiece().getColor().equals(color) &&
+                        pointer.getPiece().getType().equals(type)) {
+                    targetSquares.add(pointer);
+                }
             }
             i++;
-            if(i >= width) {
+            if (i >= width) {
                 i = 0;
                 j++;
             }
@@ -59,23 +64,23 @@ public class PossibleMoves {
         return targetSquares;
     }
 
-
     // -------------
     // Capture Moves
     // -------------
 
     private void generateNormalCaptureMoves(String color) {
         ArrayList<Square> alliedRegular = this.getPieces(color, "pawn");
+        int z = 2; // Movement
         for(Square regular: alliedRegular) {
-            if(regular.getRow() + 2 < this.board.getHeight() && regular.getColumn() - 2 >= 0) {
-                Square destination = this.board.getSquare(regular.getRow() + 2, regular.getColumn() - 2);
+            if(regular.getPossibleRow() - z >= 0 && regular.getPossibleColumn() - z >= 0) {
+                Square destination = this.board.getSquare(regular.getPossibleRow() - z, regular.getPossibleColumn() - z);
                 Move upperLeft = new NormalCaptureMove(regular.getPiece(), regular, destination);
                 if (upperLeft.isValid(this.board)) {
                     this.capture.add(upperLeft);
                 }
             }
-            if(regular.getRow() + 2 < this.board.getHeight() && regular.getColumn() + 2 < this.board.getWidth()) {
-                Square destination = this.board.getSquare(regular.getRow() + 2, regular.getColumn() + 2);
+            if(regular.getPossibleRow() - z >= 0 && regular.getPossibleColumn() + z < this.board.getWidth()) {
+                Square destination = this.board.getSquare(regular.getPossibleRow() - z, regular.getPossibleColumn() + z);
                 Move upperRight = new NormalCaptureMove(regular.getPiece(), regular, destination);
                 if(upperRight.isValid(this.board)) {
                     this.capture.add(upperRight);
@@ -86,30 +91,31 @@ public class PossibleMoves {
 
     private void generateKingCaptureMoves(String color) {
         ArrayList<Square> alliedKing = this.getPieces(color, "king");
+        int z = 2; // Movement
         for(Square king: alliedKing) {
-            if(king.getRow() + 2 < this.board.getHeight() && king.getColumn() - 2 >= 0) {
-                Square destination = this.board.getSquare(king.getRow() + 2, king.getColumn() - 2);
+            if(king.getPossibleRow() - z >= 0 && king.getPossibleColumn() - z >= 0) {
+                Square destination = this.board.getSquare(king.getPossibleRow() - z, king.getPossibleColumn() - z);
                 Move upperLeft = new KingCaptureMove(king.getPiece(), king, destination);
                 if (upperLeft.isValid(this.board)) {
                     this.capture.add(upperLeft);
                 }
             }
-            if(king.getRow() + 2 < this.board.getHeight() && king.getColumn() + 2 < this.board.getWidth()) {
-                Square destination = this.board.getSquare(king.getRow() + 2, king.getColumn() + 2);
+            if(king.getPossibleRow() - z >= 0 && king.getPossibleColumn() + z < this.board.getWidth()) {
+                Square destination = this.board.getSquare(king.getPossibleRow() - z, king.getPossibleColumn() + z);
                 Move upperRight = new KingCaptureMove(king.getPiece(), king, destination);
                 if(upperRight.isValid(this.board)) {
                     this.capture.add(upperRight);
                 }
             }
-            if(king.getRow() - 2 >= 0 && king.getColumn() - 2 >= 0) {
-                Square destination = this.board.getSquare(king.getRow() - 2, king.getColumn() - 2);
+            if(king.getPossibleRow() + z < this.board.getHeight() && king.getPossibleColumn() - z >= 0) {
+                Square destination = this.board.getSquare(king.getPossibleRow() + z, king.getPossibleColumn() - z);
                 Move lowerLeft = new KingCaptureMove(king.getPiece(), king, destination);
                 if(lowerLeft.isValid(this.board)) {
                     this.capture.add(lowerLeft);
                 }
             }
-            if(king.getRow() - 2 >= 0 && king.getColumn() + 2 < this.board.getWidth()) {
-                Square destination = this.board.getSquare(king.getRow() - 2, king.getColumn() + 2);
+            if(king.getPossibleRow() + z < this.board.getHeight() && king.getPossibleColumn() + z < this.board.getWidth()) {
+                Square destination = this.board.getSquare(king.getPossibleRow() + z, king.getPossibleColumn() + z);
                 Move lowerRight = new KingCaptureMove(king.getPiece(), king, destination);
                 if(lowerRight.isValid(this.board)) {
                     this.capture.add(lowerRight);
@@ -130,19 +136,20 @@ public class PossibleMoves {
 
     private void generateNormalRegularMoves(String color) {
         ArrayList<Square> alliedRegular = this.getPieces(color, "pawn");
+        int z = 1; // Movement
         for(Square regular: alliedRegular) {
-            if(regular.getRow() + 1 < this.board.getHeight() && regular.getColumn() - 1 >= 0) {
-                Square destination = this.board.getSquare(regular.getRow() + 1, regular.getColumn() - 1);
+            if(regular.getPossibleRow() - z >= 0 && regular.getPossibleColumn() - z >= 0) {
+                Square destination = this.board.getSquare(regular.getPossibleRow() - z, regular.getPossibleColumn() - z);
                 Move upperLeft = new NormalRegularMove(regular.getPiece(), regular, destination);
                 if (upperLeft.isValid(this.board)) {
-                    this.capture.add(upperLeft);
+                    this.normal.add(upperLeft);
                 }
             }
-            if(regular.getRow() + 1 < this.board.getHeight() && regular.getColumn() + 1 < this.board.getWidth()) {
-                Square destination = this.board.getSquare(regular.getRow() + 1, regular.getColumn() + 1);
+            if(regular.getPossibleRow() - z >= 0 && regular.getPossibleColumn() + z < this.board.getWidth()) {
+                Square destination = this.board.getSquare(regular.getPossibleRow() - z, regular.getPossibleColumn() + z);
                 Move upperRight = new NormalRegularMove(regular.getPiece(), regular, destination);
                 if(upperRight.isValid(this.board)) {
-                    this.capture.add(upperRight);
+                    this.normal.add(upperRight);
                 }
             }
         }
@@ -150,33 +157,34 @@ public class PossibleMoves {
 
     private void generateKingRegularMoves(String color) {
         ArrayList<Square> alliedKing = this.getPieces(color, "king");
+        int z = 1; // Movement
         for(Square king: alliedKing) {
-            if(king.getRow() + 1 < this.board.getHeight() && king.getColumn() - 1 >= 0) {
-                Square destination = this.board.getSquare(king.getRow() + 1, king.getColumn() - 1);
+            if(king.getPossibleRow() - z >= 0 && king.getPossibleColumn() - z >= 0) {
+                Square destination = this.board.getSquare(king.getPossibleRow() - z, king.getPossibleColumn() - z);
                 Move upperLeft = new KingRegularMove(king.getPiece(), king, destination);
                 if (upperLeft.isValid(this.board)) {
-                    this.capture.add(upperLeft);
+                    this.normal.add(upperLeft);
                 }
             }
-            if(king.getRow() + 1 < this.board.getHeight() && king.getColumn() + 1 < this.board.getWidth()) {
-                Square destination = this.board.getSquare(king.getRow() + 1, king.getColumn() + 1);
+            if(king.getPossibleRow() - z >= 0 && king.getPossibleColumn() + z < this.board.getWidth()) {
+                Square destination = this.board.getSquare(king.getPossibleRow() - z, king.getPossibleColumn() + z);
                 Move upperRight = new KingRegularMove(king.getPiece(), king, destination);
                 if(upperRight.isValid(this.board)) {
-                    this.capture.add(upperRight);
+                    this.normal.add(upperRight);
                 }
             }
-            if(king.getRow() - 1 >= 0 && king.getColumn() - 1 >= 0) {
-                Square destination = this.board.getSquare(king.getRow() - 1, king.getColumn() - 1);
+            if(king.getPossibleRow() + z < this.board.getHeight() && king.getPossibleColumn() - z >= 0) {
+                Square destination = this.board.getSquare(king.getPossibleRow() + z, king.getPossibleColumn() - z);
                 Move lowerLeft = new KingRegularMove(king.getPiece(), king, destination);
                 if(lowerLeft.isValid(this.board)) {
-                    this.capture.add(lowerLeft);
+                    this.normal.add(lowerLeft);
                 }
             }
-            if(king.getRow() - 1 >= 0 && king.getColumn() + 1 < this.board.getWidth()) {
-                Square destination = this.board.getSquare(king.getRow() - 1, king.getColumn() + 1);
+            if(king.getPossibleRow() + z < this.board.getHeight() && king.getPossibleColumn() + z < this.board.getWidth()) {
+                Square destination = this.board.getSquare(king.getPossibleRow() + z, king.getPossibleColumn() + z);
                 Move lowerRight = new KingRegularMove(king.getPiece(), king, destination);
                 if(lowerRight.isValid(this.board)) {
-                    this.capture.add(lowerRight);
+                    this.normal.add(lowerRight);
                 }
             }
         }
@@ -193,6 +201,10 @@ public class PossibleMoves {
     // Public Methods
     // --------------
 
+    public void toggleBoard() {
+        this.board.setBoard(this.board.getOppBoard());
+    }
+
     public boolean hasCaptureMove(String color) {
         this.generateCaptureMoves(color);
         if(this.capture.size() > 0) {
@@ -202,8 +214,15 @@ public class PossibleMoves {
     }
 
     public boolean hasMove(String color) {
+        if(color.equals("white")) {
+            this.board.setBoard(this.board.getOppBoard());
+        }
         this.generateCaptureMoves(color);
         this.generateNormalMoves(color);
+
+        if(color.equals("white")) {
+            this.board.setBoard(this.board.getOppBoard());
+        }
 
         if(this.capture.size() > 0 || this.normal.size() > 0) {
             return true;

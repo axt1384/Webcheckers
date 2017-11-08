@@ -1,6 +1,6 @@
 package com.webcheckers.appl;
 
-import com.webcheckers.model.Board;
+import com.webcheckers.model.CheckersGame;
 import com.webcheckers.model.Movement.PossibleMoves;
 
 
@@ -20,23 +20,29 @@ public class TurnAdministrator {
 
     private final Player red;
     private final Player white;
-    private Player currentPlayer;
     private PossibleMoves possibleMoves;
 
     // ------------
     // Constructors
     // ------------
 
-    public TurnAdministrator(Player red, Player white, Board board) {
+    public TurnAdministrator(Player red, Player white, CheckersGame checkersGame) {
         this.red = red;
         this.white = white;
-        this.currentPlayer = red;
-        this.possibleMoves = new PossibleMoves(this, board);
+        this.possibleMoves = new PossibleMoves(this, checkersGame);
     }
 
     // -------
     // Methods
     // -------
 
-    public void takeTurn() {}
+    public Player isOver() {
+        if(!possibleMoves.hasMove("red")) {
+            return this.white;
+        }
+        if(!possibleMoves.hasMove("white")) {
+            return this.red;
+        }
+        return null;
+    }
 }
