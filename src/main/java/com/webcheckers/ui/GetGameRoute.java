@@ -64,6 +64,7 @@ public class GetGameRoute implements Route {
             vm.put(BOARD, game.getBoard());
             vm.put("opponent",game.getSummoner().toString());
             vm.put("summoner",game.getSummoner().toString());
+            vm.put("summonerView",false);
             vm.put("summonerTurn", game.isSummonerTurn());
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
@@ -101,9 +102,11 @@ public class GetGameRoute implements Route {
                 }else{
                   game = playerServices.currentGame();
                 }
+                String red="red";
                 vm.put(BOARD, game.getBoard());
                 vm.put("opponent", opponent.toString());
                 vm.put("summoner", summoner);
+                vm.put("summonerView",true);
                 vm.put("summonerTurn", game.isSummonerTurn());
                 return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
             }
