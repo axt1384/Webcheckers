@@ -27,9 +27,11 @@ public class CheckersGameTest
     checkers.endTurn();
     assertFalse(checkers.isSummonerTurn());
 
+    assertNotNull(checkers.getBoard());
     Board b = checkers.getBoard();
     assertEquals(b, checkers.getBoard());
 
-    assertNotNull(checkers.getBoard());
+    checkers.updateBoard("4-1","5-0","");
+    checkers.endTurn();
   }
 }

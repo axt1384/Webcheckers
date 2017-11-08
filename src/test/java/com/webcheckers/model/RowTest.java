@@ -30,10 +30,20 @@ public class RowTest{
     new Row(width, black, index+1);
   }
 
+  // tests the rest of the methods
   @Test
-  public void getIndex(){
+  public void theRest(){
     final Row CuT = new Row(width, white, index);
     final int testIndex = CuT.getIndex();
+    Piece p = CuT.removePiece(0);
     assertEquals(0, testIndex);
+    assertFalse(CuT.getRow()[0].hasPiece());
+    CuT.setPiece(p,0);
+    assertTrue(CuT.getRow()[0].hasPiece());
+
+    row = CuT.getRow();
+    final Square[] testRow = CuT.getRow("bob", "user");
+    final Square[] reverseRow = CuT.getRow("bob", "bob");
+    assertEquals(row, testRow);
   }
 }
