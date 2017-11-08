@@ -24,8 +24,10 @@
     function withinColRange(squareCol, pieceCol){
       return ((squareCol==pieceCol-1) || (squareCol==pieceCol+1));
     }
-    function isPlayerTurn(piece, turn){
-        return (piece.dataset.color=="red" && turn)|| (piece.dataset.color=="white" && !turn);
+    function isPlayerTurn(piece, turn, view){
+
+        return (piece.dataset.color=="red" && turn && view)|| (piece.dataset.color=="white" && !turn && !view);
+    }
     function withinCapRowRange(squareRow, pieceRow, turn){
       if(turn){
         return squareRow == pieceRow-2;
@@ -98,10 +100,10 @@
         }
       }
     }
-    function drop(e,square,turn) {
+    function drop(e,square,turn,view) {
       var data = e.dataTransfer.getData("text");
       var piece=document.getElementById(data);
-      if(isPlayerTurn(piece, turn)){
+      if(isPlayerTurn(piece, turn,view)){
         var squarePos= square.id.split("-");
         var squareRow=parseInt(squarePos[0]);
         var squareCol=parseInt(squarePos[1]);
@@ -201,8 +203,8 @@
                     <#if space.isValid() >
                         <div class="Space"
                             id="${row.getIndex()}-${space.getIndex()}"
-                            ondrop="drop(event,this,${summonerTurn?c})"
-                            ondragover="allowDrop(event)">
+                            ondrop="drop(event,this,${summonerTurn?c},${summonerView?c});"
+                            ondragover="allowDrop(event);">
                             <#if space.hasPiece()>
                               <#if space.isValid()>
                                 <#if space.getPieceType() != "king">
