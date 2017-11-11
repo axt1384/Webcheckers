@@ -201,10 +201,6 @@ public class PossibleMoves {
     // Public Methods
     // --------------
 
-    public void toggleBoard() {
-        this.board.setBoard(this.board.getOppBoard());
-    }
-
     public boolean hasCaptureMove(String color) {
         this.generateCaptureMoves(color);
         if(this.capture.size() > 0) {
@@ -215,13 +211,13 @@ public class PossibleMoves {
 
     public boolean hasMove(String color) {
         if(color.equals("white")) {
-            this.board.setBoard(this.board.getOppBoard());
+            this.board.toggleBoard();
         }
         this.generateCaptureMoves(color);
         this.generateNormalMoves(color);
 
         if(color.equals("white")) {
-            this.board.setBoard(this.board.getOppBoard());
+            this.board.toggleBoard();
         }
 
         if(this.capture.size() > 0 || this.normal.size() > 0) {

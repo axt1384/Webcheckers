@@ -73,6 +73,7 @@ public class Row {
         return index;
     }
 
+
     /*
     Removes the piece at the row's column
      */

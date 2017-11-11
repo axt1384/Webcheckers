@@ -89,6 +89,7 @@ public class Square {
         return this.column;
     }
 
+    // Get Possible is used due to issues with Algorithm
     public int getPossibleRow() {
         return this.row;
     }
@@ -97,6 +98,69 @@ public class Square {
         return this.column;
     }
 
-    public int getColumn() { return this.row; }
+    public void toggleCoordinate() {
+        this.toggleColumn();
+        this.toggleRow();
+    }
 
+    private void toggleColumn() {
+        switch (this.column) {
+            case 0:
+                this.column = 7;
+                break;
+            case 1:
+                this.column = 6;
+                break;
+            case 2:
+                this.column = 5;
+                break;
+            case 3:
+                this.column = 4;
+                break;
+            case 4:
+                this.column = 3;
+                break;
+            case 5:
+                this.column = 2;
+                break;
+            case 6:
+                this.column = 1;
+                break;
+            case 7:
+                this.column = 0;
+                break;
+        }
+    }
+
+    private void toggleRow() {
+        switch (this.row) {
+            case 0:
+                this.row = 7;
+                break;
+            case 1:
+                this.row = 6;
+                break;
+            case 2:
+                this.row = 5;
+                break;
+            case 3:
+                this.row = 4;
+                break;
+            case 4:
+                this.row = 3;
+                break;
+            case 5:
+                this.row = 2;
+                break;
+            case 6:
+                this.row = 1;
+                break;
+            case 7:
+                this.row = 0;
+                break;
+        }
+
+    }
+
+    public int getColumn() { return this.row; }
 }

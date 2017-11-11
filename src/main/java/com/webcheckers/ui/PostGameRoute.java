@@ -9,10 +9,12 @@ import com.webcheckers.model.CheckersGame;
 import com.webcheckers.model.Player;
 import spark.*;
 import java.util.logging.Logger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.webcheckers.ui.GetHomeRoute.ERROR;
+import static com.webcheckers.ui.GetHomeRoute.TITLE;
 
 public class PostGameRoute implements Route {
 
@@ -74,7 +76,9 @@ public class PostGameRoute implements Route {
         }
         Player victor = this.turnAdministrator.isOver();
         if(victor != null) {
-            System.out.println(victor);
+            vm.put(ERROR, victor.toString() + " won the game!");
+            vm.put(TITLE, "Welcome!");
+            return templateEngine.render(new ModelAndView(vm , "home.ftl"));
         }
 
         vm.put("summonerTurn",game.isSummonerTurn());

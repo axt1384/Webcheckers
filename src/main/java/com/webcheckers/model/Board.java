@@ -59,6 +59,11 @@ public class Board {
     public void toggleBoard() {
         for(Row row: this.board) {
             Collections.reverse(Arrays.asList(row.getRow()));
+            int i = 0;
+            while(i < 8) {
+                row.getRow()[i].toggleCoordinate();
+                i++;
+            }
         }
         Collections.reverse(Arrays.asList(board));
     }
