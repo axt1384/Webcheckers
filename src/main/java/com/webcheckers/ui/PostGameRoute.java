@@ -48,29 +48,15 @@ public class PostGameRoute implements Route {
     public String handle(Request request, Response response) {
 
         final Session httpSession = request.session();
-        String turn=request.queryParams("turn");
-        LOG.config("TURN STATUS: "+turn);
-        String summoner=request.queryParams("summoner");
         String move= request.queryParams("move");
         String oldPos= request.queryParams("oldPos");
-        LOG.config("params:"+request.queryParams());
-        String capture=request.queryParams("capture");
-        final Map<String, Object> vm = new HashMap<>();
+        String capture = request.queryParams("capture");
         final PlayerServices playerServices = httpSession.attribute("playerServices");
         CheckersGame game = playerServices.currentGame();
 
         game.updateBoard(move, oldPos,capture);
-        if(summoner.equals(playerlobby.getUser(httpSession).toString())){
-          vm.put("opponent", game.getOpp().toString());
-          vm.put("summoner", game.getSummoner().toString());
-        }else{
-          vm.put("opponent", game.getSummoner().toString());
-          vm.put("summoner", game.getSummoner().toString());
-        }
-        vm.put(BOARD, game.getBoard());
-        LOG.config("VALIDATE TURN STATUS: "+game.isSummonerTurn());
         game.endTurn();
-
+        Map<String, Object> vm = new HashMap<>();
         if(this.turnAdministrator == null) {
             this.turnAdministrator = new TurnAdministrator(game.getSummoner(), game.getOpp(), game);
         }
@@ -82,6 +68,7 @@ public class PostGameRoute implements Route {
         }
 
         vm.put("summonerTurn",game.isSummonerTurn());
+
         response.redirect("/game");
         return null;
     }

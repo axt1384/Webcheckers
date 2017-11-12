@@ -43,9 +43,10 @@ public class Board {
         }
     }
 
-    /*
+
+    /**
     Returns the opponent's board in their perspective - reverses the board
-     */
+
     public Row[] getOppBoard(){
       Row[] reverseBoard=new Row[height];
       System.arraycopy( board, 0, reverseBoard, 0, height );
@@ -55,6 +56,7 @@ public class Board {
       }
       return reverseBoard;
     }
+    */
 
     public void toggleBoard() {
         for(Row row: this.board) {
@@ -85,13 +87,6 @@ public class Board {
       this.board=board;
     }
 
-    public Row[] getSummonerBoard(){
-      return board;
-    }
-
-    /*
-    Removes the piece at the square location
-     */
     public Piece removePiece(int row, int col){
         return board[row].removePiece(col);
     }

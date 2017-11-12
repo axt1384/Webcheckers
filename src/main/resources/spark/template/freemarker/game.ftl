@@ -1,31 +1,18 @@
 <!DOCTYPE html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+  <meta http-equiv="refresh" content="10">
   <title> Web Checkers</title>
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/game.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script>
     var moved=false;
-    function allowDrop(e,parent) {
-      //svar data = e.dataTransfer.getData("text");
-    //  var piece=document.getElementById(data);
-    //  console.log(piece.dataset.color + ""+turn);
-      //if((piece.dataset.color=="red" && turn)|| (piece.dataset.color=="white" && !turn)){
+    function allowDrop(e) {
         e.preventDefault();
-      //}
     }
-    function drag(e, piece, turn) {
+    function drag(e) {
         e.dataTransfer.setData("text", e.target.id);
-    }
-    function createSubmitLink(move, oldPos){
-        if(${opponent}==${summoner}){
-            document.write("<a href=/game?summoner="+${summoner}+"&opponent="+${summoner}+
-            "&move="+move+ "&oldPos="+oldPos+">submit it!!!</a>");
-        }else{
-            document.write("<a href=/game?summoner="+${summoner}+"&opponent="+${opponent}+
-            "&move="+move+ "&oldPos="+oldPos+">submit it!!!</a>");
-        }
     }
     function withinRowRange(squareRow, pieceRow, turn){
       if(turn){
@@ -36,6 +23,10 @@
     }
     function withinColRange(squareCol, pieceCol){
       return ((squareCol==pieceCol-1) || (squareCol==pieceCol+1));
+    }
+    function isPlayerTurn(piece, turn, view){
+
+        return (piece.dataset.color=="red" && turn && view)|| (piece.dataset.color=="white" && !turn && !view);
     }
     function withinCapRowRange(squareRow, pieceRow, turn){
       if(turn){
@@ -109,13 +100,10 @@
         }
       }
     }
-    function drop(e,square,turn) {
+    function drop(e,square,turn,view) {
       var data = e.dataTransfer.getData("text");
-      console.log(data);
       var piece=document.getElementById(data);
-      console.log(piece.dataset.color);
-      console.log(""+turn);
-      if((piece.dataset.color=="red" && turn)|| (piece.dataset.color=="white" && !turn)){
+      if(isPlayerTurn(piece, turn,view)){
         var squarePos= square.id.split("-");
         var squareRow=parseInt(squarePos[0]);
         var squareCol=parseInt(squarePos[1]);
@@ -214,9 +202,15 @@
                 <td data-cell="${space.getRow()}">
                     <#if space.isValid() >
                         <div class="Space"
+<<<<<<< HEAD
                             id="${row.getIndex()}-${space.getRow()}"
                             ondrop="drop(event,this,${summonerTurn?c})"
                             ondragover="allowDrop(event,this)">
+=======
+                            id="${row.getIndex()}-${space.getIndex()}"
+                            ondrop="drop(event,this,${summonerTurn?c},${summonerView?c});"
+                            ondragover="allowDrop(event);">
+>>>>>>> TurnsAndMoves
                             <#if space.hasPiece()>
                               <#if space.isValid()>
                                 <#if space.getPieceType() != "king">
@@ -256,9 +250,6 @@
       <input id="moveInput" type="hidden" name="move" value=""/>
       <input id="oldPosInput" type="hidden" name="oldPos" value=""/>
       <input id="capturedInput" type="hidden" name="capture" value=""/>
-      <input id="turn" type="hidden" name="turn" value="${summonerTurn?c}"/>
-      <input id="summoner" type="hidden" name="summoner" value="${summoner}"/>
-      <input id="summoner" type="hidden" name="opponent" value="${opponent}"/>
       <button id="submitButton" type='submit' disabled>Submit</button>
     </form>
 

@@ -15,10 +15,6 @@ import java.util.Objects;
 
 public class GetGameRoute implements Route {
 
-    // Values used in the view-model map for rendering the game view.
-    //static final String GAME_BEGINS_ATTR = "isFirstGuess";
-    //static final String GUESSES_LEFT_ATTR = "guessesLeft";
-    //static final String TITLE = "Number Guess Game";
     static final String VIEW_NAME = "game.ftl";
     static final String BOARD="board";
     private final TemplateEngine templateEngine;
@@ -42,9 +38,8 @@ public class GetGameRoute implements Route {
 
     }
 
-    private void updatePlayers(Session summonerSess, Session oppSess){
+    private void updateSummoner(Session summonerSess){
         Player summoner= this.playerlobby.getUser(summonerSess);
-        Player opponent=this.playerlobby.getUser(oppSess);
         summoner.setSummoner(true);
     }
 
@@ -55,7 +50,6 @@ public class GetGameRoute implements Route {
     public String handle(Request request, Response response) {
         final Session httpSession = request.session();
         final Map<String, Object> vm = new HashMap<>();
-        LOG.config("Params: "+request.queryParams());
         String enemyName, summoner;
         if(request.queryParams("summoner")==null){
             enemyName=httpSession.attribute("opponent");
@@ -70,6 +64,7 @@ public class GetGameRoute implements Route {
             vm.put(BOARD, game.getBoard());
             vm.put("opponent",game.getSummoner().toString());
             vm.put("summoner",game.getSummoner().toString());
+            vm.put("summonerView",false);
             vm.put("summonerTurn", game.isSummonerTurn());
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
@@ -102,14 +97,16 @@ public class GetGameRoute implements Route {
                   opponentSession.attribute("opponent",summoner);
 
                   playerServices=httpSession.attribute("playerServices");
-                  updatePlayers(httpSession, opponentSession);
+                  updateSummoner(httpSession);
                   game = playerServices.newGame(new Player(this.playerlobby.getUser(httpSession).toString(),true), opponent);
                 }else{
                   game = playerServices.currentGame();
                 }
+                String red="red";
                 vm.put(BOARD, game.getBoard());
                 vm.put("opponent", opponent.toString());
                 vm.put("summoner", summoner);
+                vm.put("summonerView",true);
                 vm.put("summonerTurn", game.isSummonerTurn());
                 return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
             }

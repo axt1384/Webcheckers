@@ -67,7 +67,12 @@ public class GetGameRouteTest{
     public void new_game(){
       final PlayerServices services = gameCenter.newPlayerServices();
       when(session.attribute("playerServices")).thenReturn(services);
-      final CheckersGame game = services.currentGame();
+      //final CheckersGame game = services.currentGame();
+      String myName = "user";
+      when(request.queryParams("summoner")).thenReturn(myName);
+      when(request.queryParams("opponent")).thenReturn(myName);
+      final Player user = new Player(myName);
+      final CheckersGame game = services.newGame(user,user);
 
       // To analyze what the Route created in the View-Model map you need
       // to be able to extract the argument to the TemplateEngine.render method.
@@ -86,7 +91,9 @@ public class GetGameRouteTest{
       //@SupressWarnings("unchecked")
       final Map<String,Object> vm = (Map<String,Object>) model;
       assertEquals(game.getBoard(), vm.get(GetGameRoute.BOARD));
-      assertEquals("", vm.get("opponent"));
+      assertEquals("user", vm.get("opponent"));
+      assertEquals("user", vm.get("summoner"));
+      assertEquals(true, vm.get("summonerTurn"));
 
       assertEquals(GetGameRoute.VIEW_NAME, myModelView.viewName);
     }
@@ -98,11 +105,14 @@ public class GetGameRouteTest{
     public void new_game_opp(){
       final PlayerServices services = gameCenter.newPlayerServices();
       when(session.attribute("playerServices")).thenReturn(services);
-      final CheckersGame game = services.currentGame();
 
+      String myName = "user";
       String enemyName = "bob";
+      when(request.queryParams("summoner")).thenReturn(myName);
       when(request.queryParams("opponent")).thenReturn(enemyName);
-      final Player opponent = new Player(enemyName);
+      final Player user = new Player(myName);
+      final Player opponent = new Player(enemyName,false);
+      final CheckersGame game = services.newGame(user,opponent);
       //playerLobby.SignIn(sessionOpp, opponent);
 
       // To analyze what the Route created in the View-Model map you need
@@ -125,6 +135,8 @@ public class GetGameRouteTest{
       final Map<String,Object> vm = (Map<String,Object>) model;
       assertEquals(game.getBoard(), vm.get(GetGameRoute.BOARD));
       assertEquals("bob", vm.get("opponent"));
+      assertEquals("user", vm.get("summoner"));
+      assertEquals(true, vm.get("summonerTurn"));
 
       assertEquals(GetGameRoute.VIEW_NAME, myModelView.viewName);
     }
@@ -138,10 +150,12 @@ public class GetGameRouteTest{
       when(session.attribute("playerServices")).thenReturn(services);
       final CheckersGame game = services.currentGame();
 
+      String myName = "user";
       String enemyName = "bob";
+      when(request.queryParams("summoner")).thenReturn(myName);
       when(request.queryParams("opponent")).thenReturn(enemyName);
       final Player opponent = new Player(enemyName);
-      final Player user = new Player("user");
+      final Player user = new Player(myName);
       //playerLobby.SignIn(sessionOpp, opponent);
 
       // To analyze what the Route created in the View-Model map you need
@@ -172,5 +186,51 @@ public class GetGameRouteTest{
       assertEquals("Welcome!", vm.get("title"));
 
       assertEquals("home.ftl", myModelView.viewName);
+    }
+
+    // test for null players in the gameroute
+    @Test
+    public void null_test(){
+      when(request.queryParams("summoner")).thenReturn(null);
+      final Player temp = new Player("");
+      when(playerLobby.getUser(session)).thenReturn(temp);
+      final PlayerServices services = gameCenter.newPlayerServices();
+      when(session.attribute("playerServices")).thenReturn(services);
+      final CheckersGame game = services.newGame(temp,temp);
+
+      final MyModelAndView myModelView = new MyModelAndView();
+      when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
+
+      CuT.handle(request,response);
+
+      final Object model = myModelView.model;
+      assertNotNull(model);
+      assertTrue(model instanceof Map);
+
+      //@SupressWarnings("unchecked")
+      final Map<String,Object> vm = (Map<String,Object>) model;
+      assertEquals(game.getBoard(), vm.get(GetGameRoute.BOARD));
+      assertEquals("", vm.get("opponent"));
+      assertEquals("", vm.get("summoner"));
+      assertEquals(true, vm.get("summonerTurn"));
+
+      assertEquals(GetGameRoute.VIEW_NAME, myModelView.viewName);
+    }
+
+    // test for making the new game from scratch
+    @Test
+    public void null_test2(){
+      when(session.attribute("playerServices")).thenReturn(null);
+
+      String myName = "user";
+      String enemyName = "bob";
+      when(request.queryParams("summoner")).thenReturn(myName);
+      when(request.queryParams("opponent")).thenReturn(enemyName);
+
+      final Player user = new Player(myName);
+      final Player opponent = new Player(enemyName,false);
+
+      when(playerLobby.getSession(opponent)).thenReturn(sessionOpp);
+      when(sessionOpp.attribute("inGame")).thenReturn(false);
     }
 }

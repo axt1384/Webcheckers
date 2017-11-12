@@ -28,6 +28,12 @@ public class SquareTest {
     @Test
     public void test_Square_Properties(){
         square=new Square("white",red,0,0);
+        square=new Square("white",red,0, 0);
+        square.removePiece();
+        square.setPiece(red);
+        assertEquals("white",square.getSquare());
+        assertEquals(red, square.getPiece());
+        assertEquals("King", square.getPieceType());
         assertEquals("red", square.getPieceColor());
         assertEquals(0,square.getRow());
         assertEquals(0,square.getColumn());
