@@ -16,9 +16,9 @@ public class Square {
     // Constructors
     // ------------
 
-    public Square(String color, Piece piece, int row, int column){
-        this.row = column;
-        this.column = row;
+    public Square(String color, Piece piece, int column, int row){
+        this.row = row;
+        this.column = column;
         this.piece = piece;
         this.color = color;
     }
@@ -86,7 +86,7 @@ public class Square {
     }
 
     public int getRow(){
-        return this.column;
+        return this.row;
     }
 
     // Get Possible is used due to issues with Algorithm
@@ -162,5 +162,5 @@ public class Square {
 
     }
 
-    public int getColumn() { return this.row; }
+    public int getColumn() { return this.column; }
 }

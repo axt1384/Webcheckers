@@ -199,22 +199,16 @@
             <#list board.getBoard(opponent,summoner) as row>
               <tr data-row="${row.getIndex()}">
               <#list row.getRow(opponent,summoner) as space>
-                <td data-cell="${space.getRow()}">
+                <td data-cell="${space.getColumn()}">
                     <#if space.isValid() >
                         <div class="Space"
-<<<<<<< HEAD
-                            id="${row.getIndex()}-${space.getRow()}"
-                            ondrop="drop(event,this,${summonerTurn?c})"
-                            ondragover="allowDrop(event,this)">
-=======
-                            id="${row.getIndex()}-${space.getIndex()}"
+                            id="${row.getIndex()}-${space.getColumn()}"
                             ondrop="drop(event,this,${summonerTurn?c},${summonerView?c});"
                             ondragover="allowDrop(event);">
->>>>>>> TurnsAndMoves
                             <#if space.hasPiece()>
                               <#if space.isValid()>
                                 <#if space.getPieceType() != "king">
-                                  <img id="piece-${row.getIndex()}-${space.getRow()}"
+                                  <img id="piece-${row.getIndex()}-${space.getColumn()}"
                                     src="../img/single-piece-${space.getPieceColor()}.svg"
                                     class="Piece"
                                     data-type="${space.getPieceType()}"
@@ -223,7 +217,7 @@
                                     ondragstart="drag(event,this,${summonerTurn?c});"
                                   />
                                 <#else>
-                                  <img id="piece-${row.getIndex()}-${space.getRow()}"
+                                  <img id="piece-${row.getIndex()}-${space.getColumn()}"
                                     src="../img/king-piece-${space.getPieceColor()}.svg"
                                     class="Piece"
                                     data-type="${space.getPieceType()}"
