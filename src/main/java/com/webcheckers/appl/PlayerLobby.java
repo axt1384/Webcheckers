@@ -47,18 +47,19 @@ public class PlayerLobby {
         String message = "";
 
         switch (player.toString()) { // Username Not Allowed
-            case "\"":
-                message = "\"";
-                break;
             case "":
                 return "<p>Please enter a username with at least one character.<p>";
         }
-        if(message != "") {
-            return "<p>The username " + message + " is not allowed.<p>";
+        if(player.toString().contains("\"")) {
+            return "<p>The username is not allowed to have any quotes.<p>";
         }
 
         if(players.values().contains(player)) { // Username in Use
             return "<p>The username '" + player.toString() + "' is already in use.";
+        }
+
+        if(message != "") {
+            return "<p>The username " + message + " is not allowed.<p>";
         }
         if(message == "") {
             this.players.put(session.id(), player);
