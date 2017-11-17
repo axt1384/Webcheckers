@@ -39,7 +39,6 @@ public class GetSignOutRouteTest
   @Test
   public void signOutTest(){
 
-
     final MyModelAndView myModelView = new MyModelAndView();
     when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
 
