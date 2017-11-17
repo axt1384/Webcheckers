@@ -47,11 +47,11 @@ public class PlayerLobby {
         String message = "";
 
         switch (player.toString()) { // Username Not Allowed
-            case "\"":
-                message = "\"";
-                break;
             case "":
                 return "<p>Please enter a username with at least one character.<p>";
+        }
+        if(player.toString().contains("\"")){
+          return "<p>The username is not allowed to have any quotes.<p>";
         }
         if(message != "") {
             return "<p>The username " + message + " is not allowed.<p>";
