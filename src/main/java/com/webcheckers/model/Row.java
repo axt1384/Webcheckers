@@ -6,10 +6,18 @@ import java.util.logging.Logger;
 
 public class Row {
 
-    private int width;
+    // ----------
+    // Attributes
+    // ----------
+
+    private int width; // Limit
     private String startColor;
-    private Square[] row;
-    private int index;
+    private Square[] row; // Series of Squares that Make up the Row
+    private int index; // Number Representing Row
+
+    // ------------
+    // Constructors
+    // ------------
 
     public Row(int width, String startColor, int index){
         this.width=width;
@@ -19,11 +27,16 @@ public class Row {
         rowInit();
     }
 
+    // -------
+    // Methods
+    // -------
+
     /*
     Initializes the row array with square arrays and populates the squares with pieces
      */
     private void rowInit(){
         for(int i = 0; i < width; i++){
+
             Piece piece;
             if(index < 3){
                 piece=new Piece("white","pawn");
@@ -34,18 +47,20 @@ public class Row {
             }
             if(startColor.equals("white")){
                 if(i%2 == 0){
-                    row[i] = new Square("white",piece,i);
+                    piece = null;
+                    row[i] = new Square("white",piece,i, this.index);
                 }
                 else{
-                    row[i] = new Square("black",piece,i);
+                    row[i] = new Square("black",piece,i, this.index);
                 }
             }
             if(startColor.equals("black")){
                 if(i % 2 == 0){
-                    row[i]=new Square("black",piece,i);
+                    row[i]=new Square("black",piece,i, this.index);
                 }
                 else{
-                    row[i]=new Square("white",piece,i);
+                    piece = null;
+                    row[i]=new Square("white",piece,i, this.index);
                 }
             }
         }
@@ -57,6 +72,7 @@ public class Row {
     public int getIndex(){
         return index;
     }
+
 
     /*
     Removes the piece at the row's column
@@ -72,6 +88,11 @@ public class Row {
       row[col].setPiece(piece);
 
     }
+
+    public Square getSquare(int col) {
+        return this.row[col];
+    }
+
 
     /*
     Returns the row

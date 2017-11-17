@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class CheckersGame {
+
+    // ----------
+    // Attributes
+    // ----------
+
     private static final Logger LOG = Logger.getLogger(CheckersGame.class.getName());
 
     private Board board;
@@ -14,6 +19,10 @@ public class CheckersGame {
     private Player summoner, opp;
     private boolean summonerTurn;
 
+    // ------------
+    // Constructors
+    // ------------
+
     public CheckersGame(GameCenter gameCenter, Player summoner, Player opp){
         this.gameCenter=gameCenter;
         this.board=new Board(8,8);
@@ -21,6 +30,10 @@ public class CheckersGame {
         this.opp=opp;
         this.summonerTurn=true;
     }
+
+    // -------
+    // Methods
+    // -------
 
     /*
     Updates the board based on the move the player or opponent has done during his turn
@@ -82,5 +95,4 @@ public class CheckersGame {
     public Board getBoard(){
         return board;
     }
-
 }

@@ -10,8 +10,10 @@ public class Player {
     // ----------
     // Attributes
     // ----------
+
     private String username; // A Player only has a Username
     private boolean isSummoner;
+
     // ------------
     // Constructors
     // ------------

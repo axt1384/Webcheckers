@@ -6,18 +6,29 @@ import java.util.logging.Logger;
 
 public class Board {
 
+    // ----------
+    // Attributes
+    // ----------
+
     private int width;
     private int height;
-
     private Row[] board;
+
+    // ------------
+    // Constructors
+    // ------------
 
     public Board(int width, int height){
         this.width=width;
         this.height=height;
         board=new Row[height];
         boardInit();
-        piecePresent(2,3);
     }
+
+
+    // -------
+    // Methods
+    // -------
 
     /*
     Initializes the board
@@ -30,6 +41,33 @@ public class Board {
                 board[i]=new Row(width,"black",i);
             }
         }
+    }
+
+
+    /**
+    Returns the opponent's board in their perspective - reverses the board
+
+    public Row[] getOppBoard(){
+      Row[] reverseBoard=new Row[height];
+      System.arraycopy( board, 0, reverseBoard, 0, height );
+      Collections.reverse(Arrays.asList(reverseBoard));
+      for(int i=0; i<height; i++){
+        reverseBoard[i].reverse();
+      }
+      return reverseBoard;
+    }
+    */
+
+    public void toggleBoard() {
+        for(Row row: this.board) {
+            Collections.reverse(Arrays.asList(row.getRow()));
+            int i = 0;
+            while(i < 8) {
+                row.getRow()[i].toggleCoordinate();
+                i++;
+            }
+        }
+        Collections.reverse(Arrays.asList(board));
     }
 
     public Row[] getBoard(String opponent,String summoner){
@@ -86,7 +124,15 @@ public class Board {
 
     }
 
+    public int getHeight() {
+        return this.height;
+    }
 
+    public Square getSquare(int row, int col) {
+        return this.getRow(row).getSquare(col);
+    }
 
-
+    public int getWidth() {
+        return this.width;
+    }
 }

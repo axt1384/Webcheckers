@@ -152,7 +152,5 @@ public class PossibleMoves {
 //                return false;  // Regular black piece can only move up.
 //            return true;  // The move is legal.
 //        }
-//
-//
 //    }
 }
