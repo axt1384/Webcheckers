@@ -82,7 +82,7 @@ public class GetGameRoute implements Route {
                 LOG.config("status:" + (!game.equals(oppGame)));
                 inGameStatus=(!game.equals(oppGame));
             }
-            if (oppInGame && inGameStatus) { // This Player is Already in a Match
+            if ((oppInGame && inGameStatus) || (oppInGame && playerServices==null)) { // This Player is Already in a Match
                 vm.put("gameError", "<p>The player " + opponent.toString() + " or you are already in game; please wait or " +
                         "choose another opponent.</p>");
                 vm.put("username", this.playerlobby.getUser(httpSession).toString());
