@@ -72,8 +72,18 @@ public class GetGameRoute implements Route {
             Player opponent = new Player(enemyName,false);
             Session opponentSession = this.playerlobby.getSession(opponent);
             boolean oppInGame=opponentSession.attribute("inGame");
-            if (oppInGame && httpSession.attribute("inGame")==null) { // This Player is Already in a Match
-                vm.put("gameError", "<p>The player " + opponent.toString() + " is already in game; please wait or " +
+            PlayerServices playerServices=httpSession.attribute("playerServices");
+            PlayerServices oppPlayerServices=opponentSession.attribute("playerServices");
+            CheckersGame game, oppGame;
+            boolean inGameStatus=false;
+            if(playerServices!=null){
+                game=playerServices.currentGame();
+                oppGame=oppPlayerServices.currentGame();
+                LOG.config("status:" + (!game.equals(oppGame)));
+                inGameStatus=(!game.equals(oppGame));
+            }
+            if (oppInGame && inGameStatus) { // This Player is Already in a Match
+                vm.put("gameError", "<p>The player " + opponent.toString() + " or you are already in game; please wait or " +
                         "choose another opponent.</p>");
                 vm.put("username", this.playerlobby.getUser(httpSession).toString());
                 vm.put("sign", "<a href=/SignedOut>Sign Out</a>");
@@ -82,8 +92,6 @@ public class GetGameRoute implements Route {
                 vm.put("title", "Welcome!");
                 return templateEngine.render(new ModelAndView(vm, "home.ftl"));
             } else {
-                CheckersGame game;
-                PlayerServices playerServices=httpSession.attribute("playerServices");;
                 if(httpSession.attribute("playerServices")==null){
                   httpSession.attribute("playerServices", gameCenter.newPlayerServices());
                   opponentSession.attribute("playerServices", httpSession.attribute("playerServices"));
@@ -102,7 +110,6 @@ public class GetGameRoute implements Route {
                 }else{
                   game = playerServices.currentGame();
                 }
-                String red="red";
                 vm.put(BOARD, game.getBoard());
                 vm.put("opponent", opponent.toString());
                 vm.put("summoner", summoner);
