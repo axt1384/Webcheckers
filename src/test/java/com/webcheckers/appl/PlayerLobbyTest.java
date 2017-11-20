@@ -140,7 +140,7 @@ public class PlayerLobbyTest {
 
         // Invalid Username
         error = this.playerLobby.SignIn(this.session2, new Player("\""));
-        assertEquals("<p>The username \" is not allowed.<p>", error);
+        assertEquals("<p>The username is not allowed to have any quotes.<p>", error);
 
         // No Username
         error = this.playerLobby.SignIn(this.session2, new Player(""));
