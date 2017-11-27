@@ -81,6 +81,10 @@ public class CheckersGame {
       return summoner;
     }
 
+    public boolean equals(CheckersGame game){
+        return this.summoner.equals(game.getSummoner()) && this.opp.equals(game.getOpp());
+    }
+
     /*
     Ends the turn of the player
      */

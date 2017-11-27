@@ -50,14 +50,16 @@ public class PlayerLobby {
             case "":
                 return "<p>Please enter a username with at least one character.<p>";
         }
-        if(player.toString().contains("\"")) {
-            return "<p>The username is not allowed to have any quotes.<p>";
+        if(player.toString().contains("\"")){
+          return "<p>The username is not allowed to have any quotes.<p>";
+        }
+        if(message != "") {
+            return "<p>The username " + message + " is not allowed.<p>";
         }
 
         if(players.values().contains(player)) { // Username in Use
             return "<p>The username '" + player.toString() + "' is already in use.";
         }
-
         if(message != "") {
             return "<p>The username " + message + " is not allowed.<p>";
         }

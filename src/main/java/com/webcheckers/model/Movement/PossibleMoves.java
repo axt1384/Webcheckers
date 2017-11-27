@@ -40,8 +40,10 @@ public class PossibleMoves {
     // -------
 
     private ArrayList<Square> getPieces(String color, String type) {
-        int height = this.board.getBoard().length;
-        int width = this.board.getRow(0).getRow().length;
+        //int height = this.board.getBoard().length;
+        int height = 8;
+        //int width = this.board.getRow(0).getRow().length;
+        int width = 8;
 
         ArrayList<Square> targetSquares = new ArrayList<>();
         int i = 0, j = 0;

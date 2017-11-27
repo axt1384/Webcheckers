@@ -1,0 +1,8 @@
+1718-swen-261-08-a-Resistance
+
+1) Right click in this directory and click on 'Git Bash Here'
+2) Type in 'mvn compile exec:java'
+3) Open up a web browser, and go to 'http://localhost:4567/'
+4) Repeat step 3 on a different web browser or incognito. 
+5) Sign in on both browsers and start testing our code with the given Acceptance Test Plan.
+6) Thank you.
