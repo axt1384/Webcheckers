@@ -18,13 +18,14 @@
 
     <div class="body">
       <p>Welcome to the world of online Checkers. There are ${numberUsers} players online!</p>
+
+      ${homeMessage}
+
+      <h2>Players Online:</h2>
+      <div class = "footer">
+        ${showPlayers}
+      </footer>
     </div>
-
-    ${gameError}
-
-    <h2>Players Online:</h2>
-    ${showPlayers}
-
   </div>
 </body>
 </html>

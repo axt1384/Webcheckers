@@ -12,17 +12,12 @@ import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.webcheckers.ui.GetHomeRoute.ERROR;
-import static com.webcheckers.ui.GetHomeRoute.TITLE;
+import static com.webcheckers.ui.InterfaceVariable.*;
 
 public class PostGameRoute implements Route {
 
-    static final String VIEW_NAME = "game.ftl";
-    static final String BOARD = "board";
     private final TemplateEngine templateEngine;
     private final GameCenter gameCenter;
-    private PlayerLobby playerlobby;
     private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
     private static int counter = 0;
     private TurnAdministrator turnAdministrator = null;
@@ -38,7 +33,6 @@ public class PostGameRoute implements Route {
         //
         this.templateEngine = templateEngine;
         this.gameCenter = gameCenter;
-        this.playerlobby = playerlobby;
     }
 
     /**
@@ -48,10 +42,10 @@ public class PostGameRoute implements Route {
     public String handle(Request request, Response response) {
 
         final Session httpSession = request.session();
-        String move = request.queryParams("move");
-        String oldPos = request.queryParams("oldPos");
-        String capture = request.queryParams("capture");
-        final PlayerServices playerServices = httpSession.attribute("playerServices");
+        String move = request.queryParams(MOVE);
+        String oldPos = request.queryParams(OLD_POSISTION);
+        String capture = request.queryParams(CAPTURE);
+        final PlayerServices playerServices = httpSession.attribute(PLAYER_SERVICES);
         CheckersGame game = playerServices.currentGame();
 
         game.updateBoard(move, oldPos, capture);
@@ -62,34 +56,16 @@ public class PostGameRoute implements Route {
         }
         Player victor = this.turnAdministrator.isOver();
         if (victor != null) {
-            vm.put(ERROR, victor.toString() + " won the game!");
+            vm.put(HOME_MESSAGE, victor.toString() + " won the game!");
             vm.put(TITLE, "Welcome!");
-            return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+            return templateEngine.render(new ModelAndView(vm, HOME_NAME));
         }
 
-        vm.put("summonerTurn", game.isSummonerTurn());
+        vm.put(SUMMONER_TURN, game.isSummonerTurn());
 
         response.redirect("/game");
 
         return null;
-
-    }
-
-    private ModelAndView endGame(final boolean youWonLost, final Map<String, Object> vm,
-                                 final PlayerServices playerServices) {
-
-        playerServices.finishedGame();
-        vm.put(GetHomeRoute.ERROR,gameCenter.getGameStatsMessage());
-        vm.put(ERROR, youWonLost);
-        return new ModelAndView(vm, GetHomeRoute.VIEW_NAME);
-    }
-
-    private ModelAndView youWon(final Map<String, Object> vm, final PlayerServices playerServices) {
-        return endGame(true, vm, playerServices);
-    }
-
-    private ModelAndView youLost(final Map<String, Object> vm, final PlayerServices playerServices) {
-        return endGame(false, vm, playerServices);
     }
 }
 

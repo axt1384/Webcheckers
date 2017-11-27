@@ -8,9 +8,9 @@ import java.util.logging.Logger;
 
 import com.webcheckers.appl.PlayerLobby;
 
-import com.webcheckers.appl.PlayerServices;
-import com.webcheckers.model.CheckersGame;
 import spark.*;
+
+import static com.webcheckers.ui.InterfaceVariable.*;
 
 /**
  * The UI Controller to GET the Home page.
@@ -23,17 +23,11 @@ public class GetHomeRoute implements Route {
   // ----------
   // Attributes
   // ----------
+
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private PlayerLobby playerlobby;
   private final TemplateEngine templateEngine;
-  static final String BOARD = "board";
-  public static final String TITLE = "title";
-  public static final String USERNAME = "username";
-  public static final String SIGNIN = "sign";
-  public static final String PLAYERS="showPlayers";
-  public static final String ERROR="gameError";
-  public static final String USERS="numberUsers";
-  public static final String VIEW_NAME="home.ftl";
+
   // ------------
   // Constructors
   // ------------
@@ -110,31 +104,23 @@ public class GetHomeRoute implements Route {
 
     if(this.playerlobby.getUser(httpSession) == null) { // Yet to Sign In
       vm.put(USERNAME, "");
-      vm.put(SIGNIN, "<a href=/SignIn>Sign In</a>");
-      vm.put(PLAYERS, "<p>Please Sign In to see players.</p>");
+      vm.put(SIGN, "<a href=/SignIn>Sign In</a>");
+      vm.put(SHOW_PLAYERS, "<p>Please Sign In to see players.</p>");
     }
-    else { // Logged On
-      if(httpSession.attribute("inGame")) {
+    else { // Already Signed In
+      if(httpSession.attribute("inGame")) { // Queued for a Game
         response.redirect("/game");
       }
 
-
       vm.put(USERNAME, this.playerlobby.getUser(httpSession).toString());
-      vm.put(SIGNIN, "<a href=/SignedOut>Sign Out</a>");
-      vm.put(PLAYERS, addPlayersList(playerlobby.getUser(httpSession).toString(), playerlobby));
+      vm.put(SIGN, "<a href=/SignedOut>Sign Out</a>");
+      vm.put(SHOW_PLAYERS, addPlayersList(playerlobby.getUser(httpSession).toString(), playerlobby));
     }
-    vm.put(ERROR, "");
-    vm.put(USERS, showNumber(playerlobby));
 
-    /**
-    final PlayerServices playerServices =
-            httpSession.attribute("playerServices");
-    CheckersGame game = playerServices.currentGame();
-
-     vm.put(BOARD, game.getBoard());
-     */
+    vm.put(HOME_MESSAGE, "");
+    vm.put(NUMBER_USERS, showNumber(playerlobby));
 
     vm.put(TITLE, "Welcome!");
-    return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+    return templateEngine.render(new ModelAndView(vm , HOME_NAME));
   }
 }

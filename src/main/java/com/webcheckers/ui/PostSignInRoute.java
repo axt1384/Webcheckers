@@ -1,14 +1,14 @@
 package com.webcheckers.ui;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import com.webcheckers.appl.PlayerServices;
 import com.webcheckers.model.Player;
 import com.webcheckers.appl.PlayerLobby;
+import static com.webcheckers.ui.InterfaceVariable.*;
 
 import spark.*;
 
@@ -24,9 +24,7 @@ public class PostSignInRoute implements Route {
     // ----------
 
     private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
-
     private final TemplateEngine templateEngine;
-
     private final PlayerLobby playerlobby; // Shows who is Online.
 
     // ------------
@@ -70,27 +68,25 @@ public class PostSignInRoute implements Route {
         Map<String, Object> vm = new HashMap<>();
         final Session httpSession = request.session();
 
-        vm.put("title", "Welcome!");
-        vm.put("username", request.queryParams("username"));
+        vm.put(TITLE, "Welcome!");
+        vm.put(USERNAME, request.queryParams(USERNAME));
 
 
-        Player newuser = new Player(request.queryParams("username"));
+        Player newuser = new Player(request.queryParams(USERNAME));
         String signMessage = playerlobby.SignIn(httpSession, newuser);
         if(!signMessage.equals("")) { // Username is Invalid
-            vm.put("signInMessage", signMessage);
-            return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+            vm.put(SIGN_IN_MESSAGE, signMessage);
+            return templateEngine.render(new ModelAndView(vm, SIGN_IN_NAME));
         }
 
         // Signed In Successfully, Now Go to Home Page
-        httpSession.attribute("inGame", false);
+        httpSession.attribute(PLAYER_IN_GAME, false);
 
-        vm.put("gameError", "");
-        vm.put("showPlayers", GetHomeRoute.addPlayersList(request.queryParams("username"), this.playerlobby));
-        vm.put("numberUsers", GetHomeRoute.showNumber(this.playerlobby));
-        vm.put("sign", "<a href=/SignedOut>Sign Out</a>");
-        return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+        vm.put(HOME_MESSAGE, "");
+        vm.put(SHOW_PLAYERS, GetHomeRoute.addPlayersList(request.queryParams(USERNAME), this.playerlobby));
+        vm.put(NUMBER_USERS, GetHomeRoute.showNumber(this.playerlobby));
+        vm.put(SIGN, "<a href=/SignedOut>Sign Out</a>");
+        response.redirect("/");
+        return templateEngine.render(new ModelAndView(vm , HOME_NAME));
     }
-
-
-
 }

@@ -22,7 +22,7 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.PlayerServices;
 import com.webcheckers.model.CheckersGame;
 import com.webcheckers.model.Player;
-import com.webcheckers.ui.GetGameRoute;
+import static com.webcheckers.ui.InterfaceVariable.*;
 
 /**
  * The unit test suite for the {@link GetGameRoute} component.
@@ -92,12 +92,12 @@ public class GetGameRouteTest{
 
       //@SupressWarnings("unchecked")
       final Map<String,Object> vm = (Map<String,Object>) model;
-      assertEquals(game.getBoard(), vm.get(GetGameRoute.BOARD));
+      assertEquals(game.getBoard(), vm.get(BOARD));
       assertEquals("user", vm.get("opponent"));
       assertEquals("user", vm.get("summoner"));
       assertEquals(true, vm.get("summonerTurn"));
 
-      assertEquals(GetGameRoute.VIEW_NAME, myModelView.viewName);
+      assertEquals(GAME_NAME, myModelView.viewName);
     }
 
     /**
@@ -136,12 +136,12 @@ public class GetGameRouteTest{
 
       //@SupressWarnings("unchecked")
       final Map<String,Object> vm = (Map<String,Object>) model;
-      assertEquals(game.getBoard(), vm.get(GetGameRoute.BOARD));
+      assertEquals(game.getBoard(), vm.get(BOARD));
       assertEquals("bob", vm.get("opponent"));
       assertEquals("user", vm.get("summoner"));
       assertEquals(true, vm.get("summonerTurn"));
 
-      assertEquals(GetGameRoute.VIEW_NAME, myModelView.viewName);
+      assertEquals(GAME_NAME, myModelView.viewName);
     }
 
     /**
@@ -214,12 +214,12 @@ public class GetGameRouteTest{
 
       //@SupressWarnings("unchecked")
       final Map<String,Object> vm = (Map<String,Object>) model;
-      assertEquals(game.getBoard(), vm.get(GetGameRoute.BOARD));
+      assertEquals(game.getBoard(), vm.get(BOARD));
       assertEquals("", vm.get("opponent"));
       assertEquals("", vm.get("summoner"));
       assertEquals(true, vm.get("summonerTurn"));
 
-      assertEquals(GetGameRoute.VIEW_NAME, myModelView.viewName);
+      assertEquals(GAME_NAME, myModelView.viewName);
     }
 
     // test for making the new game from scratch
