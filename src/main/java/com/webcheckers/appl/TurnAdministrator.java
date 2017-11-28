@@ -45,4 +45,8 @@ public class TurnAdministrator {
         }
         return null;
     }
+
+    public boolean hasCapture(String color){
+      return this.possibleMoves.hasCaptureMove(color);
+    }
 }

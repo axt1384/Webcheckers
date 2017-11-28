@@ -51,15 +51,15 @@ public class PostGameRoute implements Route {
         game.updateBoard(move, oldPos, capture);
         game.endTurn();
         Map<String, Object> vm = new HashMap<>();
-        if (this.turnAdministrator == null) {
-            this.turnAdministrator = new TurnAdministrator(game.getSummoner(), game.getOpp(), game);
-        }
-        Player victor = this.turnAdministrator.isOver();
-        if (victor != null) {
-            vm.put(HOME_MESSAGE, victor.toString() + " won the game!");
-            vm.put(TITLE, "Welcome!");
-            return templateEngine.render(new ModelAndView(vm, HOME_NAME));
-        }
+        // if (this.turnAdministrator == null) {
+        //     this.turnAdministrator = new TurnAdministrator(game.getSummoner(), game.getOpp(), game);
+        // }
+        // Player victor = this.turnAdministrator.isOver();
+        // if (victor != null) {
+        //     vm.put(HOME_MESSAGE, victor.toString() + " won the game!");
+        //     vm.put(TITLE, "Welcome!");
+        //     return templateEngine.render(new ModelAndView(vm, HOME_NAME));
+        // }
 
         vm.put(SUMMONER_TURN, game.isSummonerTurn());
 
@@ -68,4 +68,3 @@ public class PostGameRoute implements Route {
         return null;
     }
 }
-
