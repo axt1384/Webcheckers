@@ -29,6 +29,7 @@ public class InterfaceVariable {
     public static final String MOVE = "move";
     public static final String OLD_POSISTION = "oldPos";
     public static final String CAPTURE = "capture";
+    public static final String FORFEIT = "forfeit";
 
     public static final String SIGN_IN_MESSAGE = "signInMessage";
     public static final String PLAYER_SERVICES = "playerServices";

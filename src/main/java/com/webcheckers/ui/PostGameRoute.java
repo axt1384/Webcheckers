@@ -19,6 +19,7 @@ public class PostGameRoute implements Route {
     private final TemplateEngine templateEngine;
     private final GameCenter gameCenter;
     private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
+    private final PlayerLobby playerLobby;
 
 
     /**
@@ -32,6 +33,7 @@ public class PostGameRoute implements Route {
         //
         this.templateEngine = templateEngine;
         this.gameCenter = gameCenter;
+        this.playerLobby = playerlobby;
     }
 
     /**
@@ -42,6 +44,15 @@ public class PostGameRoute implements Route {
 
         final Session httpSession = request.session();
 
+        String done = request.queryParams(FORFEIT);
+        if(done.equals("done")) {
+            request.session().attribute(SCORE_MESSAGE, "you have forfeited the match.");
+            Player op = new Player(request.session().attribute(OPPONENT));
+            playerLobby.getSession(op).attribute(PLAYER_IN_GAME, false);
+            response.redirect("/score");
+            httpSession.attribute(PLAYER_IN_GAME, false);
+            return null;
+        }
         String move = request.queryParams(MOVE);
         String oldPos = request.queryParams(OLD_POSISTION);
         String capture = request.queryParams(CAPTURE);

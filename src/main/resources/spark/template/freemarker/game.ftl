@@ -245,11 +245,9 @@
       <input id="oldPosInput" type="hidden" name="oldPos" value=""/>
       <input id="capturedInput" type="hidden" name="capture" value=""/>
       <button id="submitButton" type='submit' disabled>Submit</button>
+      <button type='submit' value = "done" name="forfeit">Forfeit</button>
     </form>
 
-    <form action="/game" method="POST">
-          <button type='submit' value = "done">Forfeit</button>
-    </form>
 
 
   </div>
