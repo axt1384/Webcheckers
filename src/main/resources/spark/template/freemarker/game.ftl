@@ -100,7 +100,7 @@
         }
       }
     }
-    function drop(e,square,turn,view) {
+    function drop(e,square,turn,view,cap) {
       var data = e.dataTransfer.getData("text");
       var piece=document.getElementById(data);
       if(isPlayerTurn(piece, turn,view)){
@@ -111,7 +111,7 @@
         var pieceRow=parseInt(piecePos[1]);
         var pieceCol=parseInt(piecePos[2]);
         if ((piece.dataset.type == "king") && withinColRange(squareCol, pieceCol) &&
-            (squareRow == pieceRow + 1 || squareRow == pieceRow - 1) && square.childNodes.length < 2 && moved==false) {
+            (squareRow == pieceRow + 1 || squareRow == pieceRow - 1) && square.childNodes.length < 2 && moved==false && cap==false) {
             e.preventDefault();
             e.target.appendChild(piece);
             document.getElementById("moveInput").value=squareRow+"-"+squareCol;
@@ -129,7 +129,7 @@
             document.getElementById("submitButton").disabled=false;
         }
         else if(withinRowRange(squareRow, pieceRow, turn) && withinColRange(squareCol, pieceCol)
-            && square.childNodes.length < 2 && moved==false){
+            && square.childNodes.length < 2 && moved==false && cap==false){
           e.preventDefault();
           e.target.appendChild(piece);
           document.getElementById("moveInput").value=squareRow+"-"+squareCol;
@@ -203,7 +203,7 @@
                     <#if space.isValid() >
                         <div class="Space"
                             id="${row.getIndex()}-${space.getColumn()}"
-                            ondrop="drop(event,this,${summonerTurn?c},${summonerView?c});"
+                            ondrop="drop(event,this,${summonerTurn?c},${summonerView?c},${hasCapture?c});"
                             ondragover="allowDrop(event);">
                             <#if space.hasPiece()>
                               <#if space.isValid()>

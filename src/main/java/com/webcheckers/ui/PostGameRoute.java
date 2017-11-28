@@ -59,4 +59,3 @@ public class PostGameRoute implements Route {
         return null;
     }
 }
-

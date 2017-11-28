@@ -204,7 +204,13 @@ public class PossibleMoves {
     // --------------
 
     public boolean hasCaptureMove(String color) {
+        if(color.equals("white")){
+          this.board.toggleBoard();
+        }
         this.generateCaptureMoves(color);
+        if(color.equals("white")){
+          this.board.toggleBoard();
+        }
         if(this.capture.size() > 0) {
             return true;
         }
