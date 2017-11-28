@@ -45,7 +45,7 @@ public class PostGameRoute implements Route {
         final Session httpSession = request.session();
 
         String done = request.queryParams(FORFEIT);
-        if(done.equals("done")) {
+        if(done != null) {
             request.session().attribute(SCORE_MESSAGE, "you have forfeited the match.");
             Player op = new Player(request.session().attribute(OPPONENT));
             playerLobby.getSession(op).attribute(PLAYER_IN_GAME, false);
