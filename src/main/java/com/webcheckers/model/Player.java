@@ -23,12 +23,11 @@ public class Player {
      * @param username String that represents the player.
      */
     public Player(String username){
-
         this.username = username;
         this.isSummoner = false;
     }
-    public Player(String username, boolean isSummoner) {
 
+    public Player(String username, boolean isSummoner) {
         this.username = username;
         this.isSummoner = isSummoner;
     }
@@ -63,6 +62,4 @@ public class Player {
         }
         return false;
     }
-
-
 }

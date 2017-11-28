@@ -11,7 +11,6 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.GameCenter;
 import spark.*;
 
-
 /**
  * The server that initializes the set of HTTP request handlers.
  * This defines the <em>web application interface</em> for this
@@ -69,6 +68,8 @@ public class WebServer {
 
   public static final String GAME_URL = "/game";
 
+  public static final String SCORE_URL = "/score";
+
   //
   // Attributes
   //
@@ -93,7 +94,8 @@ public class WebServer {
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson, final GameCenter gameCenter, final PlayerLobby playerlobby) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson,
+                   final GameCenter gameCenter, final PlayerLobby playerlobby) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
@@ -163,6 +165,7 @@ public class WebServer {
     post(HOME_URL, new PostSignInRoute(templateEngine, playerlobby));
     post(GAME_URL, new PostGameRoute(templateEngine, gameCenter, playerlobby));
     get(GAME_URL, new GetGameRoute(templateEngine, gameCenter, playerlobby));
+    get(SCORE_URL, new GetScoreRoute(templateEngine, playerlobby));
     LOG.config("WebServer is initialized.");
   }
 }

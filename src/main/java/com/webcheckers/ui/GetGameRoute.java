@@ -23,7 +23,6 @@ public class GetGameRoute implements Route {
     private final GameCenter gameCenter;
     private PlayerLobby playerlobby;
     private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
-    //private static int counter=0; //Is this Needed?
 
     /**
      * The constructor for the {@code GET /game} route handler.
@@ -60,21 +59,16 @@ public class GetGameRoute implements Route {
             enemyName = request.queryParams(OPPONENT);
             summoner = request.queryParams(SUMMONER);
         }
-        if ((enemyName == null && !playerlobby.getUser(httpSession).isSummoner()) || enemyName.equals(summoner)) { // This Session was summoned.
+        if ((enemyName == null && !playerlobby.getUser(httpSession).isSummoner())||  enemyName.equals(summoner)) { // This Session was summoned.
             final PlayerServices playerServices = httpSession.attribute(PLAYER_SERVICES);
             CheckersGame game = playerServices.currentGame();
             TurnAdministrator turnAdmin = new TurnAdministrator(game.getSummoner(), game.getOpp(), game);
             Player victor = turnAdmin.isOver();
             if (turnAdmin.isOver() != null) {
-                vm.put(HOME_MESSAGE, victor.toString() + " won the game!");
-                vm.put(USERNAME, this.playerlobby.getUser(httpSession).toString());
-                vm.put(SIGN, "<a href=/SignedOut>Sign Out</a>");
-                vm.put(SHOW_PLAYERS, GetHomeRoute.addPlayersList(playerlobby.getUser(httpSession).toString(), playerlobby));
-                vm.put(NUMBER_USERS, GetHomeRoute.showNumber(playerlobby));
-                vm.put(TITLE, "Welcome!");
-                response.redirect("/");
-                request.session().attribute(PLAYER_IN_GAME, false);
-                return templateEngine.render(new ModelAndView(vm, HOME_NAME));
+                httpSession.attribute(SCORE_MESSAGE,victor.toString() + " won the game!");
+                response.redirect("/score");
+                httpSession.attribute(PLAYER_IN_GAME, false);
+                return null;
             }
             vm.put(BOARD, game.getBoard());
             vm.put(OPPONENT, game.getSummoner().toString());
@@ -106,16 +100,20 @@ public class GetGameRoute implements Route {
                 vm.put(NUMBER_USERS, GetHomeRoute.showNumber(playerlobby));
                 vm.put(TITLE, "Welcome!");
                 return templateEngine.render(new ModelAndView(vm, HOME_NAME));
-            } else {
-                if (httpSession.attribute(PLAYER_SERVICES) == null) {
+            } else { // A new Game is Being Started
+                if (httpSession.attribute(PLAYER_SERVICES) == null) { // Need to Create New Service for Players
+
+                    // Create and Store the Service for Both Players
                     httpSession.attribute(PLAYER_SERVICES, gameCenter.newPlayerServices());
                     opponentSession.attribute(PLAYER_SERVICES, httpSession.attribute(PLAYER_SERVICES));
+
+                    // Both Players are Now to be in Game
                     httpSession.attribute(PLAYER_IN_GAME, true);
                     opponentSession.attribute(PLAYER_IN_GAME, true);
 
+                    // Store the Players for Later
                     httpSession.attribute(SUMMONER, summoner);
                     httpSession.attribute(OPPONENT, opponent.toString());
-
                     opponentSession.attribute(SUMMONER, summoner);
                     opponentSession.attribute(OPPONENT, summoner);
 
@@ -129,15 +127,11 @@ public class GetGameRoute implements Route {
                 Player victor = turnAdmin.isOver();
                 turnAdmin = new TurnAdministrator(game.getSummoner(), game.getOpp(), game);
                 if (turnAdmin.isOver() != null) {
-                    vm.put(HOME_MESSAGE, victor.toString() + " won the game!");
-                    vm.put(USERNAME, this.playerlobby.getUser(httpSession).toString());
-                    vm.put(SIGN, "<a href=/SignedOut>Sign Out</a>");
-                    vm.put(SHOW_PLAYERS, GetHomeRoute.addPlayersList(playerlobby.getUser(httpSession).toString(), playerlobby));
-                    vm.put(NUMBER_USERS, GetHomeRoute.showNumber(playerlobby));
-                    vm.put(TITLE, "Welcome!");
-                    response.redirect("/");
-                    request.session().attribute(PLAYER_IN_GAME, false);
-                    return templateEngine.render(new ModelAndView(vm, HOME_NAME));
+
+                    httpSession.attribute(SCORE_MESSAGE,victor.toString() + " won the game!");
+                    response.redirect("/score");
+                    httpSession.attribute(PLAYER_IN_GAME, false);
+                    return null;
                 }
                 vm.put(BOARD, game.getBoard());
                 vm.put(OPPONENT, opponent.toString());
