@@ -32,4 +32,5 @@ public class InterfaceVariable {
     public static final String SIGN_IN_MESSAGE = "signInMessage";
     public static final String PLAYER_SERVICES = "playerServices";
     public static final String PLAYER_IN_GAME = "inGame";
+    public static final String HAS_CAPTURE_MOVE = "hasCapture";
 }
