@@ -233,4 +233,8 @@ public class PossibleMoves {
         }
         return false;
     }
+
+    public boolean hasPiece(String color) {
+        return (getPieces(color, "pawn").size() > 0 || getPieces(color, "king").size() > 0);
+    }
 }

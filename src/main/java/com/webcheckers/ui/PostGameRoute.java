@@ -19,8 +19,7 @@ public class PostGameRoute implements Route {
     private final TemplateEngine templateEngine;
     private final GameCenter gameCenter;
     private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
-    private static int counter = 0;
-    private TurnAdministrator turnAdministrator = null;
+
 
     /**
      * The constructor for the {@code GET /game} route handler.
@@ -42,29 +41,21 @@ public class PostGameRoute implements Route {
     public String handle(Request request, Response response) {
 
         final Session httpSession = request.session();
+
         String move = request.queryParams(MOVE);
         String oldPos = request.queryParams(OLD_POSISTION);
         String capture = request.queryParams(CAPTURE);
+
         final PlayerServices playerServices = httpSession.attribute(PLAYER_SERVICES);
         CheckersGame game = playerServices.currentGame();
 
         game.updateBoard(move, oldPos, capture);
         game.endTurn();
-        Map<String, Object> vm = new HashMap<>();
-        // if (this.turnAdministrator == null) {
-        //     this.turnAdministrator = new TurnAdministrator(game.getSummoner(), game.getOpp(), game);
-        // }
-        // Player victor = this.turnAdministrator.isOver();
-        // if (victor != null) {
-        //     vm.put(HOME_MESSAGE, victor.toString() + " won the game!");
-        //     vm.put(TITLE, "Welcome!");
-        //     return templateEngine.render(new ModelAndView(vm, HOME_NAME));
-        // }
 
+        Map<String, Object> vm = new HashMap<>();
         vm.put(SUMMONER_TURN, game.isSummonerTurn());
 
         response.redirect("/game");
-
         return null;
     }
 }

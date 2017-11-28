@@ -46,7 +46,23 @@ public class TurnAdministrator {
         return null;
     }
 
-    public boolean hasCapture(String color){
-      return this.possibleMoves.hasCaptureMove(color);
+    public boolean hasPieces(Player player) {
+        if(player.equals(red)) {
+            return possibleMoves.hasPiece("red");
+        }
+        if(player.equals(white)) {
+            return possibleMoves.hasPiece("white");
+        }
+        return false; // Player Does not Exist
+    }
+
+    public boolean hasCapture(Player player) {
+        if(player.equals(red)) {
+            return possibleMoves.hasCaptureMove("red");
+        }
+        if(player.equals(white)) {
+            return possibleMoves.hasCaptureMove("white");
+        }
+        return false; // Player Does not Exist
     }
 }

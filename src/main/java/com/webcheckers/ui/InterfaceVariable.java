@@ -18,6 +18,7 @@ public class InterfaceVariable {
     public static final String HOME_NAME = "home.ftl";
     public static final String GAME_NAME = "game.ftl";
     public static final String SIGN_IN_NAME = "signin.ftl";
+    public static final String SCORE_NAME = "score.ftl";
 
     public static final String BOARD = "board";
     public static final String OPPONENT = "opponent";
@@ -32,4 +33,6 @@ public class InterfaceVariable {
     public static final String SIGN_IN_MESSAGE = "signInMessage";
     public static final String PLAYER_SERVICES = "playerServices";
     public static final String PLAYER_IN_GAME = "inGame";
+    public static final String HAS_CAPTURE_MOVE = "hasCapture";
+    public static final String SCORE_MESSAGE = "scoreMessage";
 }

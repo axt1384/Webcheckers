@@ -8,23 +8,19 @@
 <body>
   <div class="page">
 
-    <h1>Web Checkers</h1>
-    
+    <h1>Results</h1>
+
     <div class="navigation">
       <a href="/">My Home</a>
-      ${sign}
+      <a href=/SignedOut>Sign Out</a>
       <info>${username}</info>
     </div>
 
     <div class="body">
-      <p>Welcome to the world of online Checkers. There are ${numberUsers} players online!</p>
-
-      ${homeMessage}
-
-      <h2>Players Online:</h2>
-      <div class = "footer">
-        ${showPlayers}
-      </footer>
+      <div class = "info">
+         <p>The game is over, ${scoreMessage}</p>
+         <p>Click the home button to return to the home page</p>
+      </info>
     </div>
   </div>
 </body>

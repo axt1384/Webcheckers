@@ -20,6 +20,7 @@ public class PlayerLobby {
     // ----------
     private HashMap<String, Player> players; // Simply a List of Players
     private HashMap<String, Session> sessions; // Players have a Session
+    private ArrayList<Player> occupied; // Players that are in Game
 
     // ------------
     // Constructors
@@ -93,11 +94,15 @@ public class PlayerLobby {
      * @param session Session of the current User.
      * @return Player if the current session exists in the key, null otherwise.
      */
-
     public Player getUser(Session session) {
         return this.players.get(session.id());
     }
 
+    /**
+     * Gets the session of the player.
+     * @param player The player whose session is needed.
+     * @return HTTP session of the player.
+     */
     public Session getSession(Player player) {
         return this.sessions.get(player.toString());
     }
@@ -112,5 +117,50 @@ public class PlayerLobby {
             result.add(this.players.get(session).toString());
         }
         return result;
+    }
+
+    /**
+     * Adds the Player to the list of Players in game.
+     * @param player Player to go into a game.
+     * @return True if the Player exists and was added; false otherwise.
+     */
+    public boolean toGame(Player player) {
+        if(!this.getUsers().contains(player.toString())) { // Player Does not Exist
+            return false;
+        }
+        else if(this.occupied.contains(player)) { // Player was Already in Game
+            return false;
+        }
+        else {
+            this.occupied.add(player);
+            return true;
+        }
+    }
+
+    /**
+     * Removes the Player from the list of Players in game.
+     * @param player Player to exit a game.
+     * @return True if the Player exists and was removed; false otherwise.
+     */
+    public boolean exitGame(Player player) {
+        if(!this.getUsers().contains(player.toString())) { // Player Does not Exist
+            return false;
+        }
+        else if(!this.occupied.contains(player)) { // Player is not in Game
+            return false;
+        }
+        else {
+            this.occupied.remove(player);
+            return true;
+        }
+    }
+
+    /**
+     * Determines wheter or not a Player is in game (occupied).
+     * @param player Player to check on.
+     * @return True if the Player is in a game, false otherwise.
+     */
+    public boolean inGame(Player player) {
+        return this.occupied.contains(player);
     }
 }

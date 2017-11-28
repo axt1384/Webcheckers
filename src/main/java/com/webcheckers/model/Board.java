@@ -43,21 +43,6 @@ public class Board {
         }
     }
 
-
-    /**
-    Returns the opponent's board in their perspective - reverses the board
-
-    public Row[] getOppBoard(){
-      Row[] reverseBoard=new Row[height];
-      System.arraycopy( board, 0, reverseBoard, 0, height );
-      Collections.reverse(Arrays.asList(reverseBoard));
-      for(int i=0; i<height; i++){
-        reverseBoard[i].reverse();
-      }
-      return reverseBoard;
-    }
-    */
-
     public void toggleBoard() {
         for(Row row: this.board) {
             Collections.reverse(Arrays.asList(row.getRow()));
