@@ -45,11 +45,11 @@ public class PostGameRoute implements Route {
         String move = request.queryParams(MOVE);
         String oldPos = request.queryParams(OLD_POSISTION);
         String capture = request.queryParams(CAPTURE);
-
+        String capture2 = request.queryParams("capture2");
         final PlayerServices playerServices = httpSession.attribute(PLAYER_SERVICES);
         CheckersGame game = playerServices.currentGame();
 
-        game.updateBoard(move, oldPos, capture);
+        game.updateBoard(move, oldPos, capture, capture2);
         game.endTurn();
 
         Map<String, Object> vm = new HashMap<>();

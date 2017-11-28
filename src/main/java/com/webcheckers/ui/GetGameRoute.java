@@ -9,7 +9,6 @@ import com.webcheckers.appl.TurnAdministrator;
 import com.webcheckers.model.CheckersGame;
 import com.webcheckers.model.Player;
 import static com.webcheckers.ui.InterfaceVariable.*;
-import com.webcheckers.appl.TurnAdministrator;
 
 import spark.*;
 
@@ -23,7 +22,6 @@ public class GetGameRoute implements Route {
     private final TemplateEngine templateEngine;
     private final GameCenter gameCenter;
     private PlayerLobby playerlobby;
-    private TurnAdministrator turnAdmin;
     private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
 
     /**
@@ -144,22 +142,12 @@ public class GetGameRoute implements Route {
                     httpSession.attribute(PLAYER_IN_GAME, false);
                     return null;
                 }
-                turnAdmin = new TurnAdministrator(game.getSummoner(), game.getOpp(), game);
-                if(turnAdmin.isOver() != null){
-                  vm.put(HOME_MESSAGE, victor.toString() + " won the game!");
-                  vm.put(TITLE, "Welcome!");
-                  return templateEngine.render(new ModelAndView(vm, HOME_NAME));
-                }
                 vm.put(BOARD, game.getBoard());
                 vm.put(OPPONENT, opponent.toString());
                 vm.put(SUMMONER, summoner);
                 vm.put(SUMMONER_VIEW, true);
                 vm.put(SUMMONER_TURN, game.isSummonerTurn());
-<<<<<<< HEAD
-                vm.put("hasCapture", turnAdmin.hasCapture("red"));
-=======
                 vm.put(HAS_CAPTURE_MOVE, turnAdmin.hasCapture(game.getSummoner()));
->>>>>>> WinAndLose
                 return templateEngine.render(new ModelAndView(vm, GAME_NAME));
             }
         }
