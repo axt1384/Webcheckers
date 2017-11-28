@@ -73,11 +73,11 @@ public class GetGameRoute implements Route {
         final Map<String, Object> vm = new HashMap<>();
         String enemyName, summoner;
         if (request.queryParams(SUMMONER) == null) {
-            enemyName = httpSession.attribute(OPPONENT);
-            summoner = httpSession.attribute(SUMMONER);
+            enemyName = GetHomeRoute.returnSpaces(httpSession.attribute(OPPONENT));
+            summoner =  GetHomeRoute.returnSpaces(httpSession.attribute(SUMMONER));
         } else {
-            enemyName = request.queryParams(OPPONENT);
-            summoner = request.queryParams(SUMMONER);
+            enemyName =  GetHomeRoute.returnSpaces(request.queryParams(OPPONENT));
+            summoner =  GetHomeRoute.returnSpaces(request.queryParams(SUMMONER));
         }
         if ((enemyName == null && !playerlobby.getUser(httpSession).isSummoner())||  enemyName.equals(summoner)) { // This Session was summoned.
             return summonedHandle(request, response, vm);

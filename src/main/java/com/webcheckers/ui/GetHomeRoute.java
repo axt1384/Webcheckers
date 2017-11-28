@@ -53,6 +53,14 @@ public class GetHomeRoute implements Route {
   // Methods
   // -------
 
+  private static String removeSpaces(String string) {
+    return string.replaceAll(" ", "\"");
+  }
+
+  public static String returnSpaces(String string) {
+    return string.replaceAll("\"", " ");
+  }
+
   /**
    * Creates a list of links to start games with the corresponding players. May be used in
    * any class that needs to render the home page with game links.
@@ -69,7 +77,7 @@ public class GetHomeRoute implements Route {
 
     String result = "";
     for(String user: list) {
-      result += "<li><a href=/game?opponent=" + user + "&summoner="+viewingUser+">" + user + "</a></li>";
+      result += "<li><a href=/game?opponent=" + removeSpaces(user) + "&summoner=" + removeSpaces(viewingUser)+">" + user + "</a></li>";
     }
     return "<ul>" + result + "</ul>"; // Unordered List Label
   }
