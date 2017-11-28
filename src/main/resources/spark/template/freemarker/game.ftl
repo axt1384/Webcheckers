@@ -247,6 +247,10 @@
       <button id="submitButton" type='submit' disabled>Submit</button>
     </form>
 
+    <form action="/game" method="POST">
+          <button type='submit' value = "done">Forfeit</button>
+    </form>
+
 
   </div>
 
