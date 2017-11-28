@@ -71,7 +71,8 @@ public class GetScoreRoute implements Route {
             response.redirect("/game");
         }
         else {
-            httpSession.attribute(PLAYER_SERVICES, null); // Remove the Player Services
+            httpSession.attribute(PLAYER_SERVICES, null); // Reset the Game Status for Next Game
+            playerLobby.getUser(httpSession).setSummoner(false);
         }
 
         Map<String, Object> vm = new HashMap<>();

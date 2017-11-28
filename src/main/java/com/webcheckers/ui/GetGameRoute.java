@@ -44,6 +44,26 @@ public class GetGameRoute implements Route {
         summoner.setSummoner(true);
     }
 
+    private String summonedHandle(Request request, Response response, Map<String, Object> vm) {
+        Session httpSession = request.session();
+        final PlayerServices playerServices = httpSession.attribute(PLAYER_SERVICES);
+        CheckersGame game = playerServices.currentGame();
+        TurnAdministrator turnAdmin = new TurnAdministrator(game.getSummoner(), game.getOpp(), game);
+        Player victor = turnAdmin.isOver();
+        if (turnAdmin.isOver() != null) {
+            httpSession.attribute(SCORE_MESSAGE,victor.toString() + " won the game!");
+            response.redirect("/score");
+            httpSession.attribute(PLAYER_IN_GAME, false);
+            return null;
+        }
+        vm.put(BOARD, game.getBoard());
+        vm.put(OPPONENT, game.getSummoner().toString());
+        vm.put(SUMMONER, game.getSummoner().toString());
+        vm.put(SUMMONER_VIEW, false);
+        vm.put(SUMMONER_TURN, game.isSummonerTurn());
+        vm.put(HAS_CAPTURE_MOVE, turnAdmin.hasCapture(game.getOpp()));
+        return templateEngine.render(new ModelAndView(vm, GAME_NAME));
+    }
     /**
      * {@inheritDoc}
      */
@@ -60,26 +80,15 @@ public class GetGameRoute implements Route {
             summoner = request.queryParams(SUMMONER);
         }
         if ((enemyName == null && !playerlobby.getUser(httpSession).isSummoner())||  enemyName.equals(summoner)) { // This Session was summoned.
-            final PlayerServices playerServices = httpSession.attribute(PLAYER_SERVICES);
-            CheckersGame game = playerServices.currentGame();
-            TurnAdministrator turnAdmin = new TurnAdministrator(game.getSummoner(), game.getOpp(), game);
-            Player victor = turnAdmin.isOver();
-            if (turnAdmin.isOver() != null) {
-                httpSession.attribute(SCORE_MESSAGE,victor.toString() + " won the game!");
-                response.redirect("/score");
-                httpSession.attribute(PLAYER_IN_GAME, false);
-                return null;
-            }
-            vm.put(BOARD, game.getBoard());
-            vm.put(OPPONENT, game.getSummoner().toString());
-            vm.put(SUMMONER, game.getSummoner().toString());
-            vm.put(SUMMONER_VIEW, false);
-            vm.put(SUMMONER_TURN, game.isSummonerTurn());
-            vm.put(HAS_CAPTURE_MOVE, turnAdmin.hasCapture(game.getOpp()));
-            return templateEngine.render(new ModelAndView(vm, GAME_NAME));
+            return summonedHandle(request, response, vm);
         } else {
             Player opponent = new Player(enemyName, false);
             Session opponentSession = this.playerlobby.getSession(opponent);
+
+            if(playerlobby.getUser(opponentSession).isSummoner()) { // They Clicked Right After being Summoned
+                return summonedHandle(request, response, vm);
+            }
+
             boolean oppInGame = opponentSession.attribute(PLAYER_IN_GAME);
             PlayerServices playerServices = httpSession.attribute(PLAYER_SERVICES);
             PlayerServices oppPlayerServices = opponentSession.attribute(PLAYER_SERVICES);
