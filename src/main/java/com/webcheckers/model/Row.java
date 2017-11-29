@@ -24,17 +24,17 @@ public class Row {
         this.startColor=startColor;
         this.index=index;
         this.row=new Square[width];
-        //rowInit();
-        emptyRow();
-        if(this.index == 3) {
-            this.row[4] = new Square ("black", new Piece("white", "pawn"), 4, this.index);
-        }
-        if(this.index == 4) {
-            this.row[3] = new Square("black", new Piece("red", "pawn"), 3, this.index);
-        }
-        if(this.index == 1) {
-          this.row[6] = new Square("black", new Piece("white", "pawn"), 6, this.index);
-        }
+        rowInit();
+        // emptyRow();
+        // if(this.index == 3) {
+        //     this.row[4] = new Square ("black", new Piece("white", "pawn"), 4, this.index);
+        // }
+        // if(this.index == 4) {
+        //     this.row[3] = new Square("black", new Piece("red", "pawn"), 3, this.index);
+        // }
+        // if(this.index == 1) {
+        //   this.row[6] = new Square("black", new Piece("white", "pawn"), 6, this.index);
+        // }
     }
 
     // -------
