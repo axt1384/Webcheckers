@@ -309,6 +309,7 @@
                <input id="capturedInput" type="hidden" name="capture" value=""/>
                <input id="capturedInput2" type="hidden" name="capture2" value=""/>
                <button id="submitButton" type='submit' disabled>Submit</button>
+               <button type='submit' value = "done" name="forfeit">Forfeit</button>
             </form>
             <button id = "pause" type = "button" >
             Pause
@@ -370,6 +371,7 @@
         </p>
       </div>
     </div>
+
 
   </div>
   <div style="position:absolute;

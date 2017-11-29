@@ -56,6 +56,13 @@ public class GetGameRoute implements Route {
             httpSession.attribute(PLAYER_IN_GAME, false);
             return null;
         }
+        if(!(Boolean) request.session().attribute(PLAYER_IN_GAME)) { // The Opponent has Forfeited and Ended the Game
+            String opponent = request.session().attribute(OPPONENT);
+            httpSession.attribute(SCORE_MESSAGE, opponent + " forfeited the match!");
+            response.redirect("/score");
+            httpSession.attribute(PLAYER_IN_GAME, false);
+            return null;
+        }
         vm.put(BOARD, game.getBoard());
         vm.put(OPPONENT, game.getSummoner().toString());
         vm.put(SUMMONER, game.getSummoner().toString());
@@ -72,6 +79,7 @@ public class GetGameRoute implements Route {
         final Session httpSession = request.session();
         final Map<String, Object> vm = new HashMap<>();
         String enemyName, summoner;
+
         if (request.queryParams(SUMMONER) == null) {
             enemyName = GetHomeRoute.returnSpaces(httpSession.attribute(OPPONENT));
             summoner =  GetHomeRoute.returnSpaces(httpSession.attribute(SUMMONER));
@@ -94,7 +102,17 @@ public class GetGameRoute implements Route {
             PlayerServices oppPlayerServices = opponentSession.attribute(PLAYER_SERVICES);
             CheckersGame game, oppGame;
             boolean inGameStatus = false;
+
             if (playerServices != null) {
+
+                if(!(Boolean) request.session().attribute(PLAYER_IN_GAME)) { // The Opponent has Forfeited and Ended the Game
+                    String op = request.session().attribute(OPPONENT);
+                    httpSession.attribute(SCORE_MESSAGE, op + " forfeited the match!");
+                    response.redirect("/score");
+                    httpSession.attribute(PLAYER_IN_GAME, false);
+                    return null;
+                }
+
                 game = playerServices.currentGame();
                 oppGame = oppPlayerServices.currentGame();
                 LOG.config("status:" + (!game.equals(oppGame)));
@@ -142,6 +160,13 @@ public class GetGameRoute implements Route {
                     httpSession.attribute(PLAYER_IN_GAME, false);
                     return null;
                 }
+                turnAdmin = new TurnAdministrator(game.getSummoner(), game.getOpp(), game);
+                if(turnAdmin.isOver() != null){
+                  vm.put(HOME_MESSAGE, victor.toString() + " won the game!");
+                  vm.put(TITLE, "Welcome!");
+                  return templateEngine.render(new ModelAndView(vm, HOME_NAME));
+                }
+
                 vm.put(BOARD, game.getBoard());
                 vm.put(OPPONENT, opponent.toString());
                 vm.put(SUMMONER, summoner);

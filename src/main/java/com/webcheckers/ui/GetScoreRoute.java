@@ -67,7 +67,7 @@ public class GetScoreRoute implements Route {
 
         Session httpSession = request.session();
 
-        if(httpSession.attribute("inGame")) { // Queued for a Game
+        if(httpSession.attribute(PLAYER_IN_GAME)) { // Queued for a Game
             response.redirect("/game");
         }
         else {
