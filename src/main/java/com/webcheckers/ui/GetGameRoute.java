@@ -103,7 +103,7 @@ public class GetGameRoute implements Route {
             CheckersGame game, oppGame;
             boolean inGameStatus = false;
 
-            if (playerServices != null) {
+            if (playerServices != null && oppPlayerServices != null) {
 
                 if(!(Boolean) request.session().attribute(PLAYER_IN_GAME)) { // The Opponent has Forfeited and Ended the Game
                     String op = request.session().attribute(OPPONENT);
