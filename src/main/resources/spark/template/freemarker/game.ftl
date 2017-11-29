@@ -30,22 +30,19 @@
               pauseButton.setAttribute("disabled",false);
           }
           var paused=document.getElementById("pause").getAttribute("disabled");
+          var playerName = ${summonerView?c};
           console.log("paused or nah: ",paused);
-          $.post("/pause?paused="+paused, "", function(data){
+          $.post("/pause?paused="+paused+"&view="+playerName, "", function(data){
               console.log("data: ",data);
-              dragOption(data);
-              if(data=="true"){
+              var dataArr=data.split(",");
+              var isPaused=dataArr[0];
+              var playerPausing=dataArr[1];
+              dragOption(isPaused);
+              if(isPaused=="true"){
                   pauseButton.disabled=true;
                   resumeButton.disabled=false;
-                  var playerName = ${summonerView?c};
-                  if (playerName){
-                      document.getElementById("pauseMessage").innerHTML = "Red has paused the game";
-                      document.getElementById("pauseMessage").style.color = "red";
-                  }
-                  else{
-                      document.getElementById("pauseMessage").innerHTML = "White has paused the game";
-                      document.getElementById("pauseMessage").style.color = "white";
-                  }
+                  document.getElementById("pauseMessage").innerHTML = playerPausing+" has paused the game";
+                  document.getElementById("pauseMessage").style.color = playerPausing;
               }else{
                   pauseButton.disabled=false;
                   resumeButton.disabled=true;
@@ -74,19 +71,15 @@
       var paused=document.getElementById("pause").getAttribute("disabled");
       $.get("/pause", "", function(data){
           console.log("data: ",data);
-          dragOption(data);
-          if(data=="true"){
+          var dataArr=data.split(",");
+          var isPaused=dataArr[0];
+          var playerPausing=dataArr[1];
+          dragOption(isPaused);
+          if(isPaused=="true"){
               pauseButton.disabled=true;
               resumeButton.disabled=false;
-              var playerName = ${summonerView?c};
-              if (playerName){
-                  document.getElementById("pauseMessage").innerHTML = "Red has paused the game";
-                  document.getElementById("pauseMessage").style.color = "red";
-              }
-              else{
-                  document.getElementById("pauseMessage").innerHTML = "White has paused the game";
-                  document.getElementById("pauseMessage").style.color = "white";
-              }
+              document.getElementById("pauseMessage").innerHTML = playerPausing+" has paused the game";
+              document.getElementById("pauseMessage").style.color = playerPausing;
           }else{
               pauseButton.disabled=false;
               resumeButton.disabled=true;
@@ -423,16 +416,12 @@
 
 
   </div>
-  <div style="position:absolute; background: white; border: 1px solid #6ECCFF; width:300px; height:500px; left:61%; top:0px;"
+  <div style="position:absolute; background: white; border: 1px solid #6ECCFF; width:300px; height:690px; left:61%; top:0px;"
     class="theChat" id="chatLog">
-    <div id="chatz">
-
-    </div>
-    <form>
-        <input type="text" id="msg"/>
+    <div id="chatz"></div>
+        <input style="position:relative;width:295px; height:25px; top:637px;" type="text" id="msg"/>
         <br>
-        <input type="button" id="msgSubmit" value="sub"/>
-    </form>
+        <input style="position:relative;width:300px; height:25px; top:634px;" type="button" id="msgSubmit" value="send"/>
   </div>
   <audio id="audio" src="http://www.soundjay.com/button/beep-07.mp3" autostart="false" ></audio>
 

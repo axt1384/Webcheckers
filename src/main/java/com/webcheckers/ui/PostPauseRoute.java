@@ -19,18 +19,25 @@ public class PostPauseRoute implements Route {
   private final Gson gson = new Gson();
   private static final Logger LOG = Logger.getLogger(PostPauseRoute.class.getName());
   public static boolean isPaused=false;
+  public static String playerPaused="";
   /**
    * {@inheritDoc}
    */
   @Override
   public Object handle(Request request, Response response) {
     String paused=request.queryParams("paused");
+    String player=request.queryParams("view");
     LOG.config(paused);
     if(paused.equals("false")){
       isPaused=true;
     }else{
       isPaused=false;
     }
-    return gson.toJson(""+isPaused);
+    if(player.equals("true")){
+      playerPaused="red";
+    }else{
+      playerPaused="white";
+    }
+    return gson.toJson(""+isPaused+","+playerPaused);
   }
 }

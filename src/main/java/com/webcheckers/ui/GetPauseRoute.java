@@ -5,6 +5,7 @@ import spark.*;
 import java.util.logging.Logger;
 
 import static com.webcheckers.ui.PostPauseRoute.isPaused;
+import static com.webcheckers.ui.PostPauseRoute.playerPaused;
 
 public class GetPauseRoute implements Route {
 
@@ -15,6 +16,6 @@ public class GetPauseRoute implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
-    return gson.toJson(""+isPaused);
+    return gson.toJson(""+isPaused+","+playerPaused);
   }
 }
