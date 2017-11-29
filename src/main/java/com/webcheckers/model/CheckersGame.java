@@ -55,10 +55,10 @@ public class CheckersGame {
         Piece temp = board.removePiece(Integer.parseInt(capRow), Integer.parseInt(capCol));
       }
       if (capture2 != ""){
-        String[] capCoords=capture.split("-");
-        String capRow=capCoords[0];
-        String capCol=capCoords[1];
-        Piece temp = board.removePiece(Integer.parseInt(capRow), Integer.parseInt(capCol));
+        String[] capCoords2=capture2.split("-");
+        String capRow2=capCoords2[0];
+        String capCol2=capCoords2[1];
+        Piece temp = board.removePiece(Integer.parseInt(capRow2), Integer.parseInt(capCol2));
       }
       if (!p.getType().equals("king") && ((p.getColor().equals("white") && Integer.parseInt(row) == 7) ||
               (p.getColor().equals("red") && Integer.parseInt(row) == 0))){

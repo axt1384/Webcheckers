@@ -33,7 +33,7 @@ public class Row {
             this.row[3] = new Square("black", new Piece("red", "pawn"), 3, this.index);
         }
         if(this.index == 1) {
-          this.row[6] = new Square("black", new Piece("white", "pawn"), 3, this.index);
+          this.row[6] = new Square("black", new Piece("white", "pawn"), 6, this.index);
         }
     }
 
