@@ -38,7 +38,7 @@ public class CheckersGame {
     /*
     Updates the board based on the move the player or opponent has done during his turn
      */
-    public void updateBoard(String move, String oldPos, String capture){
+    public void updateBoard(String move, String oldPos, String capture, String capture2){
       String[] moveCoords=move.split("-");
       String row=moveCoords[0];
       String col=moveCoords[1];
@@ -53,6 +53,12 @@ public class CheckersGame {
         String capRow=capCoords[0];
         String capCol=capCoords[1];
         Piece temp = board.removePiece(Integer.parseInt(capRow), Integer.parseInt(capCol));
+      }
+      if (capture2 != ""){
+        String[] capCoords2=capture2.split("-");
+        String capRow2=capCoords2[0];
+        String capCol2=capCoords2[1];
+        Piece temp = board.removePiece(Integer.parseInt(capRow2), Integer.parseInt(capCol2));
       }
       if (!p.getType().equals("king") && ((p.getColor().equals("white") && Integer.parseInt(row) == 7) ||
               (p.getColor().equals("red") && Integer.parseInt(row) == 0))){

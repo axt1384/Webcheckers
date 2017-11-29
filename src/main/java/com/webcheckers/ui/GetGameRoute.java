@@ -9,7 +9,6 @@ import com.webcheckers.appl.TurnAdministrator;
 import com.webcheckers.model.CheckersGame;
 import com.webcheckers.model.Player;
 import static com.webcheckers.ui.InterfaceVariable.*;
-import com.webcheckers.appl.TurnAdministrator;
 
 import spark.*;
 
@@ -23,7 +22,6 @@ public class GetGameRoute implements Route {
     private final TemplateEngine templateEngine;
     private final GameCenter gameCenter;
     private PlayerLobby playerlobby;
-    private TurnAdministrator turnAdmin;
     private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
 
     /**
@@ -168,7 +166,6 @@ public class GetGameRoute implements Route {
                   vm.put(TITLE, "Welcome!");
                   return templateEngine.render(new ModelAndView(vm, HOME_NAME));
                 }
-
                 vm.put(BOARD, game.getBoard());
                 vm.put(OPPONENT, opponent.toString());
                 vm.put(SUMMONER, summoner);

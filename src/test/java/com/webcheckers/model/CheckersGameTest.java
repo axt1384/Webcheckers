@@ -31,7 +31,7 @@ public class CheckersGameTest
     Board b = checkers.getBoard();
     assertEquals(b, checkers.getBoard());
 
-    checkers.updateBoard("4-1","5-0","");
+    checkers.updateBoard("4-1","5-0","", "");
     checkers.endTurn();
   }
 }
