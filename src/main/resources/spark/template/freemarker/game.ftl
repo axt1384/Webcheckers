@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+  <meta http-equiv="refresh" content="10">
   <title> Web Checkers</title>
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/game.css">
@@ -21,6 +22,38 @@
               loadLog();
           }, 'json');
       });
+
+      $("#pause, #resume").click(function(){
+          var pauseButton=document.getElementById("pause");
+          var resumeButton=document.getElementById("resume");
+          if(pauseButton.getAttribute("disabled")==null){
+              pauseButton.setAttribute("disabled",false);
+          }
+          var paused=document.getElementById("pause").getAttribute("disabled");
+          console.log("paused or nah: ",paused);
+          $.post("/pause?paused="+paused, "", function(data){
+              console.log("data: ",data);
+              dragOption(data);
+              if(data=="true"){
+                  pauseButton.disabled=true;
+                  resumeButton.disabled=false;
+                  var playerName = ${summonerView?c};
+                  if (playerName){
+                      document.getElementById("pauseMessage").innerHTML = "Red has paused the game";
+                      document.getElementById("pauseMessage").style.color = "red";
+                  }
+                  else{
+                      document.getElementById("pauseMessage").innerHTML = "White has paused the game";
+                      document.getElementById("pauseMessage").style.color = "white";
+                  }
+              }else{
+                  pauseButton.disabled=false;
+                  resumeButton.disabled=true;
+                  document.getElementById("pauseMessage").innerHTML = "";
+              }
+          }, 'json');
+      });
+
   });
     function loadLog(){
       document.getElementById('chatz').innerHTML="";
@@ -31,6 +64,41 @@
         }
       }
       ,'json');
+    }
+    function loadPause(){
+      var pauseButton=document.getElementById("pause");
+      var resumeButton=document.getElementById("resume");
+      if(pauseButton.getAttribute("disabled")==null){
+          pauseButton.setAttribute("disabled",false);
+      }
+      var paused=document.getElementById("pause").getAttribute("disabled");
+      $.get("/pause", "", function(data){
+          console.log("data: ",data);
+          dragOption(data);
+          if(data=="true"){
+              pauseButton.disabled=true;
+              resumeButton.disabled=false;
+              var playerName = ${summonerView?c};
+              if (playerName){
+                  document.getElementById("pauseMessage").innerHTML = "Red has paused the game";
+                  document.getElementById("pauseMessage").style.color = "red";
+              }
+              else{
+                  document.getElementById("pauseMessage").innerHTML = "White has paused the game";
+                  document.getElementById("pauseMessage").style.color = "white";
+              }
+          }else{
+              pauseButton.disabled=false;
+              resumeButton.disabled=true;
+              document.getElementById("pauseMessage").innerHTML = "";
+          }
+      }, 'json');
+    }
+    function update(){
+      //Paused State
+      loadPause();
+      //CHAT
+      loadLog();
     }
   </script>
 
@@ -255,45 +323,8 @@
      }
   </script>
 
-  <script>
-    $(document).ready(function(){
-        $("#pause, #resume").click(function(){
-            var pauseButton=document.getElementById("pause");
-            var resumeButton=document.getElementById("resume");
-            if(pauseButton.getAttribute("disabled")==null){
-                pauseButton.setAttribute("disabled",false);
-            }
-            var paused=document.getElementById("pause").getAttribute("disabled");
-            console.log("paused or nah: ",paused);
-            $.post("/pause?paused="+paused, "", function(data){
-                console.log("data: ",data);
-                dragOption(data);
-                if(data=="true"){
-                    pauseButton.disabled=true;
-                    resumeButton.disabled=false;
-                    var playerName = ${summonerView?c};
-                    if (playerName){
-                        document.getElementById("pauseMessage").innerHTML = "Red has paused the game";
-                        document.getElementById("pauseMessage").style.color = "red";
-
-                    }
-                    else{
-                        document.getElementById("pauseMessage").innerHTML = "White has paused the game";
-                        document.getElementById("pauseMessage").style.color = "white";
-                    }
-                }else{
-                    pauseButton.disabled=false;
-                    resumeButton.disabled=true;
-                    document.getElementById("pauseMessage").innerHTML = "";
-                }
-            }, 'json');
-        });
-
-    });
-  </script>
-
 </head>
-<body onload="setInterval(loadLog,2500);">
+<body onload="update(); setInterval(update,2500);">
   <div style="margin:0;" class="page">
     <h1>Web Checkers</h1>
     <div class="navigation">
@@ -392,13 +423,8 @@
 
 
   </div>
-  <div style="position:absolute;
-  background: white;
-  border: 1px solid #6ECCFF;
-  width:300px;
-  height:500px;
-  left:61%;
-  top:0px;" class="theChat" id="chatLog">
+  <div style="position:absolute; background: white; border: 1px solid #6ECCFF; width:300px; height:500px; left:61%; top:0px;"
+    class="theChat" id="chatLog">
     <div id="chatz">
 
     </div>

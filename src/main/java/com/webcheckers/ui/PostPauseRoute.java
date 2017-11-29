@@ -18,7 +18,7 @@ public class PostPauseRoute implements Route {
 
   private final Gson gson = new Gson();
   private static final Logger LOG = Logger.getLogger(PostPauseRoute.class.getName());
-  private static boolean isPaused=false;
+  public static boolean isPaused=false;
   /**
    * {@inheritDoc}
    */

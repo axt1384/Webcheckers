@@ -172,6 +172,7 @@ public class WebServer {
     post(HOME_URL, new PostSignInRoute(templateEngine, playerlobby));
     post(GAME_URL, new PostGameRoute(templateEngine, gameCenter, playerlobby));
     post(PAUSE_URL, new PostPauseRoute());
+    get(PAUSE_URL, new GetPauseRoute());
     post(CHAT_URL, new PostChatRoute());
     get(CHAT_URL, new GetChatRoute());
     get(GAME_URL, new GetGameRoute(templateEngine, gameCenter, playerlobby));
