@@ -66,13 +66,12 @@ public class WebServer {
    */
   public static final String SIGN_OUT_URL = "/SignedOut";
 
-<<<<<<< Updated upstream
+
   public static final String PAUSE_URL="/pause";
-=======
+
   public static final String CHAT_URL="/chat";
 
   public static final String SUBMIT_URL="/submit";
->>>>>>> Stashed changes
 
   public static final String GAME_URL = "/game";
 
