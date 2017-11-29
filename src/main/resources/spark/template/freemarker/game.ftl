@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-  <meta http-equiv="refresh" content="10">
   <title> Web Checkers</title>
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/game.css">
@@ -160,7 +159,57 @@
 
       }
     }
+
+    function dragOption(pauseState){
+        var p = document.getElementsByClassName("Piece");
+        for (var i = 0; i < p.length; i++){
+          if (pauseState == "true"){
+            p[i].setAttribute("draggable", false);
+          }
+          else{
+            p[i].setAttribute("draggable", true);
+          }
+        }
+     }
   </script>
+
+  <script>
+    $(document).ready(function(){
+        $("#pause, #resume").click(function(){
+            var pauseButton=document.getElementById("pause");
+            var resumeButton=document.getElementById("resume");
+            if(pauseButton.getAttribute("disabled")==null){
+                pauseButton.setAttribute("disabled",false);
+            }
+            var paused=document.getElementById("pause").getAttribute("disabled");
+            console.log("paused or nah: ",paused);
+            $.post("/pause?paused="+paused, "", function(data){
+                console.log("data: ",data);
+                dragOption(data);
+                if(data=="true"){
+                    pauseButton.disabled=true;
+                    resumeButton.disabled=false;
+                    var playerName = ${summonerView?c};
+                    if (playerName){
+                        document.getElementById("pauseMessage").innerHTML = "Red has paused the game";
+                        document.getElementById("pauseMessage").style.color = "red";
+
+                    }
+                    else{
+                        document.getElementById("pauseMessage").innerHTML = "White has paused the game";
+                        document.getElementById("pauseMessage").style.color = "white";
+                    }
+                }else{
+                    pauseButton.disabled=false;
+                    resumeButton.disabled=true;
+                    document.getElementById("pauseMessage").innerHTML = "";
+                }
+            }, 'json');
+        });
+
+    });
+  </script>
+
 </head>
 <body>
   <div class="page">
@@ -189,11 +238,24 @@
           </fieldset>
           <fieldset id="game-toolbar">
             <legend>Controls</legend>
-            <div class="toolbar"></div>
+            <div class="toolbar">
+            <form action="/game" method="POST">
+               <input id="moveInput" type="hidden" name="move" value=""/>
+               <input id="oldPosInput" type="hidden" name="oldPos" value=""/>
+               <input id="capturedInput" type="hidden" name="capture" value=""/>
+               <button id="submitButton" type='submit' disabled>Submit</button>
+            </form>
+            <button id = "pause" type = "button" >
+            Pause
+            </button>
+            <button id = "resume" type = "button" disabled>
+            Resume
+            </button>
+            </div>
           </fieldset>
         </div>
 
-        <div class="game-board">
+         <div class="game-board">
           <table id="game-board">
             <tbody>
             <#list board.getBoard(opponent,summoner) as row>
@@ -238,15 +300,11 @@
           </table>
         </div>
       </div>
-
+      <div>
+        <p id = "pauseMessage" style = "font-size: 30px;">
+        </p>
+      </div>
     </div>
-    <form action="/game" method="POST">
-      <input id="moveInput" type="hidden" name="move" value=""/>
-      <input id="oldPosInput" type="hidden" name="oldPos" value=""/>
-      <input id="capturedInput" type="hidden" name="capture" value=""/>
-      <button id="submitButton" type='submit' disabled>Submit</button>
-    </form>
-
 
   </div>
 
