@@ -117,8 +117,6 @@ public class GetHomeRoute implements Route {
       if(httpSession.attribute("inGame")) {
         response.redirect("/game");
       }
-
-
       vm.put(USERNAME, this.playerlobby.getUser(httpSession).toString());
       vm.put(SIGNIN, "<a href=/SignedOut>Sign Out</a>");
       vm.put(PLAYERS, addPlayersList(playerlobby.getUser(httpSession).toString(), playerlobby));

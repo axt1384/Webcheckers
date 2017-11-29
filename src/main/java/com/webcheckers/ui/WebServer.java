@@ -67,7 +67,13 @@ public class WebServer {
    */
   public static final String SIGN_OUT_URL = "/SignedOut";
 
+<<<<<<< Updated upstream
   public static final String PAUSE_URL="/pause";
+=======
+  public static final String CHAT_URL="/chat";
+
+  public static final String SUBMIT_URL="/submit";
+>>>>>>> Stashed changes
 
   public static final String GAME_URL = "/game";
   //
@@ -164,6 +170,8 @@ public class WebServer {
     post(HOME_URL, new PostSignInRoute(templateEngine, playerlobby));
     post(GAME_URL, new PostGameRoute(templateEngine, gameCenter, playerlobby));
     post(PAUSE_URL, new PostPauseRoute());
+    post(CHAT_URL, new PostChatRoute());
+    get(CHAT_URL, new GetChatRoute());
     get(GAME_URL, new GetGameRoute(templateEngine, gameCenter, playerlobby));
     LOG.config("WebServer is initialized.");
   }

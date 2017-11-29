@@ -22,6 +22,7 @@ public class GetGameRoute implements Route {
     private PlayerLobby playerlobby;
     private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
     private static int counter=0;
+    
     /**
      * The constructor for the {@code GET /game} route handler.
      *
@@ -47,7 +48,7 @@ public class GetGameRoute implements Route {
      * {@inheritDoc}
      */
     @Override
-    public String handle(Request request, Response response) {
+    public Object handle(Request request, Response response) {
         final Session httpSession = request.session();
         final Map<String, Object> vm = new HashMap<>();
         String enemyName, summoner;

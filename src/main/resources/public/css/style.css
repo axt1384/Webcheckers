@@ -46,6 +46,16 @@ div.page {
     margin: 30px auto;
 }
 
+div.theChat{
+  position:absolute;
+  background: white;
+  border: 1px solid #6ECCFF;
+  width:300px;
+  height:500px;
+  left:61%;
+  top:0px;
+}
+
 div.page h1 {
     background: #6ECCFF;
     margin: 0;

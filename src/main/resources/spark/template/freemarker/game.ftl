@@ -6,6 +6,35 @@
   <link rel="stylesheet" href="/css/game.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script>
+  $(document).ready(function(){
+      $("#msgSubmit").click(function(){
+          var playerView=${summonerView?c};
+          var player="";
+          if(playerView){
+              player="red: ";
+          }else{
+              player="white: ";
+          }
+          var msg=$("#msg").val();
+          $("#msg").text("");
+          $.post("/chat?message="+player+msg, '', function(data){
+              loadLog();
+          }, 'json');
+      });
+  });
+    function loadLog(){
+      document.getElementById('chatz').innerHTML="";
+      $.get("/chat",'',function(data){
+        var dataArr=data.split(",");
+        for(var i=0; i<dataArr.length; i++){
+          document.getElementById('chatz').innerHTML += dataArr[i];
+        }
+      }
+      ,'json');
+    }
+  </script>
+
+  <script>
     var moved=false;
     function allowDrop(e) {
         e.preventDefault();
@@ -211,11 +240,11 @@
   </script>
 
 </head>
-<body>
-  <div class="page">
+<body onload="setInterval(loadLog,2500);">
+  <div style="margin:0;" class="page">
     <h1>Web Checkers</h1>
     <div class="navigation">
-    <div class="body">
+    <div style="width:60%"class="body">
       <p id="help_text"></p>
       <div>
         <div id="game-controls">
@@ -307,7 +336,22 @@
     </div>
 
   </div>
+  <div style="position:absolute;
+  background: white;
+  border: 1px solid #6ECCFF;
+  width:300px;
+  height:500px;
+  left:61%;
+  top:0px;" class="theChat" id="chatLog">
+    <div id="chatz">
 
+    </div>
+    <form>
+        <input type="text" id="msg"/>
+        <br>
+        <input type="button" id="msgSubmit" value="sub"/>
+    </form>
+  </div>
   <audio id="audio" src="http://www.soundjay.com/button/beep-07.mp3" autostart="false" ></audio>
 
   <script data-main="js/game/index" src="js/require.js"></script>
