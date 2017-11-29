@@ -36,7 +36,7 @@
 
   <script>
     var moved=false;
-    function allowDrop(e) {
+     function allowDrop(e) {
         e.preventDefault();
     }
     function drag(e) {

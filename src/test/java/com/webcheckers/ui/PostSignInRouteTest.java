@@ -70,4 +70,26 @@ public class PostSignInRouteTest {
 
         assertEquals("home.ftl", myModelView.viewName);
     }
+
+    @Test
+    public void invalid(){
+      when(request.queryParams("username")).thenReturn("user");
+      when(lobby.SignIn(session,new Player("user"))).thenReturn("error");
+      final MyModelAndView myModelView = new MyModelAndView();
+      when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
+
+      this.CuT.handle(request,response);
+
+      final Object model = myModelView.model;
+      assertNotNull(model);
+      assertTrue(model instanceof Map);
+
+      final Map<String,Object> vm = (Map<String,Object>) model;
+
+      assertEquals("Welcome!", vm.get("title"));
+      assertEquals("user",vm.get("username"));
+      assertEquals("error",vm.get("signInMessage"));
+
+      assertEquals("signin.ftl",myModelView.viewName);
+    }
 }

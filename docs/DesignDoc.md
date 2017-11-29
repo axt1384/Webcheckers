@@ -176,4 +176,4 @@ Essentially this the brains of the game part of the application, it is responsib
 
 ### Dynamic models
 
-![State Diagram](state.png)
+![State Diagram](state2.png)
