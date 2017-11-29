@@ -22,6 +22,8 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.PlayerServices;
 import com.webcheckers.model.CheckersGame;
 import com.webcheckers.model.Player;
+import com.webcheckers.appl.TurnAdministrator;
+import com.webcheckers.model.Movement.PossibleMoves;
 import com.webcheckers.ui.PostGameRoute;
 
 /**
@@ -42,7 +44,10 @@ import com.webcheckers.ui.PostGameRoute;
     private GameCenter gameCenter;
     private PlayerLobby playerLobby;
     private PlayerServices services;
+    private Player player;
     private CheckersGame game;
+    private TurnAdministrator admin;
+    private PossibleMoves moves;
 
     /**
      * setup the new mock objects for each test
@@ -58,13 +63,16 @@ import com.webcheckers.ui.PostGameRoute;
        gameCenter = new GameCenter();
        playerLobby = mock(PlayerLobby.class);
        services = mock(PlayerServices.class);
+       player = mock(Player.class);
        game = mock(CheckersGame.class);
+       admin = mock(TurnAdministrator.class);
+       moves = mock(PossibleMoves.class);
 
        //create a CuT for the tests
        CuT = new PostGameRoute(engine, gameCenter, playerLobby);
      }
 
-     @Test
+     //@Test
      public void postThings(){
        when(request.queryParams("move")).thenReturn("3-2");
        when(request.queryParams("oldPos")).thenReturn("5-0");
@@ -72,12 +80,15 @@ import com.webcheckers.ui.PostGameRoute;
 
        //final PlayerServices services = gameCenter.newPlayerServices();
        when(session.attribute("playerServices")).thenReturn(services);
-       //String myName = "user";
-       //String enemyName = "bob";
-       //final Player user = new Player(myName);
-       //final Player opponent = new Player(enemyName,false);
+       String myName = "user";
+       String enemyName = "bob";
+       final Player user = new Player(myName);
+       final Player opponent = new Player(enemyName,false);
        //final CheckersGame game = services.newGame(user,opponent);
        when(services.currentGame()).thenReturn(game);
+       when(game.getSummoner()).thenReturn(user);
+       when(game.getOpp()).thenReturn(opponent);
+       when(admin.isOver()).thenReturn(user);
 
        this.CuT.handle(request,response);
      }

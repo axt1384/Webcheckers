@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static com.webcheckers.ui.InterfaceVariable.*;
+
 import spark.*;
 
 /**
@@ -62,9 +64,9 @@ public class GetSignInRoute implements Route {
 
         Map<String, Object> vm = new HashMap<>();
 
-        vm.put("title", "Welcome!");
-        vm.put("signInMessage", "");
+        vm.put(TITLE, "Welcome!");
+        vm.put(SIGN_IN_MESSAGE, "");
 
-        return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
+        return templateEngine.render(new ModelAndView(vm , SIGN_IN_NAME));
     }
 }

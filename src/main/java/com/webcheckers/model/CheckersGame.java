@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class CheckersGame {
+
+    // ----------
+    // Attributes
+    // ----------
+
     private static final Logger LOG = Logger.getLogger(CheckersGame.class.getName());
 
     private Board board;
@@ -13,6 +18,10 @@ public class CheckersGame {
     private int id;
     private Player summoner, opp;
     private boolean summonerTurn;
+
+    // ------------
+    // Constructors
+    // ------------
 
     public CheckersGame(GameCenter gameCenter, Player summoner, Player opp){
         this.gameCenter=gameCenter;
@@ -22,10 +31,14 @@ public class CheckersGame {
         this.summonerTurn=true;
     }
 
+    // -------
+    // Methods
+    // -------
+
     /*
     Updates the board based on the move the player or opponent has done during his turn
      */
-    public void updateBoard(String move, String oldPos, String capture){
+    public void updateBoard(String move, String oldPos, String capture, String capture2){
       String[] moveCoords=move.split("-");
       String row=moveCoords[0];
       String col=moveCoords[1];
@@ -36,6 +49,12 @@ public class CheckersGame {
       board.setPiece(p, Integer.parseInt(row), Integer.parseInt(col));
 
       if (capture != ""){
+        String[] capCoords=capture.split("-");
+        String capRow=capCoords[0];
+        String capCol=capCoords[1];
+        Piece temp = board.removePiece(Integer.parseInt(capRow), Integer.parseInt(capCol));
+      }
+      if (capture2 != ""){
         String[] capCoords=capture.split("-");
         String capRow=capCoords[0];
         String capCol=capCoords[1];
@@ -82,5 +101,4 @@ public class CheckersGame {
     public Board getBoard(){
         return board;
     }
-
 }

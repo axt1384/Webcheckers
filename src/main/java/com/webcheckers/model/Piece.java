@@ -5,13 +5,25 @@ package com.webcheckers.model;
  */
 public class Piece {
 
+    // ----------
+    // Attributes
+    // ----------
+
     private String color;
     private String type;
+
+    // ------------
+    // Constructors
+    // ------------
 
     public Piece(String color, String type){
         this.color = color;
         this.type = type;
     }
+
+    // -------
+    // Methods
+    // -------
 
     /*
     Returns the piece's type

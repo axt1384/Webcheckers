@@ -35,6 +35,7 @@
   </script>
 
   <script>
+    var moved2=false;
     var moved=false;
      function allowDrop(e) {
         e.preventDefault();
@@ -82,11 +83,19 @@
         var capPos= document.getElementById("piece-"+capRow+"-"+capCol);
         var capPos2= document.getElementById("piece-"+capRow+"-"+capCol2);
         if ((squareCol==pieceCol-2)&&(capPos.dataset.color==opposite)){
-          document.getElementById("capturedInput").value = capRow+"-"+capCol;
+          if(moved==false){
+            document.getElementById("capturedInput").value = capRow+"-"+capCol;
+          }else{
+            document.getElementById("capturedInput2").value = capRow+"-"+capCol;
+          }
           return (squareCol==pieceCol-2)&&(capPos.dataset.color==opposite);
         }
         else if ((squareCol==pieceCol+2)&&(capPos2.dataset.color==opposite)){
-          document.getElementById("capturedInput").value = capRow+"-"+capCol2;
+          if(moved==false){
+            document.getElementById("capturedInput").value = capRow+"-"+capCol2;
+          }else{
+            document.getElementById("capturedInput2").value = capRow+"-"+capCol2;
+          }
           return ((squareCol==pieceCol+2)&&(capPos2.dataset.color==opposite));
         }
       }
@@ -104,31 +113,47 @@
         console.log("4:"+capPos4!=null);
         if ((squareCol==pieceCol-2)&&(squareRow==pieceRow-2)&&(capPos!=null)&&(capPos.dataset.color==opposite)){
           console.log("used capPos1");
-          document.getElementById("capturedInput").value = capRow+"-"+capCol;
+          if(moved==false){
+            document.getElementById("capturedInput").value = capRow+"-"+capCol;
+          }else{
+            document.getElementById("capturedInput2").value = capRow+"-"+capCol;
+          }
           console.log(document.getElementById("capturedInput").value);
           return true;
         }
         else if ((squareCol==pieceCol+2)&&(squareRow==pieceRow-2)&&(capPos2!=null)&&(capPos2.dataset.color==opposite)){
           console.log("used capPos2");
-          document.getElementById("capturedInput").value = capRow+"-"+capCol2;
+          if(moved==false){
+            document.getElementById("capturedInput").value = capRow+"-"+capCol2;
+          }else{
+            document.getElementById("capturedInput2").value = capRow+"-"+capCol2;
+          }
           console.log(document.getElementById("capturedInput").value);
           return true;
         }
         else if ((squareCol==pieceCol-2)&&(squareRow==pieceRow+2)&&(capPos3!=null)&&(capPos3.dataset.color==opposite)){
           console.log("used capPos3");
-          document.getElementById("capturedInput").value = capRow2+"-"+capCol;
+          if(moved==false){
+            document.getElementById("capturedInput").value = capRow2+"-"+capCol;
+          }else{
+            document.getElementById("capturedInput2").value = capRow2+"-"+capCol;
+          }
           console.log(document.getElementById("capturedInput").value);
           return true;
         }
         else if ((squareCol==pieceCol+2)&&(squareRow==pieceRow+2)&&(capPos4!=null)&&(capPos4.dataset.color==opposite)){
           console.log("used capPos4");
-          document.getElementById("capturedInput").value = capRow2+"-"+capCol2;
+          if(moved==false){
+            document.getElementById("capturedInput").value = capRow2+"-"+capCol2;
+          }else{
+            document.getElementById("capturedInput2").value = capRow2+"-"+capCol2;
+          }
           console.log(document.getElementById("capturedInput").value);
           return true;
         }
       }
     }
-    function drop(e,square,turn,view) {
+    function drop(e,square,turn,view,cap) {
       var data = e.dataTransfer.getData("text");
       var piece=document.getElementById(data);
       if(isPlayerTurn(piece, turn,view)){
@@ -139,7 +164,7 @@
         var pieceRow=parseInt(piecePos[1]);
         var pieceCol=parseInt(piecePos[2]);
         if ((piece.dataset.type == "king") && withinColRange(squareCol, pieceCol) &&
-            (squareRow == pieceRow + 1 || squareRow == pieceRow - 1) && square.childNodes.length < 2 && moved==false) {
+            (squareRow == pieceRow + 1 || squareRow == pieceRow - 1) && square.childNodes.length < 2 && moved==false && cap==false) {
             e.preventDefault();
             e.target.appendChild(piece);
             document.getElementById("moveInput").value=squareRow+"-"+squareCol;
@@ -148,16 +173,21 @@
             document.getElementById("submitButton").disabled=false;
         }
         else if ((piece.dataset.type == "king") && (squareRow == pieceRow + 2 || squareRow == pieceRow - 2) && withinCapColRange(squareCol, squareRow, pieceCol, pieceRow, turn)
-             && square.childNodes.length < 2 && moved==false) {
+             && square.childNodes.length < 2 && moved2==false ) {
             e.preventDefault();
             e.target.appendChild(piece);
-            document.getElementById("moveInput").value=squareRow+"-"+squareCol;
-            document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
-            moved=true;
+            if(moved==false){
+              document.getElementById("moveInput").value=squareRow+"-"+squareCol;
+              document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
+              moved=true;
+            }else{
+              document.getElementById("moveInput").value=squareRow+"-"+squareCol;
+              moved2=true;
+            }
             document.getElementById("submitButton").disabled=false;
         }
         else if(withinRowRange(squareRow, pieceRow, turn) && withinColRange(squareCol, pieceCol)
-            && square.childNodes.length < 2 && moved==false){
+            && square.childNodes.length < 2 && moved==false && cap==false){
           e.preventDefault();
           e.target.appendChild(piece);
           document.getElementById("moveInput").value=squareRow+"-"+squareCol;
@@ -171,12 +201,17 @@
             piece.src = "../img/king-piece-white.svg";
           }
         }else if (withinCapRowRange(squareRow, pieceRow, turn) && withinCapColRange(squareCol, squareRow, pieceCol, pieceRow, turn)
-                  && square.childNodes.length < 2 && moved==false){
+                  && square.childNodes.length < 2 && moved2==false ){
           e.preventDefault();
           e.target.appendChild(piece);
-          document.getElementById("moveInput").value=squareRow+"-"+squareCol;
-          document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
-          moved=true;
+          if(moved==false){
+            document.getElementById("moveInput").value=squareRow+"-"+squareCol;
+            document.getElementById("oldPosInput").value=pieceRow+"-"+pieceCol;
+            moved=true;
+          }else{
+            document.getElementById("moveInput").value=squareRow+"-"+squareCol;
+            moved2=true;
+          }
           document.getElementById("submitButton").disabled=false;
           if (piece.dataset.color == "red" && squareRow == 0){
               piece.src = "../img/king-piece-red.svg";
@@ -272,6 +307,7 @@
                <input id="moveInput" type="hidden" name="move" value=""/>
                <input id="oldPosInput" type="hidden" name="oldPos" value=""/>
                <input id="capturedInput" type="hidden" name="capture" value=""/>
+               <input id="capturedInput2" type="hidden" name="capture2" value=""/>
                <button id="submitButton" type='submit' disabled>Submit</button>
             </form>
             <button id = "pause" type = "button" >
@@ -290,16 +326,16 @@
             <#list board.getBoard(opponent,summoner) as row>
               <tr data-row="${row.getIndex()}">
               <#list row.getRow(opponent,summoner) as space>
-                <td data-cell="${space.getIndex()}">
+                <td data-cell="${space.getColumn()}">
                     <#if space.isValid() >
                         <div class="Space"
-                            id="${row.getIndex()}-${space.getIndex()}"
-                            ondrop="drop(event,this,${summonerTurn?c},${summonerView?c});"
+                            id="${row.getIndex()}-${space.getColumn()}"
+                            ondrop="drop(event,this,${summonerTurn?c},${summonerView?c},${hasCapture?c});"
                             ondragover="allowDrop(event);">
                             <#if space.hasPiece()>
                               <#if space.isValid()>
                                 <#if space.getPieceType() != "king">
-                                  <img id="piece-${row.getIndex()}-${space.getIndex()}"
+                                  <img id="piece-${row.getIndex()}-${space.getColumn()}"
                                     src="../img/single-piece-${space.getPieceColor()}.svg"
                                     class="Piece"
                                     data-type="${space.getPieceType()}"
@@ -308,7 +344,7 @@
                                     ondragstart="drag(event,this,${summonerTurn?c});"
                                   />
                                 <#else>
-                                  <img id="piece-${row.getIndex()}-${space.getIndex()}"
+                                  <img id="piece-${row.getIndex()}-${space.getColumn()}"
                                     src="../img/king-piece-${space.getPieceColor()}.svg"
                                     class="Piece"
                                     data-type="${space.getPieceType()}"

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static com.webcheckers.ui.InterfaceVariable.*;
 import com.webcheckers.appl.PlayerLobby;
 import spark.ModelAndView;
 import spark.Request;
@@ -56,16 +57,17 @@ public class GetSignOutRoute implements Route {
         Map<String, Object> vm = new HashMap<>();
 
         this.playerlobby.SignOut(request.session()); // SignOut
-        vm.put("username", ""); // No Longer Have Username
+        vm.put(USERNAME, ""); // No Longer Have Username
 
-        vm.put("title", "Welcome!");
+        vm.put(TITLE, "Welcome!");
 
-        vm.put("showPlayers", "<p>Please Sign In to see players.</p>");
-        vm.put("numberUsers", GetHomeRoute.showNumber(this.playerlobby));
+        vm.put(SHOW_PLAYERS, "<p>Please Sign In to see players.</p>");
+        vm.put(NUMBER_USERS, GetHomeRoute.showNumber(this.playerlobby));
 
-        vm.put("sign", "<a href=/SignIn>Sign In</a>");
-        vm.put("gameError", "");
-        return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+        vm.put(SIGN, "<a href=/SignIn>Sign In</a>");
+        vm.put(HOME_MESSAGE, "");
+
+        return templateEngine.render(new ModelAndView(vm, HOME_NAME));
     }
 }
 

@@ -6,46 +6,93 @@ import java.util.logging.Logger;
 
 public class Row {
 
-    private int width;
+    // ----------
+    // Attributes
+    // ----------
+
+    private int width; // Limit
     private String startColor;
-    private Square[] row;
-    private int index;
+    private Square[] row; // Series of Squares that Make up the Row
+    private int index; // Number Representing Row
+
+    // ------------
+    // Constructors
+    // ------------
 
     public Row(int width, String startColor, int index){
         this.width=width;
         this.startColor=startColor;
         this.index=index;
         this.row=new Square[width];
-        rowInit();
+        //rowInit();
+        emptyRow();
+        if(this.index == 3) {
+            this.row[4] = new Square ("black", new Piece("white", "pawn"), 4, this.index);
+        }
+        if(this.index == 4) {
+            this.row[3] = new Square("black", new Piece("red", "pawn"), 3, this.index);
+        }
+        if(this.index == 1) {
+          this.row[6] = new Square("black", new Piece("white", "pawn"), 3, this.index);
+        }
     }
+
+    // -------
+    // Methods
+    // -------
 
     /*
     Initializes the row array with square arrays and populates the squares with pieces
      */
-    private void rowInit(){
-        for(int i = 0; i < width; i++){
+    private void rowInit() {
+        for (int i = 0; i < width; i++) {
+
             Piece piece;
-            if(index < 3){
-                piece=new Piece("white","pawn");
-            }else if (index > 4){
-                piece=new Piece("red","pawn");
-            }else{
+            if (index < 3) {
+                piece = new Piece("white", "pawn");
+            } else if (index > 4) {
+                piece = new Piece("red", "pawn");
+            } else {
                 piece = null;
             }
+            if (startColor.equals("white")) {
+                if (i % 2 == 0) {
+                    piece = null;
+                    row[i] = new Square("white", piece, i, this.index);
+                } else {
+                    row[i] = new Square("black", piece, i, this.index);
+                }
+            }
+            if (startColor.equals("black")) {
+                if (i % 2 == 0) {
+                    row[i] = new Square("black", piece, i, this.index);
+                } else {
+                    piece = null;
+                    row[i] = new Square("white", piece, i, this.index);
+                }
+            }
+        }
+    }
+
+    /*
+    Used to help create a simple end game board.
+     */
+    private void emptyRow() {
+        for(int i = 0; i < width; i++){
             if(startColor.equals("white")){
                 if(i%2 == 0){
-                    row[i] = new Square("white",piece,i);
+                    row[i] = new Square("white",null,i, this.index);
                 }
                 else{
-                    row[i] = new Square("black",piece,i);
+                    row[i] = new Square("black",null,i, this.index);
                 }
             }
             if(startColor.equals("black")){
                 if(i % 2 == 0){
-                    row[i]=new Square("black",piece,i);
+                    row[i]=new Square("black",null,i, this.index);
                 }
                 else{
-                    row[i]=new Square("white",piece,i);
+                    row[i]=new Square("white",null,i, this.index);
                 }
             }
         }
@@ -57,6 +104,7 @@ public class Row {
     public int getIndex(){
         return index;
     }
+
 
     /*
     Removes the piece at the row's column
@@ -72,6 +120,11 @@ public class Row {
       row[col].setPiece(piece);
 
     }
+
+    public Square getSquare(int col) {
+        return this.row[col];
+    }
+
 
     /*
     Returns the row

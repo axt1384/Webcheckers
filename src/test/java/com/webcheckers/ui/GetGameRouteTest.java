@@ -22,7 +22,7 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.PlayerServices;
 import com.webcheckers.model.CheckersGame;
 import com.webcheckers.model.Player;
-import com.webcheckers.ui.GetGameRoute;
+import static com.webcheckers.ui.InterfaceVariable.*;
 
 /**
  * The unit test suite for the {@link GetGameRoute} component.
@@ -41,6 +41,7 @@ public class GetGameRouteTest{
   private TemplateEngine engine;
   private GameCenter gameCenter;
   private PlayerLobby playerLobby;
+  private PlayerServices service;
 
   /**
    * setup the new mock objects for each test
@@ -55,6 +56,7 @@ public class GetGameRouteTest{
      engine = mock(TemplateEngine.class);
      gameCenter = new GameCenter();
      playerLobby = mock(PlayerLobby.class);
+     service = mock(PlayerServices.class);
 
      //create a CuT for the tests
      CuT = new GetGameRoute(engine, gameCenter, playerLobby);
@@ -90,12 +92,12 @@ public class GetGameRouteTest{
 
       //@SupressWarnings("unchecked")
       final Map<String,Object> vm = (Map<String,Object>) model;
-      assertEquals(game.getBoard(), vm.get(GetGameRoute.BOARD));
+      assertEquals(game.getBoard(), vm.get(BOARD));
       assertEquals("user", vm.get("opponent"));
       assertEquals("user", vm.get("summoner"));
       assertEquals(true, vm.get("summonerTurn"));
 
-      assertEquals(GetGameRoute.VIEW_NAME, myModelView.viewName);
+      assertEquals(GAME_NAME, myModelView.viewName);
     }
 
     /**
@@ -124,6 +126,7 @@ public class GetGameRouteTest{
 
       when(playerLobby.getSession(opponent)).thenReturn(sessionOpp);
       when(sessionOpp.attribute("inGame")).thenReturn(false);
+      when(sessionOpp.attribute("playerServices")).thenReturn(services);
       //when(any(PlayerLobby.class).getSession(opponent)).thenReturn(sessionOpp);
       CuT.handle(request, response);
 
@@ -133,12 +136,12 @@ public class GetGameRouteTest{
 
       //@SupressWarnings("unchecked")
       final Map<String,Object> vm = (Map<String,Object>) model;
-      assertEquals(game.getBoard(), vm.get(GetGameRoute.BOARD));
+      assertEquals(game.getBoard(), vm.get(BOARD));
       assertEquals("bob", vm.get("opponent"));
       assertEquals("user", vm.get("summoner"));
       assertEquals(true, vm.get("summonerTurn"));
 
-      assertEquals(GetGameRoute.VIEW_NAME, myModelView.viewName);
+      assertEquals(GAME_NAME, myModelView.viewName);
     }
 
     /**
@@ -146,9 +149,9 @@ public class GetGameRouteTest{
      */
     @Test
     public void new_game_opp_in_game(){
-      final PlayerServices services = gameCenter.newPlayerServices();
-      when(session.attribute("playerServices")).thenReturn(services);
-      final CheckersGame game = services.currentGame();
+      //final PlayerServices services = gameCenter.newPlayerServices();
+      when(session.attribute("playerServices")).thenReturn(null);
+      //final CheckersGame game = service.currentGame();
 
       String myName = "user";
       String enemyName = "bob";
@@ -168,7 +171,9 @@ public class GetGameRouteTest{
       when(playerLobby.getSession(opponent)).thenReturn(sessionOpp);
       when(sessionOpp.attribute("inGame")).thenReturn(true);
       when(playerLobby.getUser(session)).thenReturn(user);
-      //when(any(PlayerLobby.class).getSession(opponent)).thenReturn(sessionOpp);
+      when(sessionOpp.attribute("playerServices")).thenReturn(service);
+      //when(service.currentGame()).thenReturn(game);
+      //when(game.equals(game)).thenReturn(false);
       CuT.handle(request, response);
 
       final Object model = myModelView.model;
@@ -177,7 +182,7 @@ public class GetGameRouteTest{
 
       //@SupressWarnings("unchecked")
       final Map<String,Object> vm = (Map<String,Object>) model;
-      assertEquals("<p>The player bob is already in game; please wait or " +
+      assertEquals("<p>The player bob or you are already in game; please wait or " +
               "choose another opponent.</p>", vm.get("gameError"));
       assertEquals("user", vm.get("username"));
       assertEquals("<a href=/SignedOut>Sign Out</a>", vm.get("sign"));
@@ -209,12 +214,12 @@ public class GetGameRouteTest{
 
       //@SupressWarnings("unchecked")
       final Map<String,Object> vm = (Map<String,Object>) model;
-      assertEquals(game.getBoard(), vm.get(GetGameRoute.BOARD));
+      assertEquals(game.getBoard(), vm.get(BOARD));
       assertEquals("", vm.get("opponent"));
       assertEquals("", vm.get("summoner"));
       assertEquals(true, vm.get("summonerTurn"));
 
-      assertEquals(GetGameRoute.VIEW_NAME, myModelView.viewName);
+      assertEquals(GAME_NAME, myModelView.viewName);
     }
 
     // test for making the new game from scratch

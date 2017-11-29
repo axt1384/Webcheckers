@@ -4,29 +4,27 @@ import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.PlayerServices;
 
+import com.webcheckers.appl.TurnAdministrator;
 import com.webcheckers.model.CheckersGame;
 import com.webcheckers.model.Player;
 import spark.*;
 import java.util.logging.Logger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import static com.webcheckers.ui.InterfaceVariable.*;
 
 public class PostGameRoute implements Route {
 
-    static final String VIEW_NAME = "game.ftl";
-    static final String BOARD="board";
     private final TemplateEngine templateEngine;
     private final GameCenter gameCenter;
-    private PlayerLobby playerlobby;
     private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
-    private static int counter=0;
+
+
     /**
      * The constructor for the {@code GET /game} route handler.
      *
-     * @param templateEngine
-     *    The {@link TemplateEngine} used for rendering page HTML.
+     * @param templateEngine The {@link TemplateEngine} used for rendering page HTML.
      */
     PostGameRoute(final TemplateEngine templateEngine, final GameCenter gameCenter, PlayerLobby playerlobby) {
         // validation
@@ -34,7 +32,6 @@ public class PostGameRoute implements Route {
         //
         this.templateEngine = templateEngine;
         this.gameCenter = gameCenter;
-        this.playerlobby = playerlobby;
     }
 
     /**
@@ -42,14 +39,22 @@ public class PostGameRoute implements Route {
      */
     @Override
     public String handle(Request request, Response response) {
+
         final Session httpSession = request.session();
-        String move= request.queryParams("move");
-        String oldPos= request.queryParams("oldPos");
-        String capture = request.queryParams("capture");
-        final PlayerServices playerServices = httpSession.attribute("playerServices");
+
+        String move = request.queryParams(MOVE);
+        String oldPos = request.queryParams(OLD_POSISTION);
+        String capture = request.queryParams(CAPTURE);
+        String capture2 = request.queryParams("capture2");
+        final PlayerServices playerServices = httpSession.attribute(PLAYER_SERVICES);
         CheckersGame game = playerServices.currentGame();
-        game.updateBoard(move, oldPos,capture);
+
+        game.updateBoard(move, oldPos, capture, capture2);
         game.endTurn();
+
+        Map<String, Object> vm = new HashMap<>();
+        vm.put(SUMMONER_TURN, game.isSummonerTurn());
+
         response.redirect("/game");
         return null;
     }

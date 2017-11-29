@@ -8,9 +8,9 @@ import java.util.logging.Logger;
 
 import com.webcheckers.appl.PlayerLobby;
 
-import com.webcheckers.appl.PlayerServices;
-import com.webcheckers.model.CheckersGame;
 import spark.*;
+
+import static com.webcheckers.ui.InterfaceVariable.*;
 
 /**
  * The UI Controller to GET the Home page.
@@ -23,17 +23,11 @@ public class GetHomeRoute implements Route {
   // ----------
   // Attributes
   // ----------
+
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
-  private PlayerLobby playerlobby;
+  private PlayerLobby playerLobby;
   private final TemplateEngine templateEngine;
-  static final String BOARD = "board";
-  public static final String TITLE = "title";
-  public static final String USERNAME = "username";
-  public static final String SIGNIN = "sign";
-  public static final String PLAYERS="showPlayers";
-  public static final String ERROR="gameError";
-  public static final String USERS="numberUsers";
-  public static final String VIEW_NAME="home.ftl";
+
   // ------------
   // Constructors
   // ------------
@@ -50,7 +44,7 @@ public class GetHomeRoute implements Route {
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
 
     this.templateEngine = templateEngine;
-    this.playerlobby = playerlobby;
+    this.playerLobby = playerlobby;
 
     LOG.config("GetHomeRoute is initialized.");
   }
@@ -58,6 +52,14 @@ public class GetHomeRoute implements Route {
   // -------
   // Methods
   // -------
+
+  private static String removeSpaces(String string) {
+    return string.replaceAll(" ", "\"");
+  }
+
+  public static String returnSpaces(String string) {
+    return string.replaceAll("\"", " ");
+  }
 
   /**
    * Creates a list of links to start games with the corresponding players. May be used in
@@ -75,7 +77,7 @@ public class GetHomeRoute implements Route {
 
     String result = "";
     for(String user: list) {
-      result += "<li><a href=/game?opponent=" + user + "&summoner="+viewingUser+">" + user + "</a></li>";
+      result += "<li><a href=/game?opponent=" + removeSpaces(user) + "&summoner=" + removeSpaces(viewingUser)+">" + user + "</a></li>";
     }
     return "<ul>" + result + "</ul>"; // Unordered List Label
   }
@@ -108,31 +110,25 @@ public class GetHomeRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     final Session httpSession = request.session();
 
-    if(this.playerlobby.getUser(httpSession) == null) { // Yet to Sign In
+    if(this.playerLobby.getUser(httpSession) == null) { // Yet to Sign In
       vm.put(USERNAME, "");
-      vm.put(SIGNIN, "<a href=/SignIn>Sign In</a>");
-      vm.put(PLAYERS, "<p>Please Sign In to see players.</p>");
+      vm.put(SIGN, "<a href=/SignIn>Sign In</a>");
+      vm.put(SHOW_PLAYERS, "<p>Please Sign In to see players.</p>");
     }
-    else { // Logged On
-      if(httpSession.attribute("inGame")) {
+    else { // Already Signed In
+      if(httpSession.attribute("inGame")) { // Queued for a Game
         response.redirect("/game");
       }
-      vm.put(USERNAME, this.playerlobby.getUser(httpSession).toString());
-      vm.put(SIGNIN, "<a href=/SignedOut>Sign Out</a>");
-      vm.put(PLAYERS, addPlayersList(playerlobby.getUser(httpSession).toString(), playerlobby));
+
+      vm.put(USERNAME, this.playerLobby.getUser(httpSession).toString());
+      vm.put(SIGN, "<a href=/SignedOut>Sign Out</a>");
+      vm.put(SHOW_PLAYERS, addPlayersList(playerLobby.getUser(httpSession).toString(), playerLobby));
     }
-    vm.put(ERROR, "");
-    vm.put(USERS, showNumber(playerlobby));
 
-    /**
-    final PlayerServices playerServices =
-            httpSession.attribute("playerServices");
-    CheckersGame game = playerServices.currentGame();
-
-     vm.put(BOARD, game.getBoard());
-     */
+    vm.put(HOME_MESSAGE, "");
+    vm.put(NUMBER_USERS, showNumber(playerLobby));
 
     vm.put(TITLE, "Welcome!");
-    return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+    return templateEngine.render(new ModelAndView(vm , HOME_NAME));
   }
 }

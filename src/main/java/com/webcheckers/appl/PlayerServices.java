@@ -21,4 +21,8 @@ public class PlayerServices {
           return this.game;
     }
 
+    public void finishedGame() {
+        this.game = null;
+    }
+
 }
