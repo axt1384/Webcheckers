@@ -72,11 +72,12 @@ import com.webcheckers.ui.PostGameRoute;
        CuT = new PostGameRoute(engine, gameCenter, playerLobby);
      }
 
-     //@Test
+     @Test
      public void postThings(){
-       when(request.queryParams("move")).thenReturn("3-2");
-       when(request.queryParams("oldPos")).thenReturn("5-0");
-       when(request.queryParams("capture")).thenReturn("4-1");
+       when(request.queryParams("move")).thenReturn("0-7");
+       when(request.queryParams("oldPos")).thenReturn("4-3");
+       when(request.queryParams("capture")).thenReturn("3-4");
+       when(request.queryParams("capture2")).thenReturn("1-6");
 
        //final PlayerServices services = gameCenter.newPlayerServices();
        when(session.attribute("playerServices")).thenReturn(services);

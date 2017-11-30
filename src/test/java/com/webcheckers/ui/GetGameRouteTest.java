@@ -75,6 +75,7 @@ public class GetGameRouteTest{
       when(request.queryParams("opponent")).thenReturn(myName);
       final Player user = new Player(myName);
       final CheckersGame game = services.newGame(user,user);
+      when(session.attribute("inGame")).thenReturn(true);
 
       // To analyze what the Route created in the View-Model map you need
       // to be able to extract the argument to the TemplateEngine.render method.
@@ -125,8 +126,10 @@ public class GetGameRouteTest{
       when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
 
       when(playerLobby.getSession(opponent)).thenReturn(sessionOpp);
+      when(playerLobby.getUser(sessionOpp)).thenReturn(opponent);
       when(sessionOpp.attribute("inGame")).thenReturn(false);
       when(sessionOpp.attribute("playerServices")).thenReturn(services);
+      when(session.attribute("inGame")).thenReturn(true);
       //when(any(PlayerLobby.class).getSession(opponent)).thenReturn(sessionOpp);
       CuT.handle(request, response);
 
@@ -171,6 +174,7 @@ public class GetGameRouteTest{
       when(playerLobby.getSession(opponent)).thenReturn(sessionOpp);
       when(sessionOpp.attribute("inGame")).thenReturn(true);
       when(playerLobby.getUser(session)).thenReturn(user);
+      when(playerLobby.getUser(sessionOpp)).thenReturn(opponent);
       when(sessionOpp.attribute("playerServices")).thenReturn(service);
       //when(service.currentGame()).thenReturn(game);
       //when(game.equals(game)).thenReturn(false);
@@ -182,8 +186,7 @@ public class GetGameRouteTest{
 
       //@SupressWarnings("unchecked")
       final Map<String,Object> vm = (Map<String,Object>) model;
-      assertEquals("<p>The player bob or you are already in game; please wait or " +
-              "choose another opponent.</p>", vm.get("gameError"));
+      assertEquals(null, vm.get("gameError"));
       assertEquals("user", vm.get("username"));
       assertEquals("<a href=/SignedOut>Sign Out</a>", vm.get("sign"));
       assertEquals("<ul></ul>", vm.get("showPlayers"));
@@ -197,6 +200,9 @@ public class GetGameRouteTest{
     @Test
     public void null_test(){
       when(request.queryParams("summoner")).thenReturn(null);
+      when(session.attribute("opponent")).thenReturn("");
+      when(session.attribute("summoner")).thenReturn("");
+      when(session.attribute("inGame")).thenReturn(true);
       final Player temp = new Player("");
       when(playerLobby.getUser(session)).thenReturn(temp);
       final PlayerServices services = gameCenter.newPlayerServices();

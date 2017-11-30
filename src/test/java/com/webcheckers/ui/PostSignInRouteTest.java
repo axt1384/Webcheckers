@@ -63,7 +63,7 @@ public class PostSignInRouteTest {
 
         assertEquals("Welcome!", vm.get("title"));
         assertEquals("user",vm.get("username"));
-        assertEquals("", vm.get("gameError"));
+        assertEquals(null, vm.get("gameError"));
         assertEquals("<ul></ul>", vm.get("showPlayers"));
         assertEquals("0", vm.get("numberUsers"));
         assertEquals("<a href=/SignedOut>Sign Out</a>", vm.get("sign"));

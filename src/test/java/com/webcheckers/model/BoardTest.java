@@ -11,7 +11,8 @@ import static org.junit.Assert.*;
 public class BoardTest {
 
   private Board board = new Board(8,8);
-  private Row [] row = board.getBoard();
+  private Row[] reverse = board.getBoard("","");
+  private Row[] row = board.getBoard();
 
   /*
   Tests the get board methods
@@ -34,6 +35,7 @@ public class BoardTest {
     board.setBoard(row1);
     assertEquals(row1[0],board.getBoard()[0]);
     assertEquals(row1[0],board.getBoard("", "1")[0]);
+    assertEquals(8,board.getHeight());
   }
 
   /*

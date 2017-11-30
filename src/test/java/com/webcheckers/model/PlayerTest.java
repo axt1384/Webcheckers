@@ -17,6 +17,7 @@ public class PlayerTest {
     private Player p4 = new Player("Furious",true);
     private Player p5 = new Player("Furious",false);
     private Player p6 = new Player(null);
+    private Object p7 = new Object();
 
 
     /*
@@ -28,6 +29,7 @@ public class PlayerTest {
         assertFalse(p1.isSummoner());
         assertTrue(p2.isSummoner());
         assertFalse(p3.isSummoner());
+        p3.setSummoner(true);
         assertTrue(p4.isSummoner());
         assertFalse(p5.isSummoner());
     }
@@ -67,7 +69,7 @@ public class PlayerTest {
      */
     @Test
     public void testPlayerEqualsAnotherPlayer(){
-
+        assertFalse(p1.equals(p7));
         assertNotEquals(p1.toString(),p2.toString());
         assertEquals(p1.toString(),p3.toString());
         assertEquals(p4.toString(),p5.toString());

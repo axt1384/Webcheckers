@@ -76,7 +76,7 @@ public class Row {
 
     /*
     Used to help create a simple end game board.
-     */
+
     private void emptyRow() {
         for(int i = 0; i < width; i++){
             if(startColor.equals("white")){
@@ -97,6 +97,7 @@ public class Row {
             }
         }
     }
+    */
 
     /*
     Returns the index

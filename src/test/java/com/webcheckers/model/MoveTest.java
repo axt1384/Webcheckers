@@ -11,7 +11,7 @@ public class MoveTest {
 
     private Move m1 = new Move(1,2,2,3);
     private Move m2 = new Move(2,1,4,3);
-    private Move m3 = new Move(5,5,7,7);
+    private Move m3 = new Move(7,5,5,7);
     private Move m4 = new Move(1,3,1,3);
     private Move m5 = new Move(6,7,6,7);
     private Move m6 = new Move(3,4,5,6);

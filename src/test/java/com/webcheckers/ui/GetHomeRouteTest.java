@@ -57,7 +57,7 @@ public class GetHomeRouteTest {
         @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Welcome!", vm.get("title"));
-        assertEquals("", vm.get("gameError"));
+        assertEquals(null, vm.get("gameError"));
         assertEquals("0", vm.get("numberUsers"));
         assertEquals("", vm.get("username"));
         assertEquals("<a href=/SignIn>Sign In</a>", vm.get("sign"));
@@ -84,7 +84,7 @@ public class GetHomeRouteTest {
         @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Welcome!", vm.get("title"));
-        assertEquals("", vm.get("gameError"));
+        assertEquals(null, vm.get("gameError"));
         assertEquals(playerLobby.getUser(request.session()).toString(), vm.get("username"));
         assertEquals("<a href=/SignedOut>Sign Out</a>", vm.get("sign"));
         assertEquals("<ul></ul>", vm.get("showPlayers"));

@@ -58,7 +58,7 @@ public class GetSignOutRouteTest
     assertEquals(GetHomeRoute.showNumber(lobby) , vm.get("numberUsers"));
     assertEquals("sign should have value '<a href=/SignIn>Sign In</a>'", "<a href=/SignIn>Sign In</a>",
             vm.get("sign"));
-    assertEquals("gameError should have no value", "", vm.get("gameError"));
+    assertEquals("gameError should have no value", null, vm.get("gameError"));
   }
 
 }
